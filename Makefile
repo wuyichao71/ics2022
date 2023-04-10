@@ -1,5 +1,5 @@
-STUID = 211220000
-STUNAME = 张三
+STUID = DZ1722034-Yichao Wu
+STUNAME = 吴逸超
 
 # DO NOT modify the following code!!!
 
