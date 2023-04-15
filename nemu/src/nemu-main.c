@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 
   /* Start engine. */
   engine_start();
-  printf("Test\n");
+  /* printf("Test\n"); */
 
   return is_exit_status_bad();
 }
