@@ -42,23 +42,23 @@ static char* rl_gets() {
   return line_read;
 }
 
-/* static int cmd_info(char *args) */
-/* { */
-/*   char *arg = strtok(args, " "); */
-/*   if (strcmp(arg, "r") == 0) */
-/*   { */
-/*     isa_reg_display(); */
-/*   } */
-/*   else if (strcmp(arg, "w") == 0) */
-/*   { */
+static int cmd_info(char *args)
+{
+  char *arg = strtok(args, " ");
+  if (strcmp(arg, "r") == 0)
+  {
+    isa_reg_display();
+  }
+  else if (strcmp(arg, "w") == 0)
+  {
 
-/*   } */
-/*   else */
-/*   { */
-/*     printf("Unknown subcommand '%s'\n", arg); */
-/*   } */
-/*   return 0; */
-/* } */
+  }
+  else
+  {
+    printf("Unknown subcommand '%s'\n", arg);
+  }
+  return 0;
+}
 
 static int cmd_si(char *args) {
   int N = 1;
@@ -90,7 +90,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execution N step commands", cmd_si },
-  /* { "info", "Generic command for showing things about the program being debugged.", cmd_info }, */
+  { "info", "Generic command for showing things about the program being debugged.", cmd_info },
 
   /* TODO: Add more commands */
 
