@@ -25,7 +25,8 @@ const char *regs[] = {
 
 void isa_reg_display() {
   int regs_len = sizeof(regs) / sizeof(char *);
-  printf("%d\n", regs_len);
+  for(int i = 0; i < regs_len; i++)
+    printf("%s " FMT_WORD " %u", reg_name(i, 4), gpr(i), gpr(i));
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
