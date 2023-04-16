@@ -28,7 +28,7 @@ void isa_reg_display() {
   for(int i = 0; i < regs_len; i++)
   {
     printf("%4s: " FMT_WORD, reg_name(i, 4), gpr(i));
-    if ((i + 1) % 8 == 0)
+    if ((i + 1) % 4 == 0)
       printf("\n");
   }
 }
