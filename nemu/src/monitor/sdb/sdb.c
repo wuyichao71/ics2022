@@ -15,6 +15,9 @@
 
 #include <isa.h>
 #include <cpu/cpu.h>
+/* wuyc */
+#include <cpu/ifetch.h>
+/* wuyc */
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
@@ -42,14 +45,20 @@ static char* rl_gets() {
   return line_read;
 }
 
+/* wuyc */
 static int cmd_x(char *args)
 {
   char *N_str = strtok(args, " ");
   char *addr_str = strtok(NULL, " ");
   int N = atoi(N_str);
   vaddr_t addr;
+  word_t inst;
   sscanf(addr_str, "%x", &addr);
-  printf("%d "FMT_WORD, N, addr);
+  for(int i = 0; i < N; i++)
+  {
+    inst = inst_fetch(&addr, 4);
+    printf(FMT_WORD": "FMT_WORD"\n", addr, inst);
+  }
   return 0;
 }
 
@@ -79,6 +88,7 @@ static int cmd_si(char *args) {
   cpu_exec(N);
   return 0;
 }
+/* wuyc */
 
 static int cmd_c(char *args) {
   cpu_exec(-1);
