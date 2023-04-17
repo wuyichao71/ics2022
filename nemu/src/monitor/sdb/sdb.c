@@ -42,6 +42,17 @@ static char* rl_gets() {
   return line_read;
 }
 
+static int cmd_x(char *args)
+{
+  char *N_str = strtok(args, " ");
+  char *addr_str = strtok(NULL, " ");
+  int N = atoi(N_str);
+  vaddr_t addr;
+  sscanf(addr_str, "%x", &addr);
+  printf("%d "FMT_WORD, N, addr);
+  return 0;
+}
+
 static int cmd_info(char *args)
 {
   char *arg = strtok(args, " ");
@@ -91,6 +102,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execution N step commands", cmd_si },
   { "info", "Generic command for showing things about the program being debugged.", cmd_info },
+  { "x", "Print [N] memory.", cmd_x},
 
   /* TODO: Add more commands */
 
