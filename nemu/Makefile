@@ -39,6 +39,7 @@ SRCS-BLACKLIST-y += $(SRCS-BLACKLIST) $(shell find $(DIRS-BLACKLIST-y) -name "*.
 SRCS-y += $(shell find $(DIRS-y) -name "*.c")
 SRCS = $(filter-out $(SRCS-BLACKLIST-y),$(SRCS-y))
 
+$(shell echo $(DIRS-BLACKLIST-y))
 # Extract compiler and options from menuconfig
 CC = $(call remove_quote,$(CONFIG_CC))
 CFLAGS_BUILD += $(call remove_quote,$(CONFIG_CC_OPT))
@@ -55,7 +56,6 @@ include $(NEMU_HOME)/scripts/config.mk
 ifdef CONFIG_TARGET_AM
 include $(AM_HOME)/Makefile
 LINKAGE += $(ARCHIVES)
-$(error hello)
 else
 # Include rules to build NEMU
 include $(NEMU_HOME)/scripts/native.mk
