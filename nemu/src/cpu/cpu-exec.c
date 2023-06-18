@@ -55,7 +55,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
     p += snprintf(p, 4, " %02x", inst[i]);
   }
   int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
-  printf("%d\n", ilen_max);
   int space_len = ilen_max - ilen;
   if (space_len < 0) space_len = 0;
   space_len = space_len * 3 + 1;
@@ -68,6 +67,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
+  printf("%s$\n", s->logbuf);
 #endif
 #endif
 }
