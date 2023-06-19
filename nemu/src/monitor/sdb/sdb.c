@@ -64,7 +64,13 @@ static int cmd_x(char *args)
 
 static int cmd_info(char *args)
 {
-  char *arg = strtok(args, " ");
+  char *arg = NULL;
+  if (args == NULL)
+  {
+    printf("Missing subcommand\n");
+    return -1;
+  }
+  arg = strtok(NULL, " ");
   if (strcmp(arg, "r") == 0)
   {
     isa_reg_display();
@@ -111,11 +117,13 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
+  /* wuyc */
   { "si", "Execution N step commands", cmd_si },
   { "info", "Generic command for showing things about the program being debugged.", cmd_info },
   { "x", "Print [N] memory.", cmd_x},
 
   /* TODO: Add more commands */
+  /* wuyc */
 
 };
 
