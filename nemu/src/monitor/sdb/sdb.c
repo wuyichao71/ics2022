@@ -16,7 +16,7 @@
 #include <isa.h>
 #include <cpu/cpu.h>
 /* wuyc */
-#include <cpu/ifetch.h>
+#include <memory/vaddr.h>
 /* wuyc */
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -48,18 +48,19 @@ static char* rl_gets() {
 /* wuyc */
 static int cmd_x(char *args)
 {
-  char *N_str = NULL;
-  char *vaddr_str = NULL;
-  N_str = strtok(NULL, " ");
-  vaddr_str = strtok(NULL, " ");
+  vaddr_t incr = sizeof(word_t);
+  char *N_str = strtok(NULL, " ");
+  char *vaddr_str = strtok(NULL, " ");
   int N = atoi(N_str);
   vaddr_t vaddr;
   word_t inst;
   sscanf(vaddr_str, "%x", &vaddr);
   for(int i = 0; i < N; i++)
   {
-    inst = inst_fetch(&vaddr, 4);
+    inst = vaddr_read(vaddr, incr);
+    printf("%d\n", incr);
     printf(FMT_WORD": "FMT_WORD"\n", vaddr, inst);
+    vaddr += incr;
   }
   return 0;
 }
