@@ -86,6 +86,7 @@ static int cmd_si(char *args) {
   if (arg != NULL)
     N = atoi(arg);
   cpu_exec(N);
+  printf("%d\n", nemu_state.state);
   return 0;
 }
 /* wuyc */
