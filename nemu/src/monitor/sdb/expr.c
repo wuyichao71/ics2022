@@ -108,6 +108,11 @@ static bool make_token(char *e) {
 /* wuyc */
         switch (rules[i].token_type) {
           case '+':
+          case '-':
+          case '*':
+          case '/':
+          case '(':
+          case ')':
             tokens[nr_token].type = rules[i].token_type;
           case TK_NOTYPE:
           case TK_EQ:
