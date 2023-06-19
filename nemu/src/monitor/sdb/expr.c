@@ -122,8 +122,8 @@ static bool make_token(char *e) {
               panic("The token of number is too long.");
             tokens[nr_token].type = rules[i].token_type;
             strncpy(tokens[nr_token].str, substr_start, substr_len);
-            printf("%s\n", tokens[nr_token].str);
-            tokens[nr_token].str[substr_len] = '\0';
+            /* printf("%s\n", tokens[nr_token].str); */
+            /* tokens[nr_token].str[substr_len] = '\0'; */
             nr_token++;
             break;
           case TK_NOTYPE:
