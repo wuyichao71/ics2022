@@ -48,16 +48,18 @@ static char* rl_gets() {
 /* wuyc */
 static int cmd_x(char *args)
 {
-  char *N_str = strtok(args, " ");
-  char *addr_str = strtok(NULL, " ");
+  char *N_str = NULL;
+  char *vaddr_str = NULL;
+  N_str = strtok(NULL, " ");
+  vaddr_str = strtok(NULL, " ");
   int N = atoi(N_str);
-  vaddr_t addr;
+  vaddr_t vaddr;
   word_t inst;
-  sscanf(addr_str, "%x", &addr);
+  sscanf(vaddr_str, "%x", &vaddr);
   for(int i = 0; i < N; i++)
   {
-    inst = inst_fetch(&addr, 4);
-    printf(FMT_WORD": "FMT_WORD"\n", addr, inst);
+    inst = inst_fetch(&vaddr, 4);
+    printf(FMT_WORD": "FMT_WORD"\n", vaddr, inst);
   }
   return 0;
 }
