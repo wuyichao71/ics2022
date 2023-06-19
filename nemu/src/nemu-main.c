@@ -14,6 +14,9 @@
 ***************************************************************************************/
 
 #include <common.h>
+/* wuyc */
+#include "monitor/sdb/sdb.h"
+/* wuyc */
 
 void init_monitor(int, char *[]);
 void am_init_monitor();
@@ -28,9 +31,13 @@ int main(int argc, char *argv[]) {
   init_monitor(argc, argv);
 #endif
 
+/* wuyc */
   /* Start engine. */
   /* engine_start(); */
   /* printf("Test\n"); */
+  bool success;
+  expr("+-*/", &success);
+/* wuyc */
 
   return is_exit_status_bad();
 }
