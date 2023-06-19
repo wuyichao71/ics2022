@@ -51,6 +51,11 @@ static int cmd_x(char *args)
   vaddr_t incr = sizeof(word_t);
   char *N_str = strtok(NULL, " ");
   char *vaddr_str = strtok(NULL, " ");
+  if (N_str == NULL || vaddr_str == NULL)
+  {
+    printf("Missing arguments\n");
+    return 0;
+  }
   int N = atoi(N_str);
   vaddr_t vaddr;
   word_t inst;
@@ -58,7 +63,7 @@ static int cmd_x(char *args)
   for(int i = 0; i < N; i++)
   {
     inst = vaddr_read(vaddr, incr);
-    printf("%d\n", incr);
+    /* printf("%d\n", incr); */
     printf(FMT_WORD": "FMT_WORD"\n", vaddr, inst);
     vaddr += incr;
   }
