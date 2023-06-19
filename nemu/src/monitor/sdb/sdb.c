@@ -68,7 +68,7 @@ static int cmd_info(char *args)
   if (args == NULL)
   {
     printf("Missing subcommand\n");
-    return -1;
+    return 0;
   }
   arg = strtok(NULL, " ");
   if (strcmp(arg, "r") == 0)
