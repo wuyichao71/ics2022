@@ -24,13 +24,16 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-  int regs_len = sizeof(regs) / sizeof(char *);
+  /* wuyc */
+  /* int regs_len = sizeof(regs) / sizeof(char *); */
+  int regs_len = ARRLEN(regs);
   for(int i = 0; i < regs_len; i++)
   {
     printf("%4s: " FMT_WORD, reg_name(i, 4), gpr(i));
     if ((i + 1) % 4 == 0)
       printf("\n");
   }
+  /* wuyc */
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
