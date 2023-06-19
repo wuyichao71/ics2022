@@ -43,10 +43,14 @@ static struct rule {
   {"==", TK_EQ},        // equal
 /* wuyc */
   {"(0|[1-9][0-9]*)", TK_NUM},
-  /* {"\\*", '*'}, */
+  {"\\*", '*'},
+  {"-", '-'},
+  {"/", '/'},
+  {"\\(", '('},
+  {"\\)", ')'},
+/* wuyc */
 
 };
-/* wuyc */
 
 #define NR_REGEX ARRLEN(rules)
 
