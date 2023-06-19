@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
   /* engine_start(); */
   /* printf("Test\n"); */
   bool success;
-  expr("(", &success);
+  expr("100+(10*20)/3", &success);
 /* wuyc */
 
   return is_exit_status_bad();
