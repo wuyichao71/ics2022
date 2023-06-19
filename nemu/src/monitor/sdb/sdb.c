@@ -82,7 +82,7 @@ static int cmd_info(char *args)
 
 static int cmd_si(char *args) {
   int N = 1;
-  char *arg = strtok(args, " "); 
+  char *arg = strtok(NULL, " "); 
   if (arg != NULL)
     N = atoi(arg);
   cpu_exec(N);
