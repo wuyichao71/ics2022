@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
   /* engine_start(); */
   /* printf("Test\n"); */
   bool success;
-  expr("(10+100)+00000", &success);
+  expr("(10+100)+1000000000000000000000000000000", &success);
 /* wuyc */
 
   return is_exit_status_bad();
