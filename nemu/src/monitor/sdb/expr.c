@@ -20,12 +20,14 @@
  */
 #include <regex.h>
 
+/* wuyc */
 enum {
-  TK_NOTYPE = 256, TK_EQ,
+  TK_NOTYPE = 256, TK_EQ, TK_NUM,
 
   /* TODO: Add more token types */
 
 };
+/* wuyc */
 
 static struct rule {
   const char *regex;
@@ -39,7 +41,12 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
+/* wuyc */
+  {"[1-9][0-9]*", TK_NUM},
+  /* {"\\*", '*'}, */
+
 };
+/* wuyc */
 
 #define NR_REGEX ARRLEN(rules)
 
@@ -94,9 +101,15 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
+/* wuyc */
         switch (rules[i].token_type) {
+          case '+':
+            tokens[nr_token].type = rules[i].token_type;
+          case TK_NOTYPE:
+          case TK_EQ:
           default: TODO();
         }
+/* wuyc */
 
         break;
       }
