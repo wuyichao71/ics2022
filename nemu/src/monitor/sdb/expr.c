@@ -107,28 +107,20 @@ static bool make_token(char *e) {
 
 /* wuyc */
         switch (rules[i].token_type) {
-          case '+':
-          case '-':
-          case '*':
-          case '/':
-          case '(':
-          case ')':
-          case TK_EQ:
-            tokens[nr_token].type = rules[i].token_type;
-            nr_token++;
-            break;
-          case TK_NUM:
-            if (substr_len > 31)
-              panic("The token of number is too long.");
-            tokens[nr_token].type = rules[i].token_type;
-            strncpy(tokens[nr_token].str, substr_start, substr_len);
-            /* printf("%s\n", tokens[nr_token].str); */
-            tokens[nr_token].str[substr_len] = '\0';
-            nr_token++;
-            break;
           case TK_NOTYPE:
             break;
           default: //TODO();
+            /* if the token is TK_NUM, storge the SUBSTR. */
+            if (rules[i].token_type == TK_NUM)
+            {
+              if (substr_len >= 32)
+                panic("The token of number is too long.");
+              strncpy(tokens[nr_token].str, substr_start, substr_len);
+              /* printf("%s\n", tokens[nr_token].str); */
+              tokens[nr_token].str[substr_len] = '\0';
+            }
+            tokens[nr_token].type = rules[i].token_type;
+            nr_token++;
             break;
         }
 /* wuyc */
@@ -154,7 +146,7 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  /* TODO(); */
+  TODO();
 
   return 0;
 }
