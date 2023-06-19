@@ -114,9 +114,12 @@ static bool make_token(char *e) {
           case '(':
           case ')':
             tokens[nr_token].type = rules[i].token_type;
+            nr_token++;
+            break;
           case TK_NOTYPE:
           case TK_EQ:
-          default: TODO();
+          default: //TODO();
+            break;
         }
 /* wuyc */
 
