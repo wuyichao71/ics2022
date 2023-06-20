@@ -112,10 +112,10 @@ static int cmd_p(char *args) {
   }
 
   bool success_val = true;
-  /* int result = (int)expr(args, &success_val); */
+  int result = (int)expr(args, &success_val);
   if (success_val)
   {
-    /* printf("%d\n", result); */
+    printf("%d\n", result);
   }
   else
   {
