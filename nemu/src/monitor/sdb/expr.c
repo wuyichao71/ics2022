@@ -143,13 +143,30 @@ static bool make_token(char *e) {
 
 
 /* wuyc */
-static bool check_parentheses(int p, int q)
+static bool check_parentheses(int p, int q, bool *success)
 {
-  if (p == '(' && q == ')')
-    return true;
-  else
+  int level = 0;
+  int tag = 0;
+  if (tokens[p].type != '(' || tokens[q].type != ')')
     return false;
-  /* return false; */
+  for(int i = p; i <= q; i++)
+  {
+    if (tokens[i].type == '(') level++;
+    else if (tokens[i].type == ')') level--;
+
+    if (level == 0 && i != q)
+      tag = 1;
+    else if (level < 0)
+    {
+      *success = false;
+      return false;
+    }
+  }
+
+  if (tag == 0 && level == 0)
+    return true;
+
+  return false;
 
 }
 
@@ -175,7 +192,7 @@ static int eval(int p, int q, bool *success)
       *success = false;
     }
   }
-  else if (check_parentheses(p, q) == true)
+  else if (check_parentheses(p, q, success) == true)
   {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
