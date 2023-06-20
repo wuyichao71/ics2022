@@ -146,7 +146,32 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  /* TODO(); */
+  TODO();
 
   return 0;
 }
+
+/* wuyc */
+int eval(int p, int q, bool *success)
+{
+  if (p > q)
+  {
+  }
+  else if (p == q)
+  {
+  }
+  else if (check_parentheses(p, q) == true)
+  {
+  }
+  else
+  {
+  }
+}
+
+bool check_parentheses(int p, int q)
+{
+  return true;
+
+}
+/* wuyc */
+

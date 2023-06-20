@@ -15,7 +15,7 @@
 
 #include <common.h>
 /* wuyc */
-#include "monitor/sdb/sdb.h"
+/* #include "monitor/sdb/sdb.h" */
 /* wuyc */
 
 void init_monitor(int, char *[]);
@@ -33,10 +33,10 @@ int main(int argc, char *argv[]) {
 
 /* wuyc */
   /* Start engine. */
-  /* engine_start(); */
+  engine_start();
   /* printf("Test\n"); */
-  bool success;
-  expr("100+(10*20)/3", &success);
+  /* bool success; */
+  /* expr("100+(10*20)/3", &success); */
 /* wuyc */
 
   return is_exit_status_bad();
