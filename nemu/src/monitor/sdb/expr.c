@@ -165,6 +165,8 @@ static bool check_parentheses(int p, int q, bool *success)
 
   if (tag == 0 && level == 0)
     return true;
+  else if (level > 0)
+    *success = false;
 
   return false;
 
