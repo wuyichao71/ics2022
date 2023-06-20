@@ -103,6 +103,26 @@ static int cmd_si(char *args) {
   /* printf("%d\n", nemu_state.state); */
   return 0;
 }
+
+static int cmd_p(char *args) {
+  if (args == NULL)
+  {
+    printf("Missing expression\n");
+    return 0;
+  }
+
+  bool success_val = true;
+  /* int result = (int)expr(args, &success_val); */
+  if (success_val)
+  {
+    /* printf("%d\n", result); */
+  }
+  else
+  {
+    printf("The expression is incorrect\n");
+  }
+  return 0;
+}
 /* wuyc */
 
 static int cmd_c(char *args) {
@@ -129,6 +149,7 @@ static struct {
   { "si", "Execution N step commands", cmd_si },
   { "info", "Generic command for showing things about the program being debugged.", cmd_info },
   { "x", "Print [N] memory.", cmd_x},
+  { "p", "Evaluate the expression.", cmd_p},
 
   /* TODO: Add more commands */
   /* wuyc */

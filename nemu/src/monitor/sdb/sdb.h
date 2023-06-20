@@ -19,5 +19,9 @@
 #include <common.h>
 
 word_t expr(char *e, bool *success);
+/* wuyc */
+int eval(int p, int q, bool *success);
+bool check_parentheses(int p, int q);
+/* wuyc */
 
 #endif

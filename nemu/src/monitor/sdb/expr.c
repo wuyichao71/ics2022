@@ -21,6 +21,9 @@
 #include <regex.h>
 
 /* wuyc */
+/* #include "sdb.h" */
+/* wuyc */
+
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_NUM,
 
@@ -139,6 +142,53 @@ static bool make_token(char *e) {
 }
 
 
+/* wuyc */
+static bool check_parentheses(int p, int q)
+{
+  return true;
+  /* return false; */
+
+}
+
+int eval(int p, int q, bool *success)
+{
+  if (p > q)
+  {
+    /* Bad expression */
+    *success = false;
+    return 0;
+  }
+  else if (p == q)
+  {
+    /* Single token.
+     * For now this token should be a number.
+     * Return the value of the number.
+     */
+    return 0;
+  }
+  else if (check_parentheses(p, q) == true)
+  {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1, success);
+  }
+  else
+  {
+    /* op = the position of major operator in the token expression; */
+    /* val1 = eval(p, op - 1); */
+    /* val2 = eval(op + 1, q); */
+    /* switch (op_type) { */
+    /*   case '+': return val1 + val2; */
+    /*   case '-': /1* ... *1/ */
+    /*   case '*': /1* ... *1/ */
+    /*   case '/': /1* ... *1/ */
+    /*   default: assert(0); */
+    return 0;
+  }
+}
+/* wuyc */
+
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -150,28 +200,3 @@ word_t expr(char *e, bool *success) {
 
   return 0;
 }
-
-/* wuyc */
-int eval(int p, int q, bool *success)
-{
-  if (p > q)
-  {
-  }
-  else if (p == q)
-  {
-  }
-  else if (check_parentheses(p, q) == true)
-  {
-  }
-  else
-  {
-  }
-}
-
-bool check_parentheses(int p, int q)
-{
-  return true;
-
-}
-/* wuyc */
-
