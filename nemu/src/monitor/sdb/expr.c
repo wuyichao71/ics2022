@@ -159,7 +159,6 @@ int eval(int p, int q, bool *success)
   {
     /* Bad expression */
     *success = false;
-    return 0;
   }
   else if (p == q)
   {
@@ -167,7 +166,14 @@ int eval(int p, int q, bool *success)
      * For now this token should be a number.
      * Return the value of the number.
      */
-    return 0;
+    if (tokens[p].type == TK_NUM)
+    {
+      return atoi(tokens[p].str);
+    }
+    else
+    {
+      *success = false;
+    }
   }
   else if (check_parentheses(p, q) == true)
   {
@@ -187,8 +193,8 @@ int eval(int p, int q, bool *success)
     /*   case '*': /1* ... *1/ */
     /*   case '/': /1* ... *1/ */
     /*   default: assert(0); */
-    return 0;
   }
+  return 0;
 }
 /* wuyc */
 
