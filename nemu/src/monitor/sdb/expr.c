@@ -145,7 +145,10 @@ static bool make_token(char *e) {
 /* wuyc */
 static bool check_parentheses(int p, int q)
 {
-  return true;
+  if (p == '(' && q == ')')
+    return true;
+  else
+    return false;
   /* return false; */
 
 }
@@ -197,6 +200,9 @@ word_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   /* TODO(); */
-
-  return 0;
+  int result = eval(0, nr_token-1, success);
+  if (*success == true)
+    return result;
+  else
+    return 0;
 }
