@@ -244,7 +244,7 @@ static int eval(int p, int q, bool *success)
   {
     /* Bad expression */
     *success = false;
-    panic("ERROR");
+    printf("%d, %d\n", p, q);
   }
   else if (p == q)
   {
