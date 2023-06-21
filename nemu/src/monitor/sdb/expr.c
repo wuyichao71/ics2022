@@ -86,7 +86,7 @@ static int nr_token __attribute__((used))  = 0;
 
 static bool is_unary(int op_index)
 {
-  return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == '(');
+  return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == ')');
 }
 
 static bool make_token(char *e) {
