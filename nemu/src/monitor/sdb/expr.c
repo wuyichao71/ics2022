@@ -304,7 +304,8 @@ static int eval(int p, int q, bool *success)
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
-    Assert(*success, "all");
+    /* Assert(*success, "all"); */
+    panic("a");
     return 0;
   }
 
