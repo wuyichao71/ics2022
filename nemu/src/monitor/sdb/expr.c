@@ -271,7 +271,10 @@ static int eval(int p, int q, bool *success)
   {
     /* If the CHECK_PARENTHESES is not successful, finish the EVAL. */
     if (*success == false)
+    {
+      Assert(*success, "a");
       return 0;
+    }
 
     /* op = the position of major operator in the token expression; */
     int val1 = 0, val2 = 0;
