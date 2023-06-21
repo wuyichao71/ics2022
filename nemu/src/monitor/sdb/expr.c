@@ -190,7 +190,6 @@ static bool check_parentheses(int p, int q, bool *success)
 
 static unsigned int priority(int p)
 {
-  printf("%d\n", p);
   switch(tokens[p].type)
   {
     case '+':
@@ -222,6 +221,7 @@ static int dominant_operator(int p, int q)
       if (tokens[i].type != TK_NUM)
       {
         cur_pri = priority(i);
+        printf("%d\n", cur_pri);
         if (cur_pri == 0)
         {
           Log("Please set token[%d]'s priority", tokens[i].type);
