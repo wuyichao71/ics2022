@@ -244,6 +244,7 @@ static int eval(int p, int q, bool *success)
   {
     /* Bad expression */
     *success = false;
+    panic("ERROR");
   }
   else if (p == q)
   {
@@ -305,7 +306,7 @@ word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     /* Assert(*success, "all"); */
-    panic("a");
+    /* panic("a"); */
     return 0;
   }
 
