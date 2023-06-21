@@ -282,6 +282,7 @@ static int eval(int p, int q, bool *success)
     if (op == -1)
     {
       *success = false;
+      Assert(*success, "a");
       return 0;
     }
     if (op != TK_NEG)
