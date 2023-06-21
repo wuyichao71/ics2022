@@ -272,7 +272,7 @@ static int eval(int p, int q, bool *success)
     /* If the CHECK_PARENTHESES is not successful, finish the EVAL. */
     if (*success == false)
     {
-      Assert(*success, "a");
+      /* Assert(*success, "a"); */
       return 0;
     }
 
@@ -282,7 +282,7 @@ static int eval(int p, int q, bool *success)
     if (op == -1)
     {
       *success = false;
-      Assert(*success, "a");
+      /* Assert(*success, "a"); */
       return 0;
     }
     if (op != TK_NEG)
@@ -304,6 +304,7 @@ static int eval(int p, int q, bool *success)
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
+    Assert(*success, "all");
     return 0;
   }
 
