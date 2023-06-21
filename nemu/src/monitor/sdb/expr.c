@@ -197,6 +197,8 @@ static unsigned int priority(int p)
     case '*':
     case '/':
       return 2;
+    case TK_NEG:
+      return 3;
   }
   return 0;
 
@@ -271,19 +273,22 @@ static int eval(int p, int q, bool *success)
       return 0;
 
     /* op = the position of major operator in the token expression; */
+    int val1 = 0, val2 = 0;
     int op = dominant_operator(p, q);
     if (op == -1)
     {
       *success = false;
       return 0;
     }
-    int val1 = eval(p, op - 1, success);
-    int val2 = eval(op + 1, q, success);
+    if (op != TK_NEG)
+      val1 = eval(p, op - 1, success);
+    val2 = eval(op + 1, q, success);
     switch (tokens[op].type) {
       case '+': return val1 + val2;
       case '-': return val1 - val2;
       case '*': return val1 * val2;
       case '/': return val1 / val2;
+      case TK_NEG: return -val2;
       default: assert(0);
     }
   }
