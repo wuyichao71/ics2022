@@ -25,7 +25,7 @@
 /* wuyc */
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NUM,
+  TK_NOTYPE = 256, TK_EQ, TK_NUM, TK_NEG,
 
   /* TODO: Add more token types */
 
@@ -84,6 +84,11 @@ typedef struct token {
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
+static bool is_unary(int op_index)
+{
+  return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == '(');
+}
+
 static bool make_token(char *e) {
   int position = 0;
   int i;
@@ -111,6 +116,13 @@ static bool make_token(char *e) {
 /* wuyc */
         switch (rules[i].token_type) {
           case TK_NOTYPE:
+            break;
+            /* distinguish the TK_NEG and '-'. */
+          case '-':
+            if (is_unary(nr_token))
+              tokens[nr_token].type = TK_NEG;
+            else
+              tokens[nr_token].type = '-';
             break;
           default: //TODO();
             /* if the token is TK_NUM, storge the SUBSTR. */
