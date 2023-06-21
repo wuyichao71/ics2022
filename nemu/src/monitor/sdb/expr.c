@@ -218,7 +218,7 @@ static int dominant_operator(int p, int q)
       level--;
     else if (level == 0)
     {
-      if (tokens[i].type != TK_NUM && tokens[i].type != TK_NEG)
+      if (tokens[i].type != TK_NUM)
       {
         cur_pri = priority(i);
         /* printf("%d\n", cur_pri); */
