@@ -239,7 +239,7 @@ static int dominant_operator(int p, int q)
   return dom;
 }
 
-static int eval(int p, int q, bool *success)
+static word_t eval(int p, int q, bool *success)
 {
   if (p > q)
   {
