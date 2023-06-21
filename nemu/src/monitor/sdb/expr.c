@@ -129,7 +129,10 @@ static bool make_token(char *e) {
             if (rules[i].token_type == TK_NUM)
             {
               if (substr_len >= 32)
-                panic("The token of number is too long.");
+              {
+                Log("The token of number is too long.");
+                return false;
+              }
               strncpy(tokens[nr_token].str, substr_start, substr_len);
               /* printf("%s\n", tokens[nr_token].str); */
               tokens[nr_token].str[substr_len] = '\0';
