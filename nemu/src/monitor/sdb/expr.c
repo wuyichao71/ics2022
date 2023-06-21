@@ -190,6 +190,7 @@ static bool check_parentheses(int p, int q, bool *success)
 
 static unsigned int priority(int p)
 {
+  printf("%d\n", p);
   switch(tokens[p].type)
   {
     case '+':
@@ -312,8 +313,8 @@ word_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   /* TODO(); */
-  for(int i = 0; i < nr_token; i++)
-    printf("%d\n", tokens[i].type);
+  /* for(int i = 0; i < nr_token; i++) */
+  /*   printf("%d\n", tokens[i].type); */
   int result = eval(0, nr_token-1, success);
   if (*success == true)
     return result;
