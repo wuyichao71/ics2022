@@ -255,16 +255,16 @@ static int eval(int p, int q, bool *success)
     if (*success == false)
       return 0;
 
-    int op_index = dominant_operator(p, q);
     /* op = the position of major operator in the token expression; */
-    if (op_index == -1)
+    int op = dominant_operator(p, q);
+    if (op == -1)
     {
       *success = false;
       return 0;
     }
-    int val1 = eval(p, op_index - 1, success);
-    int val2 = eval(op_index + 1, q, success);
-    switch (tokens[op_index].type) {
+    int val1 = eval(p, op - 1, success);
+    int val2 = eval(op + 1, q, success);
+    switch (tokens[op].type) {
       case '+': return val1 + val2;
       case '-': return val1 - val2;
       case '*': return val1 * val2;
