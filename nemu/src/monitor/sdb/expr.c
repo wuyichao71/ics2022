@@ -198,8 +198,8 @@ static unsigned int priority(int p)
     case '*':
     case '/':
       return 2;
-    /* case TK_NEG: */
-      /* return 3; */
+    case TK_NEG:
+      return 3;
   }
   return 0;
 
@@ -269,10 +269,10 @@ static int eval(int p, int q, bool *success)
      */
     return eval(p + 1, q - 1, success);
   }
-  else if (tokens[p].type == TK_NEG && tokens[q].type == TK_NUM)
-  {
-    return -eval(p+1, q, success);
-  }
+  /* else if (tokens[p].type == TK_NEG && tokens[q].type == TK_NUM) */
+  /* { */
+  /*   return -eval(p+1, q, success); */
+  /* } */
   else
   {
     /* If the CHECK_PARENTHESES is not successful, finish the EVAL. */
@@ -290,6 +290,10 @@ static int eval(int p, int q, bool *success)
       *success = false;
       printf("Can not find dominant operator\n");
       return 0;
+    }
+    if (tokens[op].type == TK_NEG)
+    {
+      return -eval(p+1, q, success);
     }
     int val1 = eval(p, op - 1, success);
     int val2 = eval(op + 1, q, success);
