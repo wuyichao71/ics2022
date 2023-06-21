@@ -312,8 +312,8 @@ word_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   /* TODO(); */
-  /* for(int i = 0; i < nr_token; i++) */
-  /*   printf("%d\n", tokens[nr_token].type); */
+  for(int i = 0; i < nr_token; i++)
+    printf("%d\n", tokens[nr_token].type);
   int result = eval(0, nr_token-1, success);
   if (*success == true)
     return result;
