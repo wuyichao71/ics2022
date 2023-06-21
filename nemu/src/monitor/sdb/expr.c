@@ -198,8 +198,8 @@ static unsigned int priority(int p)
     case '*':
     case '/':
       return 2;
-    case TK_NEG:
-      return 3;
+    /* case TK_NEG: */
+      /* return 3; */
   }
   return 0;
 
@@ -218,7 +218,7 @@ static int dominant_operator(int p, int q)
       level--;
     else if (level == 0)
     {
-      if (tokens[i].type != TK_NUM)
+      if (tokens[i].type != TK_NUM && tokens[i].type != TK_NEG)
       {
         cur_pri = priority(i);
         /* printf("%d\n", cur_pri); */
@@ -269,6 +269,10 @@ static int eval(int p, int q, bool *success)
      */
     return eval(p + 1, q - 1, success);
   }
+  else if (tokens[p].type == TK_NEG)
+  {
+    return -eval(p+1, q, success);
+  }
   else
   {
     /* If the CHECK_PARENTHESES is not successful, finish the EVAL. */
@@ -279,24 +283,21 @@ static int eval(int p, int q, bool *success)
     }
 
     /* op = the position of major operator in the token expression; */
-    int val1 = 0, val2 = 0;
     int op = dominant_operator(p, q);
-    printf("%d\n", op);
+    /* printf("%d\n", op); */
     if (op == -1)
     {
       *success = false;
       printf("Can not find dominant operator\n");
       return 0;
     }
-    if (tokens[op].type != TK_NEG)
-      val1 = eval(p, op - 1, success);
-    val2 = eval(op + 1, q, success);
+    int val1 = eval(p, op - 1, success);
+    int val2 = eval(op + 1, q, success);
     switch (tokens[op].type) {
       case '+': return val1 + val2;
       case '-': return val1 - val2;
       case '*': return val1 * val2;
       case '/': return val1 / val2;
-      case TK_NEG: return -val2;
       default: assert(0);
     }
   }
