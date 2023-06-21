@@ -217,7 +217,7 @@ static int dominant_operator(int p, int q)
         cur_pri = priority(i);
         if (cur_pri == 0)
         {
-          printf("Please set token[%d]'s priority", tokens[i].type);
+          Log("Please set token[%d]'s priority", tokens[i].type);
           /* *success = false; */
           return -1;
         }
