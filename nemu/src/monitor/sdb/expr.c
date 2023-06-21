@@ -130,7 +130,7 @@ static bool make_token(char *e) {
             {
               if (substr_len >= 32)
               {
-                Log("The token of number is too long.");
+                printf(ANSI_FMT("The token of number is too long.\n", ANSI_FG_RED));
                 return false;
               }
               strncpy(tokens[nr_token].str, substr_start, substr_len);
