@@ -244,7 +244,7 @@ static int eval(int p, int q, bool *success)
   {
     /* Bad expression */
     *success = false;
-    printf("%d, %d\n", p, q);
+    printf("Bad expression\n");
   }
   else if (p == q)
   {
@@ -283,10 +283,10 @@ static int eval(int p, int q, bool *success)
     if (op == -1)
     {
       *success = false;
-      /* Assert(*success, "a"); */
+      printf("Can not find dominant operator\n");
       return 0;
     }
-    if (op != TK_NEG)
+    if (tokens[op].type != TK_NEG)
       val1 = eval(p, op - 1, success);
     val2 = eval(op + 1, q, success);
     switch (tokens[op].type) {
