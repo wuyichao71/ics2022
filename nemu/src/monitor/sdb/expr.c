@@ -221,7 +221,7 @@ static int dominant_operator(int p, int q)
       if (tokens[i].type != TK_NUM)
       {
         cur_pri = priority(i);
-        printf("%d\n", cur_pri);
+        /* printf("%d\n", cur_pri); */
         if (cur_pri == 0)
         {
           Log("Please set token[%d]'s priority", tokens[i].type);
@@ -281,6 +281,7 @@ static int eval(int p, int q, bool *success)
     /* op = the position of major operator in the token expression; */
     int val1 = 0, val2 = 0;
     int op = dominant_operator(p, q);
+    printf("%d\n", op);
     if (op == -1)
     {
       *success = false;
