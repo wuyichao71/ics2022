@@ -269,7 +269,7 @@ static int eval(int p, int q, bool *success)
      */
     return eval(p + 1, q - 1, success);
   }
-  else if (tokens[p].type == TK_NEG)
+  else if (tokens[p].type == TK_NEG && tokens[q].type == TK_NUM)
   {
     return -eval(p+1, q, success);
   }
