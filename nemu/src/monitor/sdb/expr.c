@@ -172,6 +172,54 @@ static bool check_parentheses(int p, int q, bool *success)
 
 }
 
+static unsigned int priority(int p)
+{
+  switch(tokens[p].type)
+  {
+    case '+':
+    case '-':
+      return 1;
+    case '*':
+    case '/':
+      return 2;
+  }
+  return 0;
+
+}
+
+static int dominant_operator(int p, int q)
+{
+  int level = 0;
+  unsigned int pri = 0, cur_pri;
+  int dom = -1;
+  for(int i = p; i <= q; i++)
+  {
+    if (tokens[i].type == '(')
+      level++;
+    else if (tokens[i].type == ')')
+      level--;
+    else if (level == 0)
+    {
+      if (tokens[i].type != TK_NUM)
+      {
+        cur_pri = priority(i);
+        if (cur_pri == 0)
+        {
+          printf("Please set token[%d]'s priority", tokens[i].type);
+          /* *success = false; */
+          return -1;
+        }
+        if (pri == 0 || cur_pri <= pri)
+        {
+          pri = cur_pri;
+          dom = i;
+        }
+      }
+    }
+  }
+  return dom;
+}
+
 static int eval(int p, int q, bool *success)
 {
   if (p > q)
@@ -203,15 +251,26 @@ static int eval(int p, int q, bool *success)
   }
   else
   {
+    /* If the CHECK_PARENTHESES is not successful, finish the EVAL. */
+    if (*success == false)
+      return 0;
+
+    int op_index = dominant_operator(p, q);
     /* op = the position of major operator in the token expression; */
-    /* val1 = eval(p, op - 1); */
-    /* val2 = eval(op + 1, q); */
-    /* switch (op_type) { */
-    /*   case '+': return val1 + val2; */
-    /*   case '-': /1* ... *1/ */
-    /*   case '*': /1* ... *1/ */
-    /*   case '/': /1* ... *1/ */
-    /*   default: assert(0); */
+    if (op_index == -1)
+    {
+      *success = false;
+      return 0;
+    }
+    int val1 = eval(p, op_index - 1, success);
+    int val2 = eval(op_index + 1, q, success);
+    switch (tokens[op_index].type) {
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+      case '/': return val1 / val2;
+      default: assert(0);
+    }
   }
   return 0;
 }
