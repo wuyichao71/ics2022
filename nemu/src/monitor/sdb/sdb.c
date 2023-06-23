@@ -192,7 +192,7 @@ void sdb_set_batch_mode() {
 #define CHK_NAME "./tools/gen-expr/build/input"
 void check_expr()
 {
-  return;
+  /* return; */
   char str[STR_LEN];
   FILE *fp = fopen(CHK_NAME, "r");
   char *result_p, *expr_p;
@@ -223,7 +223,7 @@ void sdb_mainloop() {
     return;
   }
   /* wuyc */
-  /* check_expr(); */
+  check_expr();
   /* wuyc */
 
   for (char *str; (str = rl_gets()) != NULL; ) {

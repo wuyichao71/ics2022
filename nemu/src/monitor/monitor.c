@@ -24,7 +24,7 @@ void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
 /* wuyc */
-void check_expr();
+/* void check_expr(); */
 /* wuyc */
 
 static void welcome() {
@@ -142,7 +142,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Display welcome message. */
   /* wuyc */
-  check_expr();
+  /* check_expr(); */
   /* wuyc */
   welcome();
 }
