@@ -222,7 +222,7 @@ void sdb_mainloop() {
     return;
   }
   /* wuyc */
-  /* check_expr(); */
+  check_expr();
   /* wuyc */
 
   for (char *str; (str = rl_gets()) != NULL; ) {
