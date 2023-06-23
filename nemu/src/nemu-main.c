@@ -22,6 +22,9 @@ void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
+/* wuyc */
+void check_expr();
+/* wuyc */
 
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
@@ -32,6 +35,7 @@ int main(int argc, char *argv[]) {
 #endif
 
 /* wuyc */
+  check_expr();
   /* Start engine. */
   engine_start();
   /* printf("Test\n"); */
