@@ -23,6 +23,9 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
+/* wuyc */
+void check_expr();
+/* wuyc */
 
 static void welcome() {
   Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
@@ -138,6 +141,9 @@ void init_monitor(int argc, char *argv[]) {
 #endif
 
   /* Display welcome message. */
+  /* wuyc */
+  check_expr();
+  /* wuyc */
   welcome();
 }
 #else // CONFIG_TARGET_AM
