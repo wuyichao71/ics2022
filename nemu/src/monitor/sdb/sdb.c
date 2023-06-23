@@ -112,7 +112,7 @@ static int cmd_p(char *args) {
   }
 
   bool success_val = true;
-  int result = (int)expr(args, &success_val);
+  word_t result = expr(args, &success_val);
   if (success_val)
   {
     printf("%d\n", result);
@@ -185,11 +185,42 @@ void sdb_set_batch_mode() {
   is_batch_mode = true;
 }
 
+/* wuyc */
+#define RST_LEN 128
+#define BUF_LEN 65536
+#define STR_LEN (BUF_LEN + RST_LEN)
+#define CHK_NAME "./tools/gen-expr/build/input"
+static void check_expr()
+{
+  char str[STR_LEN];
+  FILE *fp = fopen(CHK_NAME, "r");
+  char *result_p, *expr_p;
+  int result, expr_result;
+  bool success_val = true;
+  if (!fp) {Assert(0, "Something wrong when open input file\n");}
+
+  int i = 1;
+  while(fgets(str, STR_LEN, fp) != NULL)
+  {
+    result_p = strtok(str, " ");
+    result = atoi(result_p);
+    expr_p = str + strlen(result_p) + 1;
+    expr_result = expr(expr_p, &success_val);
+    if (result != expr_result)
+      Assert(0, "expr[%d] make difference\n", i);
+    i++;
+  }
+}
+/* wuyc */
+
 void sdb_mainloop() {
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
   }
+  /* wuyc */
+  check_expr();
+  /* wuyc */
 
   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
