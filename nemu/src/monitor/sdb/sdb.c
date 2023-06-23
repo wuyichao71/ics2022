@@ -202,6 +202,7 @@ static void check_expr()
   int i = 1;
   while(fgets(str, STR_LEN, fp) != NULL)
   {
+    str[strlen(str)-1] = '\0';
     result_p = strtok(str, " ");
     result = atoi(result_p);
     expr_p = str + strlen(result_p) + 1;
