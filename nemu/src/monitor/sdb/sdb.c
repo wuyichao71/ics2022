@@ -207,7 +207,7 @@ static void check_expr()
     expr_p = str + strlen(result_p) + 1;
     expr_result = expr(expr_p, &success_val);
     if (result != expr_result)
-      Assert(0, "expr[%d] make difference\n", i);
+      Assert(0, "expr[%d] make difference[%d, %d]\n", i, result, expr_result);
     i++;
   }
 }
