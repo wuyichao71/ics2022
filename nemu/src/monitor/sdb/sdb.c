@@ -206,6 +206,8 @@ static void check_expr()
     result = atoi(result_p);
     expr_p = str + strlen(result_p) + 1;
     expr_result = expr(expr_p, &success_val);
+    if (success_val == false)
+      printf("incorrect\n");
     if (result != expr_result)
       Assert(0, "expr[%d] make difference[%d, %d]\n", i, result, expr_result);
     i++;
