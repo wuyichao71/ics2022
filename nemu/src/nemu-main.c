@@ -29,7 +29,7 @@ void check_expr();
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
   /* wuyc */
-  check_expr();
+  /* check_expr(); */
   /* wuyc */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
