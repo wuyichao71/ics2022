@@ -28,14 +28,15 @@ void check_expr();
 
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
+  /* wuyc */
+  check_expr();
+  /* wuyc */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
 #else
   init_monitor(argc, argv);
 #endif
 
-/* wuyc */
-  check_expr();
   /* Start engine. */
   engine_start();
   /* printf("Test\n"); */
