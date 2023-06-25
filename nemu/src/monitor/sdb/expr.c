@@ -130,7 +130,7 @@ static bool make_token(char *e) {
             tokens[nr_token].type = rules[i].token_type;
             nr_token++;
             break;
-          default: //TODO();
+          case TK_NUM:
             /* if the token is TK_NUM, storge the SUBSTR. */
             if (rules[i].token_type == TK_NUM)
             {
@@ -145,6 +145,8 @@ static bool make_token(char *e) {
             }
             tokens[nr_token].type = rules[i].token_type;
             nr_token++;
+            break;
+          default: //TODO();
             break;
         }
 /* wuyc */
