@@ -118,11 +118,12 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_NOTYPE:
             break;
-            /* distinguish the TK_NEG and '-'. */
           case '+':
           case '-':
           case '*':
           case '/':
+          case '(':
+          case ')':
             /* if (is_unary(nr_token)) */
               /* tokens[nr_token].type = TK_NEG; */
             /* else */
@@ -130,19 +131,17 @@ static bool make_token(char *e) {
             tokens[nr_token].type = rules[i].token_type;
             nr_token++;
             break;
+          /* if the token is TK_NUM, storge the SUBSTR. */
           case TK_NUM:
-            /* if the token is TK_NUM, storge the SUBSTR. */
-            if (rules[i].token_type == TK_NUM)
+          case TK_HEX:
+            if (substr_len >= 32)
             {
-              if (substr_len >= 32)
-              {
-                printf(ANSI_FMT("The token of number is too long.\n", ANSI_FG_RED));
-                return false;
-              }
-              strncpy(tokens[nr_token].str, substr_start, substr_len);
-              /* printf("%s\n", tokens[nr_token].str); */
-              tokens[nr_token].str[substr_len] = '\0';
+              printf(ANSI_FMT("The token of number is too long.\n", ANSI_FG_RED));
+              return false;
             }
+            strncpy(tokens[nr_token].str, substr_start, substr_len);
+            /* printf("%s\n", tokens[nr_token].str); */
+            tokens[nr_token].str[substr_len] = '\0';
             tokens[nr_token].type = rules[i].token_type;
             nr_token++;
             break;
@@ -326,6 +325,7 @@ word_t expr(char *e, bool *success) {
 
   for (int i = 0; i < nr_token; i++)
   {
+    /* distinguish the TK_NEG and '-'. */
     if (tokens[i].type == '-' && is_unary(i))
       tokens[i].type = TK_NEG;
   }
