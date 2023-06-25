@@ -261,6 +261,7 @@ static word_t eval(int p, int q, bool *success)
      */
     if (tokens[p].type == TK_NUM || tokens[p].type == TK_HEX)
     {
+      printf("%s\n", tokens[p].str);
       return atoi(tokens[p].str);
     }
     else
