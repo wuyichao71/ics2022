@@ -267,6 +267,9 @@ static word_t eval(int p, int q, bool *success)
     {
       *success = false;
     }
+
+    if (tokens[p].type == TK_HEX)
+      printf("%s\n", tokens[p].str);
   }
   else if (check_parentheses(p, q, success) == true)
   {
