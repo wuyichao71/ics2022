@@ -25,7 +25,7 @@
 /* wuyc */
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NUM, TK_NEG,
+  TK_NOTYPE = 256, TK_EQ, TK_NUM, TK_HEX, TK_NEG,
 
   /* TODO: Add more token types */
 
@@ -46,6 +46,7 @@ static struct rule {
   {"==", TK_EQ},        // equal
 /* wuyc */
   {"\\b(0|[1-9][0-9]*)\\b", TK_NUM},
+  {"\\b0x(0|[1-9][0-9]*)\\b", TK_HEX},
   {"\\*", '*'},
   {"-", '-'},
   {"/", '/'},
@@ -119,27 +120,27 @@ static bool make_token(char *e) {
             break;
             /* distinguish the TK_NEG and '-'. */
           case '-':
-            if (is_unary(nr_token))
-              tokens[nr_token].type = TK_NEG;
-            else
-              tokens[nr_token].type = '-';
+          case '*':
+          case '+':
+          case '/':
+            tokens[nr_token].type = rules[i].token_type;
+            nr_token++;
+            break;
+          /* if the token is TK_NUM or TK_HEX, storge the SUBSTR. */
+          case TK_NUM:
+          case TK_HEX:
+            if (substr_len >= 32)
+            {
+              printf(ANSI_FMT("The token of number is too long.\n", ANSI_FG_RED));
+              return false;
+            }
+            strncpy(tokens[nr_token].str, substr_start, substr_len);
+            /* printf("%s\n", tokens[nr_token].str); */
+            tokens[nr_token].str[substr_len] = '\0';
+            tokens[nr_token].type = rules[i].token_type;
             nr_token++;
             break;
           default: //TODO();
-            /* if the token is TK_NUM, storge the SUBSTR. */
-            if (rules[i].token_type == TK_NUM)
-            {
-              if (substr_len >= 32)
-              {
-                printf(ANSI_FMT("The token of number is too long.\n", ANSI_FG_RED));
-                return false;
-              }
-              strncpy(tokens[nr_token].str, substr_start, substr_len);
-              /* printf("%s\n", tokens[nr_token].str); */
-              tokens[nr_token].str[substr_len] = '\0';
-            }
-            tokens[nr_token].type = rules[i].token_type;
-            nr_token++;
             break;
         }
 /* wuyc */
@@ -315,6 +316,12 @@ word_t expr(char *e, bool *success) {
     /* Assert(*success, "all"); */
     /* panic("a"); */
     return 0;
+  }
+
+  for(int i = 0; i < nr_token; i++)
+  {
+    if (tokens[i].type == '-' && is_unary(i))
+      tokens[i].type = TK_NEG;
   }
 
   /* TODO: Insert codes to evaluate the expression. */
