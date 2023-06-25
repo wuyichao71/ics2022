@@ -85,10 +85,10 @@ typedef struct token {
 static Token tokens[65536] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
-static bool is_unary(int op_index)
-{
-  return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == ')');
-}
+/* static bool is_unary(int op_index) */
+/* { */
+/*   return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == ')'); */
+/* } */
 
 static bool make_token(char *e) {
   int position = 0;
@@ -119,11 +119,15 @@ static bool make_token(char *e) {
           case TK_NOTYPE:
             break;
             /* distinguish the TK_NEG and '-'. */
+          case '+':
           case '-':
-            if (is_unary(nr_token))
-              tokens[nr_token].type = TK_NEG;
-            else
-              tokens[nr_token].type = '-';
+          case '*':
+          case '/':
+            /* if (is_unary(nr_token)) */
+              /* tokens[nr_token].type = TK_NEG; */
+            /* else */
+              /* tokens[nr_token].type = '-'; */
+            tokens[nr_token].type = rules[i].token_type;
             nr_token++;
             break;
           default: //TODO();
