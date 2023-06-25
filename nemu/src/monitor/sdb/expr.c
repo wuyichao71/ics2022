@@ -259,18 +259,21 @@ static word_t eval(int p, int q, bool *success)
      * For now this token should be a number.
      * Return the value of the number.
      */
-    if (tokens[p].type == TK_NUM || tokens[p].type == TK_HEX)
+    int num = 0;
+    if (tokens[p].type == TK_NUM)
     {
-      printf("%s\n", tokens[p].str);
-      return atoi(tokens[p].str);
+      num = atoi(tokens[p].str);
+      return num;
+    }
+    else if (tokens[p].type == TK_HEX)
+    {
+      sscanf(tokens[p].str, "%x", &num);
+      return num;
     }
     else
     {
       *success = false;
     }
-
-    if (tokens[p].type == TK_HEX)
-      printf("%s\n", tokens[p].str);
   }
   else if (check_parentheses(p, q, success) == true)
   {
