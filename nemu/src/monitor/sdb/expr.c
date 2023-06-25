@@ -85,10 +85,10 @@ typedef struct token {
 static Token tokens[65536] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
-/* static bool is_unary(int op_index) */
-/* { */
-/*   return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == ')'); */
-/* } */
+static bool is_unary(int op_index)
+{
+  return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == ')');
+}
 
 static bool make_token(char *e) {
   int position = 0;
@@ -118,28 +118,29 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_NOTYPE:
             break;
-          case '+':
+            /* distinguish the TK_NEG and '-'. */
           case '-':
-          case '*':
-          case '/':
-            tokens[nr_token].type = rules[i].token_type;
-            nr_token++;
-            break;
-          /* if the token is TK_NUM or TK_HEX, storge the SUBSTR. */
-          case TK_NUM:
-          case TK_HEX:
-            if (substr_len >= 32)
-            {
-              printf(ANSI_FMT("The token of number is too long.\n", ANSI_FG_RED));
-              return false;
-            }
-            strncpy(tokens[nr_token].str, substr_start, substr_len);
-            /* printf("%s\n", tokens[nr_token].str); */
-            tokens[nr_token].str[substr_len] = '\0';
-            tokens[nr_token].type = rules[i].token_type;
+            if (is_unary(nr_token))
+              tokens[nr_token].type = TK_NEG;
+            else
+              tokens[nr_token].type = '-';
             nr_token++;
             break;
           default: //TODO();
+            /* if the token is TK_NUM, storge the SUBSTR. */
+            if (rules[i].token_type == TK_NUM)
+            {
+              if (substr_len >= 32)
+              {
+                printf(ANSI_FMT("The token of number is too long.\n", ANSI_FG_RED));
+                return false;
+              }
+              strncpy(tokens[nr_token].str, substr_start, substr_len);
+              /* printf("%s\n", tokens[nr_token].str); */
+              tokens[nr_token].str[substr_len] = '\0';
+            }
+            tokens[nr_token].type = rules[i].token_type;
+            nr_token++;
             break;
         }
 /* wuyc */
@@ -316,13 +317,6 @@ word_t expr(char *e, bool *success) {
     /* panic("a"); */
     return 0;
   }
-
-  /* distinguish the TK_NEG and '-'. */
-  /* for(int i = 0; i < nr_token; i++) */
-  /* { */
-  /*   if (tokens[i].type == '-' && is_unary(i)) */
-  /*     tokens[i].type = TK_NEG; */
-  /* } */
 
   /* TODO: Insert codes to evaluate the expression. */
   /* TODO(); */
