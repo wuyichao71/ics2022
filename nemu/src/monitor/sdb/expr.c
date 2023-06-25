@@ -85,10 +85,10 @@ typedef struct token {
 static Token tokens[65536] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
-/* static bool is_unary(int op_index) */
-/* { */
-/*   return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == ')'); */
-/* } */
+static bool is_unary(int op_index)
+{
+  return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == ')');
+}
 
 static bool make_token(char *e) {
   int position = 0;
@@ -320,6 +320,12 @@ word_t expr(char *e, bool *success) {
     /* Assert(*success, "all"); */
     /* panic("a"); */
     return 0;
+  }
+
+  for (int i = 0; i < nr_token; i++)
+  {
+    if (tokens[i].type == '-' && is_unary(i))
+      tokens[i].type = TK_NEG;
   }
 
   /* TODO: Insert codes to evaluate the expression. */
