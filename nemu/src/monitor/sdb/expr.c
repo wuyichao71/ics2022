@@ -124,6 +124,7 @@ static bool make_token(char *e) {
           case '/':
           case '(':
           case ')':
+          case TK_EQ:
             /* if (is_unary(nr_token)) */
               /* tokens[nr_token].type = TK_NEG; */
             /* else */
@@ -197,18 +198,22 @@ static bool check_parentheses(int p, int q, bool *success)
 
 }
 
+enum { EQ_NE = 1, PL_MI, MU_DI, NEG};
+
 static unsigned int priority(int p)
 {
   switch(tokens[p].type)
   {
+    case TK_EQ:
+      return EQ_NE;
     case '+':
     case '-':
-      return 1;
+      return PL_MI;
     case '*':
     case '/':
-      return 2;
+      return MU_DI;
     case TK_NEG:
-      return 3;
+      return NEG;
   }
   return 0;
 
@@ -328,6 +333,7 @@ static word_t eval(int p, int q, bool *success)
       case '-': return val1 - val2;
       case '*': return val1 * val2;
       case '/': return val1 / val2;
+      case TK_EQ: return val1 == val2;
       default: assert(0);
     }
   }
