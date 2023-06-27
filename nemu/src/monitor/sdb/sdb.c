@@ -50,8 +50,8 @@ static int cmd_x(char *args)
 {
   vaddr_t incr = sizeof(word_t);
   char *N_str = strtok(NULL, " ");
-  char *vaddr_str = strtok(NULL, " ");
-  if (N_str == NULL || vaddr_str == NULL)
+  char *vaddr_str = N_str + strlen(N_str) + 1;
+  if (N_str == NULL || strtok(vaddr_str, " ") == NULL)
   {
     printf("Missing arguments\n");
     return 0;
