@@ -57,9 +57,15 @@ static int cmd_x(char *args)
     return 0;
   }
   int N = atoi(N_str);
-  vaddr_t vaddr;
+  bool success_val = true;
+  /* sscanf(vaddr_str, "%x", &vaddr); */
+  vaddr_t vaddr = expr(vaddr_str, &success_val);
+  if (success_val == false)
+  {
+    printf("Error address!\n");
+    return 0;
+  }
   word_t inst;
-  sscanf(vaddr_str, "%x", &vaddr);
   for(int i = 0; i < N; i++)
   {
     inst = vaddr_read(vaddr, incr);

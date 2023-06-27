@@ -280,7 +280,7 @@ static word_t eval(int p, int q, bool *success)
         num = isa_reg_str2val(tokens[p].str, success);
         if (*success == false)
         {
-          printf("The register is wrong");
+          printf("The register is wrong\n");
           return 0;
         }
         return num;
