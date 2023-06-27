@@ -25,8 +25,8 @@
 /* wuyc */
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NUM, TK_HEX, TK_NEG,
-  TK_REG,
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_NUM, TK_HEX, TK_NEG,
+  TK_REG, TK_AND, TK_DEREF, 
 
   /* TODO: Add more token types */
 
@@ -45,10 +45,12 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
+  {"!=", TK_NEQ},        // not equal
+  {"&&", TK_AND},        // and
 /* wuyc */
-  {"\\b(0|[1-9][0-9]*)\\b", TK_NUM},
-  {"\\b0x(0|[1-9a-fA-F][0-9a-fA-F]*)\\b", TK_HEX},
-  {"\\$[0-9a-zA-Z$]+\\b", TK_REG},
+  {"\\b(0|[1-9][0-9]*)\\b", TK_NUM}, // number
+  {"\\b0x(0|[1-9a-fA-F][0-9a-fA-F]*)\\b", TK_HEX}, // hex number
+  {"\\$[0-9a-zA-Z$]+\\b", TK_REG}, // register
   {"\\*", '*'},
   {"-", '-'},
   {"/", '/'},
@@ -125,6 +127,8 @@ static bool make_token(char *e) {
           case '(':
           case ')':
           case TK_EQ:
+          case TK_NEQ:
+          case TK_AND:
             /* if (is_unary(nr_token)) */
               /* tokens[nr_token].type = TK_NEG; */
             /* else */
@@ -198,13 +202,16 @@ static bool check_parentheses(int p, int q, bool *success)
 
 }
 
-enum { EQ_NE = 1, PL_MI, MU_DI, NEG};
+enum { AND = 1, EQ_NE, PL_MI, MU_DI, NEG_DEREF};
 
 static unsigned int priority(int p)
 {
   switch(tokens[p].type)
   {
+    case TK_AND:
+      return AND;
     case TK_EQ:
+    case TK_NEQ:
       return EQ_NE;
     case '+':
     case '-':
@@ -213,7 +220,8 @@ static unsigned int priority(int p)
     case '/':
       return MU_DI;
     case TK_NEG:
-      return NEG;
+    case TK_DEREF:
+      return NEG_DEREF;
   }
   return 0;
 
@@ -334,6 +342,8 @@ static word_t eval(int p, int q, bool *success)
       case '*': return val1 * val2;
       case '/': return val1 / val2;
       case TK_EQ: return val1 == val2;
+      case TK_NEQ: return val1 != val2;
+      case TK_AND: return val1 && val2;
       default: assert(0);
     }
   }
