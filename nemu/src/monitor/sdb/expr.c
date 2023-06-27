@@ -362,8 +362,18 @@ word_t expr(char *e, bool *success) {
   for (int i = 0; i < nr_token; i++)
   {
     /* distinguish the TK_NEG and '-'. */
-    if (tokens[i].type == '-' && IS_UNARY(i))
-      tokens[i].type = TK_NEG;
+    if (IS_UNARY(i))
+    {
+      switch(tokens[i].type)
+      {
+        case '-':
+          tokens[i].type = TK_NEG;
+        case '*':
+          tokens[i].type = TK_DEREF;
+        default:
+          assert(0);
+      }
+    }
   }
 
   /* TODO: Insert codes to evaluate the expression. */
