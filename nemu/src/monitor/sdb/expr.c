@@ -277,7 +277,13 @@ static word_t eval(int p, int q, bool *success)
         sscanf(tokens[p].str, "%x", &num);
         return num;
       case TK_REG:
-        return isa_reg_str2val(tokens[p].str, success);
+        num = isa_reg_str2val(tokens[p].str, success);
+        if (*success == false)
+        {
+          printf("The register is wrong");
+          return 0;
+        }
+        return num;
       default:
         *success = false;
     }
