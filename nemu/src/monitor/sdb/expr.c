@@ -21,11 +21,12 @@
 #include <regex.h>
 
 /* wuyc */
-/* #include "sdb.h" */
+/* #include "local-include/reg.h" */
 /* wuyc */
 
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_NUM, TK_HEX, TK_NEG,
+  TK_REG,
 
   /* TODO: Add more token types */
 
@@ -47,6 +48,7 @@ static struct rule {
 /* wuyc */
   {"\\b(0|[1-9][0-9]*)\\b", TK_NUM},
   {"\\b0x(0|[1-9a-fA-F][0-9a-fA-F]*)\\b", TK_HEX},
+  {"$[[:alnum:]]", TK_REG},
   {"\\*", '*'},
   {"-", '-'},
   {"/", '/'},
@@ -131,6 +133,9 @@ static bool make_token(char *e) {
             tokens[nr_token].type = rules[i].token_type;
             nr_token++;
             break;
+          case TK_REG:
+            substr_len--;
+            substr_start++;
           /* if the token is TK_NUM, storge the SUBSTR. */
           case TK_NUM:
           case TK_HEX:
@@ -260,19 +265,21 @@ static word_t eval(int p, int q, bool *success)
      * Return the value of the number.
      */
     int num = 0;
-    if (tokens[p].type == TK_NUM)
+    if (*success == false)
+      return 0;
+
+    switch(tokens[p].type)
     {
-      num = atoi(tokens[p].str);
-      return num;
-    }
-    else if (tokens[p].type == TK_HEX)
-    {
-      sscanf(tokens[p].str, "%x", &num);
-      return num;
-    }
-    else
-    {
-      *success = false;
+      case TK_NUM:
+        num = atoi(tokens[p].str);
+        return num;
+      case TK_HEX:
+        sscanf(tokens[p].str, "%x", &num);
+        return num;
+      case TK_REG:
+        return isa_reg_str2val(tokens[p].str, success);
+      default:
+        *success = false;
     }
   }
   else if (check_parentheses(p, q, success) == true)
