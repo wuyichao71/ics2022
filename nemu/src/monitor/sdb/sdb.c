@@ -48,10 +48,11 @@ static char* rl_gets() {
 /* wuyc */
 static int cmd_x(char *args)
 {
+  char *args_end = args + strlen(args);
   vaddr_t incr = sizeof(word_t);
   char *N_str = strtok(NULL, " ");
   char *vaddr_str = N_str + strlen(N_str) + 1;
-  if (N_str == NULL || strtok(vaddr_str, " ") == NULL)
+  if (N_str == NULL || vaddr_str >= args_end)
   {
     printf("Missing arguments\n");
     return 0;
