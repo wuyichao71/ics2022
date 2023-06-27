@@ -87,10 +87,8 @@ typedef struct token {
 static Token tokens[65536] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
-static bool is_unary(int op_index)
-{
-  return op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == ')');
-}
+#define IS_UNARY(op_index) \
+  (op_index == 0 || !(tokens[op_index-1].type == TK_NUM || tokens[op_index-1].type == ')'))
 
 static bool make_token(char *e) {
   int position = 0;
@@ -216,6 +214,8 @@ static unsigned int priority(int p)
 
 }
 
+#define IS_VAL(i) (tokens[i].type != TK_NUM && tokens[i].type != TK_HEX && tokens[i].type != TK_REG)
+
 static int dominant_operator(int p, int q)
 {
   int level = 0;
@@ -229,7 +229,7 @@ static int dominant_operator(int p, int q)
       level--;
     else if (level == 0)
     {
-      if (tokens[i].type != TK_NUM)
+      if (IS_VAL(i))
       {
         cur_pri = priority(i);
         /* printf("%d\n", cur_pri); */
@@ -346,7 +346,7 @@ word_t expr(char *e, bool *success) {
   for (int i = 0; i < nr_token; i++)
   {
     /* distinguish the TK_NEG and '-'. */
-    if (tokens[i].type == '-' && is_unary(i))
+    if (tokens[i].type == '-' && IS_UNARY(i))
       tokens[i].type = TK_NEG;
   }
 
