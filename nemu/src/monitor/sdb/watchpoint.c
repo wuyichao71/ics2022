@@ -16,11 +16,15 @@
 #include "sdb.h"
 
 #define NR_WP 32
+/* wuyc */
+#define EXPR_LEN 1024
+/* wuyc */
 
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
   /* wuyc */
+  char expr[EXPR_LEN];
   word_t old_val;
   /* wuyc */
 
@@ -43,4 +47,22 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
+/* wuyc */
+WP *new_wp()
+{
+  WP *cur_wp;
 
+  if (free_ == NULL)
+    assert(0);
+
+  cur_wp = free_;
+  free_ = cur_wp->next;
+  return cur_wp;
+}
+
+void free_wp(WP *wp)
+{
+  wp->next = free_;
+  free_ = wp;
+}
+/* wuyc */
