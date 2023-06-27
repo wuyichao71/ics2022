@@ -20,6 +20,9 @@
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
+  /* wuyc */
+  word_t old_val;
+  /* wuyc */
 
   /* TODO: Add more members if necessary */
 
