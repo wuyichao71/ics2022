@@ -21,7 +21,7 @@
 #include <regex.h>
 
 /* wuyc */
-/* #include "local-include/reg.h" */
+#include <memory/vaddr.h>
 /* wuyc */
 
 enum {
@@ -331,9 +331,9 @@ static word_t eval(int p, int q, bool *success)
       return 0;
     }
     if (tokens[op].type == TK_NEG)
-    {
       return -eval(p+1, q, success);
-    }
+    else if (tokens[op].type == TK_DEREF)
+      return  vaddr_read(eval(p+1, q, success), sizeof(word_t));
     int val1 = eval(p, op - 1, success);
     int val2 = eval(op + 1, q, success);
     switch (tokens[op].type) {
@@ -362,18 +362,10 @@ word_t expr(char *e, bool *success) {
   for (int i = 0; i < nr_token; i++)
   {
     /* distinguish the TK_NEG and '-'. */
-    if (IS_UNARY(i))
-    {
-      switch(tokens[i].type)
-      {
-        case '-':
-          tokens[i].type = TK_NEG;
-        case '*':
-          tokens[i].type = TK_DEREF;
-        default:
-          assert(0);
-      }
-    }
+    if (tokens[i].type == '-' && IS_UNARY(i))
+      tokens[i].type = TK_NEG;
+    else if (tokens[i].type == '*' && IS_UNARY(i))
+      tokens[i].type = TK_DEREF;
   }
 
   /* TODO: Insert codes to evaluate the expression. */
