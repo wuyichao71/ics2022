@@ -53,7 +53,7 @@ static int cmd_w(char *args)
     printf("Missing expression");
     return 0;
   }
-  /* for(; args[0] != ' '; args++); */
+  for(; args[0] == ' '; args++);
 
   add_wp(args);
   printf("Watchpoint [%d]: %s\n", get_head_no(), get_head_expr());
