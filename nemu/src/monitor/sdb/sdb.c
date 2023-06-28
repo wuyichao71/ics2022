@@ -46,6 +46,19 @@ static char* rl_gets() {
 }
 
 /* wuyc */
+static int cmd_w(char *args)
+{
+  if (args == NULL)
+  {
+    printf("Missing expression");
+    return 0;
+  }
+  for(; args[0] != ' '; args++);
+
+  add_wp(args);
+  printf("Watchpoint [%d]: %s\n", get_head_no(), get_head_expr());
+  return 0;
+}
 static int cmd_x(char *args)
 {
   char *args_end = args + strlen(args);
@@ -157,6 +170,8 @@ static struct {
   { "info", "Generic command for showing things about the program being debugged.", cmd_info },
   { "x", "Print [N] memory.", cmd_x},
   { "p", "Evaluate the expression.", cmd_p},
+  { "w", "Add expression to watchpoint.", cmd_w},
+  /* { "d", "Delete No.N watchpoint.", cmd.d}, */
 
   /* TODO: Add more commands */
   /* wuyc */

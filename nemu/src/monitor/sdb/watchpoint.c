@@ -25,7 +25,7 @@ typedef struct watchpoint {
   struct watchpoint *next;
   /* wuyc */
   char expr[EXPR_LEN];
-  bool used;
+  /* bool used; */
   word_t old_val;
   /* wuyc */
 
@@ -67,17 +67,21 @@ void free_wp(WP *wp)
   free_ = wp;
 }
 
-void add_wp(char *expr)
+void add_wp(char *expr_str)
 {
+  bool success_val = true;
   WP *new = new_wp();
   new->next = head;
   head = new;
-  strcpy(new->expr, expr);
-  new->used = false;
+  strcpy(new->expr, expr_str);
+  /* new->used = false; */
+  new->old_val = expr(expr_str, &success_val);
 }
+
+int get_head_no() {return head->NO;}
+char *get_head_expr() {return head->expr;}
 
 void del_wp(int no)
 {
-
 }
 /* wuyc */
