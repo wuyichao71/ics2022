@@ -73,10 +73,7 @@ static int cmd_w(char *args)
 
   WP *wp = add_wp(args);
   if (wp == NULL)
-  {
-    printf("The expression is incorrect.\n");
     return 0;
-  }
 
   printf("Watchpoint [%d]: %s\n", wp->NO, wp->expr);
   return 0;
