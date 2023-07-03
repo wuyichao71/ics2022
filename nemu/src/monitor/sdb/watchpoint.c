@@ -111,7 +111,7 @@ void del_wp(int no)
   }
   /* not found */
   else
-    printf("No watchpint number %d\n", no);
+    printf("No watchpint number %d.\n", no);
 
 }
 
