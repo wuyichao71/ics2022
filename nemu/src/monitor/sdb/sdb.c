@@ -54,6 +54,11 @@ static int cmd_w(char *args)
     return 0;
   }
   for(; args[0] == ' '; args++);
+  if (args[0] == '\0')
+  {
+    printf("The expression is incorrect.\n");
+    return 0;
+  }
 
   add_wp(args);
   printf("Watchpoint [%d]: %s\n", get_head_no(), get_head_expr());
