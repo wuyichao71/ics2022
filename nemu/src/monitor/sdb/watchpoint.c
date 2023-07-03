@@ -16,6 +16,7 @@
 #include "sdb.h"
 
 /* wuyc */
+#include <watchpoint.h>
 /* wuyc */
 
 
@@ -53,7 +54,7 @@ void free_wp(WP *wp)
   free_ = wp;
 }
 
-void add_wp(char *expr_str)
+WP *add_wp(char *expr_str)
 {
   bool success_val = true;
   WP *new = new_wp();
@@ -66,11 +67,13 @@ void add_wp(char *expr_str)
   {
     head = new->next;
     free_wp(new);
+    return NULL;
   }
+  return new;
 }
 
-int get_head_no() {return head->NO;}
-char *get_head_expr() {return head->expr;}
+/* int get_head_no() {return head->NO;} */
+/* char *get_head_expr() {return head->expr;} */
 
 void del_wp(int no)
 {

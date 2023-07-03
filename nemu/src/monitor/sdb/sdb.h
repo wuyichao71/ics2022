@@ -17,9 +17,6 @@
 #define __SDB_H__
 
 #include <common.h>
-/* wuyc */
-#include "watchpoint.h"
-/* wuyc */
 
 word_t expr(char *e, bool *success);
 /* wuyc */

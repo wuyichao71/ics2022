@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 /* wuyc */
 #include <memory/vaddr.h>
+#include <watchpoint.h>
 /* wuyc */
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -64,14 +65,20 @@ static int cmd_w(char *args)
     return 0;
   }
   for(; args[0] == ' '; args++);
-  if (args[0] == '\0')
+  /* if (args[0] == '\0') */
+  /* { */
+  /*   printf("The expression is incorrect.\n"); */
+  /*   return 0; */
+  /* } */
+
+  WP *wp = add_wp(args);
+  if (wp == NULL)
   {
     printf("The expression is incorrect.\n");
     return 0;
   }
 
-  add_wp(args);
-  printf("Watchpoint [%d]: %s\n", get_head_no(), get_head_expr());
+  printf("Watchpoint [%d]: %s\n", wp->NO, wp->expr);
   return 0;
 }
 static int cmd_x(char *args)

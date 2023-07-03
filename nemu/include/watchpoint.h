@@ -19,9 +19,9 @@ typedef struct watchpoint {
 
 } WP;
 
-void add_wp(char *expr);
+WP *add_wp(char *expr);
 void del_wp(int no);
-int get_head_no();
-char *get_head_expr();
+/* int get_head_no(); */
+/* char *get_head_expr(); */
 void watchpoints_display();
 #endif
