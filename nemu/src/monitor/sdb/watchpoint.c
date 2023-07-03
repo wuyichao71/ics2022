@@ -76,6 +76,11 @@ void add_wp(char *expr_str)
   strcpy(new->expr, expr_str);
   /* new->used = false; */
   new->old_val = expr(expr_str, &success_val);
+  if (!success_val) 
+  {
+    head = new->next;
+    free_wp(new);
+  }
 }
 
 int get_head_no() {return head->NO;}
@@ -83,6 +88,31 @@ char *get_head_expr() {return head->expr;}
 
 void del_wp(int no)
 {
+  WP *p = NULL;
+  WP *q = head;
+
+  while(q != NULL && q->NO != no)
+  {
+    p = q; q = p->next;
+  }
+
+  /* if the WP is head */
+  if (q != NULL && p == NULL)
+  {
+    p = q->next;
+    free_wp(q);
+    head = p;
+  }
+  /* if the WP is not head */
+  else if (q != NULL && p != NULL)
+  {
+    p->next = q->next;
+    free_wp(q);
+  }
+  /* not found */
+  else
+    printf("No watchpint number %d\n", no);
+
 }
 
 void watchpoints_display()

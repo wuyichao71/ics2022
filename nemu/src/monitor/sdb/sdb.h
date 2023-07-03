@@ -23,6 +23,7 @@ word_t expr(char *e, bool *success);
 /* int eval(int p, int q, bool *success); */
 /* bool check_parentheses(int p, int q); */
 void add_wp(char *expr);
+void del_wp(int no);
 int get_head_no();
 char *get_head_expr();
 void watchpoints_display();

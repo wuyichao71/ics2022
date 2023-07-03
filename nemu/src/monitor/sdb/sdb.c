@@ -46,6 +46,16 @@ static char* rl_gets() {
 }
 
 /* wuyc */
+static int cmd_d(char *args)
+{
+  if (args == NULL)
+    return 0;
+
+  int no = atoi(strtok(NULL, " "));
+  del_wp(no);
+  return 0;
+}
+
 static int cmd_w(char *args)
 {
   if (args == NULL)
@@ -167,7 +177,7 @@ static struct {
   { "x", "Print [N] memory.", cmd_x},
   { "p", "Evaluate the expression.", cmd_p},
   { "w", "Add expression to watchpoint.", cmd_w},
-  /* { "d", "Delete No.N watchpoint.", cmd.d}, */
+  { "d", "Delete No.N watchpoint.", cmd_d},
 
   /* TODO: Add more commands */
   /* wuyc */
