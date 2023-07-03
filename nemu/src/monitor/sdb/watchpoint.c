@@ -92,10 +92,10 @@ void watchpoints_display()
     printf("No watchpoints.\n");
   else
   {
-    printf("Num\tWhat\n");
+    printf("%-8s%s\n", "Num", "What");
     while (p != NULL)
     {
-      printf("%d\t%s\n", p->NO, p->expr);
+      printf("%-8d%s\n", p->NO, p->expr);
       p = p->next;
     }
   }
