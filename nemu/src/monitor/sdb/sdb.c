@@ -104,18 +104,9 @@ static int cmd_info(char *args)
     return 0;
   }
   arg = strtok(NULL, " ");
-  if (strcmp(arg, "r") == 0)
-  {
-    isa_reg_display();
-  }
-  else if (strcmp(arg, "w") == 0)
-  {
-
-  }
-  else
-  {
-    printf("Unknown subcommand '%s'\n", arg);
-  }
+  if (strcmp(arg, "r") == 0) isa_reg_display();
+  else if (strcmp(arg, "w") == 0) watchpoints_display();
+  else printf("Unknown subcommand '%s'\n", arg);
   return 0;
 }
 

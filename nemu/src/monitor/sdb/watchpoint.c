@@ -84,4 +84,21 @@ char *get_head_expr() {return head->expr;}
 void del_wp(int no)
 {
 }
+
+void watchpoints_display()
+{
+  WP *p = head;
+  if (p == NULL)
+    printf("No watchpoints.\n");
+  else
+  {
+    printf("Num\tWhat\n");
+    while (p != NULL)
+    {
+      printf("%d\t%s\n", p->NO, p->expr);
+      p = p->next;
+    }
+  }
+
+}
 /* wuyc */

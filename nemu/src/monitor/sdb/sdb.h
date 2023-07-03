@@ -25,6 +25,7 @@ word_t expr(char *e, bool *success);
 void add_wp(char *expr);
 int get_head_no();
 char *get_head_expr();
+void watchpoints_display();
 /* wuyc */
 
 #endif
