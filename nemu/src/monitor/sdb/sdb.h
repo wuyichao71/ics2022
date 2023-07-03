@@ -17,16 +17,14 @@
 #define __SDB_H__
 
 #include <common.h>
+/* wuyc */
+#include "watchpoint.h"
+/* wuyc */
 
 word_t expr(char *e, bool *success);
 /* wuyc */
 /* int eval(int p, int q, bool *success); */
 /* bool check_parentheses(int p, int q); */
-void add_wp(char *expr);
-void del_wp(int no);
-int get_head_no();
-char *get_head_expr();
-void watchpoints_display();
 /* wuyc */
 
 #endif

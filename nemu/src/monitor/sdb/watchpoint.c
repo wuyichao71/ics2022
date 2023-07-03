@@ -15,23 +15,9 @@
 
 #include "sdb.h"
 
-#define NR_WP 32
 /* wuyc */
-#define EXPR_LEN 1024
 /* wuyc */
 
-typedef struct watchpoint {
-  int NO;
-  struct watchpoint *next;
-  /* wuyc */
-  char expr[EXPR_LEN];
-  /* bool used; */
-  word_t old_val;
-  /* wuyc */
-
-  /* TODO: Add more members if necessary */
-
-} WP;
 
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
