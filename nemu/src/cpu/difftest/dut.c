@@ -131,10 +131,6 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
   checkregs(&ref_r, pc);
 }
 
-void difftest_watchpoint()
-{
-  printf("hello, world\n");
-}
 #else
 void init_difftest(char *ref_so_file, long img_size, int port) { }
 #endif

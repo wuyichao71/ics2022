@@ -120,4 +120,10 @@ void watchpoints_display()
   }
 
 }
+
+void difftest_watchpoint()
+{
+  printf("hello, world\n");
+}
+
 /* wuyc */

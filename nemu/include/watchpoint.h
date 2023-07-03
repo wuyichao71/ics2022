@@ -24,4 +24,5 @@ void del_wp(int no);
 /* int get_head_no(); */
 /* char *get_head_expr(); */
 void watchpoints_display();
+void difftest_watchpoint();
 #endif
