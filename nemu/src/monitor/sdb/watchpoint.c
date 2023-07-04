@@ -121,9 +121,29 @@ void watchpoints_display()
 
 }
 
-void difftest_watchpoint()
+bool check_watchpoint(vaddr_t pc)
 {
-  printf("hello, world\n");
+  WP *p = head;
+  word_t val;
+  bool changed = false, success_val = true;
+  while (p != NULL)
+  {
+    val = expr(p->expr, &success_val);
+    if (val != p->old_val)
+    {
+      if (!changed)
+      {
+        printf(FMT_WORD "\n", pc);
+        changed = true;
+      }
+      printf("Watchpoint %d: %s\n", p->NO, p->expr);
+      printf("Old value = %d\n", p->old_val);
+      printf("New value = %d\n", val);
+      puts("\n");
+      p->old_val = val;
+    }
+  }
+  return changed;
 }
 
 /* wuyc */
