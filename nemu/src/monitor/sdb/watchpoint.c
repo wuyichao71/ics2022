@@ -137,8 +137,8 @@ bool check_watchpoint(vaddr_t pc)
         changed = true;
       }
       printf("Watchpoint %d: %s\n", p->NO, p->expr);
-      printf("Old value = %d\n", p->old_val);
-      printf("New value = %d\n", val);
+      printf("Old value = " FMT_WORD "\n", p->old_val);
+      printf("New value = " FMT_WORD "\n", val);
       puts("\n");
       p->old_val = val;
     }
