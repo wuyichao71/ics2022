@@ -142,6 +142,7 @@ bool check_watchpoint(vaddr_t pc)
       puts("\n");
       p->old_val = val;
     }
+    p = p->next;
   }
   return changed;
 }
