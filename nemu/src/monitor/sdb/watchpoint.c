@@ -139,7 +139,7 @@ bool check_watchpoint(vaddr_t pc)
       printf("Watchpoint %d: %s\n", p->NO, p->expr);
       printf("Old value = " FMT_WORD "\n", p->old_val);
       printf("New value = " FMT_WORD "\n", val);
-      puts("\n");
+      putchar('\n');
       p->old_val = val;
     }
     p = p->next;
