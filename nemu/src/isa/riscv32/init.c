@@ -21,7 +21,7 @@
 static const uint32_t img [] = {
   0x800002b7,  // lui t0,0x80000
   /* wuyc */
-  0x00028293,  // addi t0,t0,4
+  0x00428293,  // addi t0,t0,4
   /* wuyc */
   0x0002a023,  // sw  zero,0(t0)
   0x0002a503,  // lw  a0,0(t0)
