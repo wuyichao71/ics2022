@@ -19,9 +19,6 @@
 #include <common.h>
 
 static inline int check_reg_idx(int idx) {
-  /* wuyc */
-  /* printf("idx = %d\n", idx); */
-  /* wuyc */
   IFDEF(CONFIG_RT_CHECK, assert(idx >= 0 && idx < 32));
   return idx;
 }
