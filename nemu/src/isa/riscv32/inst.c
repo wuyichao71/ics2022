@@ -62,7 +62,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 010 ????? 01000 11", sw     , S, Mw(src1 + imm, 4, src2));
   /* wuyc */
   INSTPAT("??????? ????? ????? 000 ????? 00100 11", addi   , I, R(rd) = R(src1) + imm);
-  printf("%d %d\n", rd, src1);
+  /* printf("%d %d\n", rd, src1); */
   /* wuyc */
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
