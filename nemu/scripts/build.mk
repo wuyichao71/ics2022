@@ -27,15 +27,16 @@ LDFLAGS := -O2 $(LDFLAGS)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
+# wuyc
+PRES = $(SRCS:%.c=$(OBJ_DIR)/%.i) $(CXXSRC:%.cc=$(OBJ_DIR)/%.i)
+# wuyc
+
 # Compilation patterns
 $(OBJ_DIR)/%.o: %.c
 	@echo + CC $<
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c -o $@ $<
 	$(call call_fixdep, $(@:.o=.d), $@)
-
-$(OBJ_DIR)/%.E: %.c
-	@$(CC) $(CFLAGS) -E -o $@ $<
 
 $(OBJ_DIR)/%.o: %.cc
 	@echo + CXX $<
@@ -52,9 +53,14 @@ $(OBJ_DIR)/%.o: %.cc
 
 app: $(BINARY)
 
+# wuyc
+pre: $(BINARY) $(PRES)
+# wuyc
+
 $(BINARY): $(OBJS) $(ARCHIVES)
 	@echo + LD $@
 	@$(LD) -o $@ $(OBJS) $(LDFLAGS) $(ARCHIVES) $(LIBS)
+
 
 clean:
 	-rm -rf $(BUILD_DIR)
