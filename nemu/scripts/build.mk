@@ -34,7 +34,7 @@ $(OBJ_DIR)/%.i: %.c
 	@echo + CC -E $<
 	@$(CC) $(CFLAGS) -E -o $@ $<
 
-$(OBJ_DIR)/%.o: %.cc
+$(OBJ_DIR)/%.i: %.cc
 	@echo + CXX -E $<
 	@$(CXX) $(CFLAGS) $(CXXFLAGS) -E -o $@ $<
 # wuyc
