@@ -33,6 +33,10 @@ PRES = $(SRCS:%.c=$(OBJ_DIR)/%.i) $(CXXSRC:%.cc=$(OBJ_DIR)/%.i)
 $(OBJ_DIR)/%.i: %.c
 	@echo + CC -E $<
 	@$(CC) $(CFLAGS) -c -E $@ $<
+
+$(OBJ_DIR)/%.o: %.cc
+	@echo + CXX -E $<
+	@$(CC) $(CFLAGS) -c -E $@ $<
 # wuyc
 
 # Compilation patterns
