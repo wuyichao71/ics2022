@@ -29,6 +29,10 @@ OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
 # wuyc
 PRES = $(SRCS:%.c=$(OBJ_DIR)/%.i) $(CXXSRC:%.cc=$(OBJ_DIR)/%.i)
+
+$(OBJ_DIR)/%.i: %.c
+	@echo + CC -E $<
+	@$(CC) $(CFLAGS) -c -E $@ $<
 # wuyc
 
 # Compilation patterns
