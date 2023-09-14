@@ -36,7 +36,7 @@ $(OBJ_DIR)/%.i: %.c
 
 $(OBJ_DIR)/%.o: %.cc
 	@echo + CXX -E $<
-	@$(CC) $(CFLAGS) -E -o $@ $<
+	@$(CXX) $(CFLAGS) $(CXXFLAGS) -E -o $@ $<
 # wuyc
 
 # Compilation patterns
