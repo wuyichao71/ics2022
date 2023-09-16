@@ -149,7 +149,11 @@ int main(int argc, char *argv[]) {
     assert(fp != NULL);
 
     int result;
-    fscanf(fp, "%d", &result);
+    int fr;
+    fr = fscanf(fp, "%d", &result);
+    if (fr == EOF)
+        return 0;
+
     pclose(fp);
 
     printf("%u %s\n", result, buf);
