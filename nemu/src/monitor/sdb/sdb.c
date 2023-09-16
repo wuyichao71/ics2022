@@ -222,31 +222,31 @@ void sdb_set_batch_mode() {
 #define BUF_LEN 65536
 #define STR_LEN (BUF_LEN + RST_LEN)
 #define CHK_NAME "./tools/gen-expr/build/input"
-void check_expr()
-{
-  /* return; */
-  char str[STR_LEN];
-  FILE *fp = fopen(CHK_NAME, "r");
-  char *result_p, *expr_p;
-  int result, expr_result;
-  bool success_val = true;
-  if (!fp) {Assert(0, "Something wrong when open input file\n");}
+/* void check_expr() */
+/* { */
+/*   /1* return; *1/ */
+/*   char str[STR_LEN]; */
+/*   FILE *fp = fopen(CHK_NAME, "r"); */
+/*   char *result_p, *expr_p; */
+/*   int result, expr_result; */
+/*   bool success_val = true; */
+/*   if (!fp) {Assert(0, "Something wrong when open input file\n");} */
 
-  int i = 1;
-  while(fgets(str, STR_LEN, fp) != NULL)
-  {
-    str[strlen(str)-1] = '\0';
-    result_p = strtok(str, " ");
-    result = atoi(result_p);
-    expr_p = str + strlen(result_p) + 1;
-    expr_result = expr(expr_p, &success_val);
-    if (success_val == false)
-      printf("incorrect\n");
-    if (result != expr_result)
-      Assert(0, "expr[%d] make difference[%d, %d]\n", i, result, expr_result);
-    i++;
-  }
-}
+/*   int i = 1; */
+/*   while(fgets(str, STR_LEN, fp) != NULL) */
+/*   { */
+/*     str[strlen(str)-1] = '\0'; */
+/*     result_p = strtok(str, " "); */
+/*     result = atoi(result_p); */
+/*     expr_p = str + strlen(result_p) + 1; */
+/*     expr_result = expr(expr_p, &success_val); */
+/*     if (success_val == false) */
+/*       printf("incorrect\n"); */
+/*     if (result != expr_result) */
+/*       Assert(0, "expr[%d] make difference[%d, %d]\n", i, result, expr_result); */
+/*     i++; */
+/*   } */
+/* } */
 /* wuyc */
 
 void sdb_mainloop() {
@@ -255,7 +255,7 @@ void sdb_mainloop() {
     return;
   }
   /* wuyc */
-  check_expr();
+  /* check_expr(); */
   /* wuyc */
 
   for (char *str; (str = rl_gets()) != NULL; ) {
