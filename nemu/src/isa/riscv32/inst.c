@@ -23,7 +23,10 @@
 #define Mw vaddr_write
 
 enum {
-  TYPE_I, TYPE_U, TYPE_S,
+  /* TYPE_I, TYPE_U, TYPE_S, */
+  /* wuyc */
+  TYPE_I, TYPE_U, TYPE_S, TYPE_J,
+  /* wuyc */
   TYPE_N, // none
 };
 
@@ -34,8 +37,8 @@ enum {
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
 /* wuyc */
 #define immJ() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 19) | \
-    (SEXT(BITS(i, 19, 12)) << 11) | \
-    (SETX(BITS(i, 20, 20), 1) << 10) | \
+    (SEXT(BITS(i, 19, 12), 8) << 11) | \
+    (SEXT(BITS(i, 20, 20), 1) << 10) | \
     (BITS(i, 30, 21))) << 1; } while(0)
 /* wuyc */
 
@@ -48,6 +51,9 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_I: src1R();          immI(); break;
     case TYPE_U:                   immU(); break;
     case TYPE_S: src1R(); src2R(); immS(); break;
+    /* wuyc */
+    case TYPE_J: src1R();          immJ(); break;
+    /* wuyc */
   }
 }
 
@@ -67,7 +73,9 @@ static int decode_exec(Decode *s) {
   /* wuyc */
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
   /* wuyc */
-  INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw     , I, R(rd) = Mr(src1 + imm, 4));
+  /* wuyc */
+  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->pc + 4, s->pc += imm);
+  /* wuyc */
   INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw     , I, R(rd) = Mr(src1 + imm, 4));
   /* wuyc */
   INSTPAT("??????? ????? ????? 000 ????? 00100 11", addi   , I, R(rd) = src1 + imm);
