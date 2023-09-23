@@ -25,7 +25,7 @@
 enum {
   /* TYPE_I, TYPE_U, TYPE_S, */
   /* wuyc */
-  TYPE_I, TYPE_U, TYPE_S, TYPE_J, TYPE_R,
+  TYPE_I, TYPE_U, TYPE_S, TYPE_J, TYPE_R, TYPE_B,
   /* wuyc */
   TYPE_N, // none
 };
@@ -40,6 +40,10 @@ enum {
     (SEXT(BITS(i, 19, 12), 8) << 11) | \
     (SEXT(BITS(i, 20, 20), 1) << 10) | \
     (BITS(i, 30, 21))) << 1; } while(0)
+#define immB() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 11) | \
+    (SEXT(BITS(i, 7, 7), 1) << 10) | \
+    (SEXT(BITS(i, 30, 25), 6) << 4) | \
+    (BITS(i, 11, 8))) << 1; } while(0)
 /* wuyc */
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
@@ -54,6 +58,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     /* wuyc */
     case TYPE_J: src1R();          immJ(); break;
     case TYPE_R: src1R(); src2R()        ; break;
+    case TYPE_B: src1R(); src2R(); immB(); break;
     /* wuyc */
   }
 }
@@ -92,6 +97,10 @@ static int decode_exec(Decode *s) {
   /* R type */
   INSTPAT("0000000 ????? ????? 000 ????? 01100 11", add    , R, R(rd) = src1 + src2);
   INSTPAT("0100000 ????? ????? 000 ????? 01100 11", sub    , R, R(rd) = src1 - src2);
+  /* wuyc */
+  /* wuyc */
+  /* B type */
+  INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, if (src1 == src2) s->dnpc = s->pc + imm);
   /* wuyc */
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
