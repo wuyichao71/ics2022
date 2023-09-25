@@ -36,13 +36,21 @@ enum {
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
 /* wuyc */
+/* #define immJ() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 19) | \ */
+/*     (SEXT(BITS(i, 19, 12), 8) << 11) | \ */
+/*     (SEXT(BITS(i, 20, 20), 1) << 10) | \ */
+/*     (BITS(i, 30, 21))) << 1; } while(0) */
+/* #define immB() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 11) | \ */
+/*     (SEXT(BITS(i, 7, 7), 1) << 10) | \ */
+/*     (SEXT(BITS(i, 30, 25), 6) << 4) | \ */
+/*     (BITS(i, 11, 8))) << 1; } while(0) */
 #define immJ() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 19) | \
-    (SEXT(BITS(i, 19, 12), 8) << 11) | \
-    (SEXT(BITS(i, 20, 20), 1) << 10) | \
+    (BITS(i, 19, 12) << 11) | \
+    (BITS(i, 20, 20) << 10) | \
     (BITS(i, 30, 21))) << 1; } while(0)
 #define immB() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 11) | \
-    (SEXT(BITS(i, 7, 7), 1) << 10) | \
-    (SEXT(BITS(i, 30, 25), 6) << 4) | \
+    (BITS(i, 7, 7) << 10) | \
+    (BITS(i, 30, 25) << 4) | \
     (BITS(i, 11, 8))) << 1; } while(0)
 /* wuyc */
 
@@ -96,6 +104,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 100 ????? 00100 11", xori   , I, R(rd) = src1 ^ imm);
   INSTPAT("0000000 ????? ????? 001 ????? 00100 11", slli   , I, R(rd) = src1 << imm);
   INSTPAT("??????? ????? ????? 001 ????? 00000 11", lh     , I, R(rd) = SEXT(Mr(src1 + imm, 2), 16));
+  INSTPAT("??????? ????? ????? 001 ????? 00000 11", lhu    , I, R(rd) = SEXT(Mr(src1 + imm, 2), 16));
   /* wuyc */
   INSTPAT("??????? ????? ????? 010 ????? 01000 11", sw     , S, Mw(src1 + imm, 4, src2));
   /* wuyc */
