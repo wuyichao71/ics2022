@@ -66,9 +66,9 @@ LINKAGE   = $(OBJS) \
 ## 3. General Compilation Flags
 
 ### (Cross) compilers, e.g., mips-linux-gnu-g++
-AS        = $(CROSS_COMPILE)gcc
-CC        = $(CROSS_COMPILE)gcc
-CXX       = $(CROSS_COMPILE)g++
+AS        = $(CROSS_COMPILE)gcc-12
+CC        = $(CROSS_COMPILE)gcc-12
+CXX       = $(CROSS_COMPILE)g++-12
 LD        = $(CROSS_COMPILE)ld
 OBJDUMP   = $(CROSS_COMPILE)objdump
 OBJCOPY   = $(CROSS_COMPILE)objcopy
