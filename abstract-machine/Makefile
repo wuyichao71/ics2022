@@ -54,12 +54,12 @@ $(shell mkdir -p $(DST_DIR))
 IMAGE_REL = build/$(NAME)-$(ARCH)
 IMAGE     = $(abspath $(IMAGE_REL))
 # wuyc
-$(info IMAGE-->$(IMAGE))
+# $(info IMAGE-->$(IMAGE))
 # wuyc
 ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
 # wuyc
-$(info WORK_DIR-->$(WORK_DIR))
-$(info DST_DIR-->$(DST_DIR))
+# $(info WORK_DIR-->$(WORK_DIR))
+# $(info DST_DIR-->$(DST_DIR))
 # wuyc
 
 ### Collect the files to be linked: object files (`.o`) and libraries (`.a`)
@@ -132,12 +132,16 @@ $(DST_DIR)/%.o: %.S
 
 ### Rule (recursive make): build a dependent library (am, klib, ...)
 $(LIBS): %:
-	@echo HERO
+	# wuyc
+	# @echo HERO
+	# wuyc
 	@$(MAKE) -s -C $(AM_HOME)/$* archive
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `IMAGE.elf`, the final ELF binary to be packed into image (ld)
 $(IMAGE).elf: $(OBJS) am $(LIBS)
-	@echo OBJS "-->" $(OBJS)
+	# wuyc
+	# @echo OBJS "-->" $(OBJS)
+	# wuyc
 	@echo + LD "->" $(IMAGE_REL).elf
 	@$(LD) $(LDFLAGS) -o $(IMAGE).elf --start-group $(LINKAGE) --end-group
 
