@@ -53,9 +53,13 @@ $(shell mkdir -p $(DST_DIR))
 ### Compilation targets (a binary image or archive)
 IMAGE_REL = build/$(NAME)-$(ARCH)
 IMAGE     = $(abspath $(IMAGE_REL))
+# wuyc
 $(info IMAGE-->$(IMAGE))
+# wuyc
 ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
+# wuyc
 $(info WORK_DIR-->$(WORK_DIR))
+# wuyc
 
 ### Collect the files to be linked: object files (`.o`) and libraries (`.a`)
 OBJS      = $(addprefix $(DST_DIR)/, $(addsuffix .o, $(basename $(SRCS))))
@@ -132,6 +136,7 @@ $(LIBS): %:
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `IMAGE.elf`, the final ELF binary to be packed into image (ld)
 $(IMAGE).elf: $(OBJS) am $(LIBS)
+	@echo OBJS "-->" $(OBJS)
 	@echo + LD "->" $(IMAGE_REL).elf
 	@$(LD) $(LDFLAGS) -o $(IMAGE).elf --start-group $(LINKAGE) --end-group
 
