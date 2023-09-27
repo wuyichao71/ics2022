@@ -12,7 +12,9 @@ size_t strlen(const char *s) {
 }
 
 char *strcpy(char *dst, const char *src) {
-  panic("Not implemented");
+  for(size_t i= 0; (dst[i] == src[i]) != '\0'; i++);
+  return dst;
+  /* panic("Not implemented"); */
 }
 
 char *strncpy(char *dst, const char *src, size_t n) {
@@ -20,12 +22,16 @@ char *strncpy(char *dst, const char *src, size_t n) {
 }
 
 char *strcat(char *dst, const char *src) {
-  panic("Not implemented");
+  size_t dst_len = strlen(dst);
+  size_t i;
+  for(i = 0; (dst[dst_len+i] = src[i]) != '\0'; i++);
+  return dst;
+  /* panic("Not implemented"); */
 }
 
 int strcmp(const char *s1, const char *s2) {
   int dif;
-  for(int i = 0; (dif = s1[i] - s2[i]) == 0 && s1[i] != '\0' && s2[i] != '\0'; i++);
+  for(size_t i = 0; (dif = s1[i] - s2[i]) == 0 && s1[i] != '\0' && s2[i] != '\0'; i++);
   return dif;
   /* panic("Not implemented"); */
 }
