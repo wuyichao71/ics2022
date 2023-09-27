@@ -41,7 +41,9 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 void *memset(void *s, int c, size_t n) {
-  panic("Not implemented");
+  for(size_t i = 0; i < n; i++) *(unsigned char *)(s+i) = c;
+  return s;
+  /* panic("Not implemented"); */
 }
 
 void *memmove(void *dst, const void *src, size_t n) {
@@ -53,7 +55,15 @@ void *memcpy(void *out, const void *in, size_t n) {
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
-  panic("Not implemented");
+  int dif = 0;
+  for(size_t i = 0; i < n; i++)
+  {
+    dif = *(unsigned char *)(s1+i) - *(unsigned char *)(s2+i);
+    if (dif != 0)
+      return dif;
+  }
+  return dif;
+  /* panic("Not implemented"); */
 }
 
 #endif
