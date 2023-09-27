@@ -26,7 +26,9 @@ $(BINARY): compile_git
 
 override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 override ARGS += $(ARGS_DIFF)
-$(info ARGS-->$(ARGS))
+# wuyc
+# $(info ARGS-->$(ARGS))
+# wuyc
 
 
 # Command to execute NEMU
