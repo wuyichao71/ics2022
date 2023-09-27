@@ -12,7 +12,7 @@ size_t strlen(const char *s) {
 }
 
 char *strcpy(char *dst, const char *src) {
-  for(size_t i= 0; (dst[i] == src[i]) != '\0'; i++);
+  for(size_t i= 0; (dst[i] = src[i]) != '\0'; i++);
   return dst;
   /* panic("Not implemented"); */
 }
