@@ -53,6 +53,7 @@ $(shell mkdir -p $(DST_DIR))
 ### Compilation targets (a binary image or archive)
 IMAGE_REL = build/$(NAME)-$(ARCH)
 IMAGE     = $(abspath $(IMAGE_REL))
+$(info IMAGE-->$(IMAGE))
 ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
 $(info WORK_DIR-->$(WORK_DIR))
 
@@ -106,7 +107,6 @@ endif
 ### Rule (compile): a single `.c` -> `.o` (gcc)
 $(DST_DIR)/%.o: %.c
 	@mkdir -p $(dir $@) && echo + CC $<
-	@echo + CC $<
 	@$(CC) -std=gnu11 $(CFLAGS) -c -o $@ $(realpath $<)
 	# @$(CC) -std=gnu11 $(CFLAGS) -c --verbose -o $@ $(realpath $<)
 
