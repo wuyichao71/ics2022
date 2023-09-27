@@ -106,6 +106,7 @@ endif
 ### Rule (compile): a single `.c` -> `.o` (gcc)
 $(DST_DIR)/%.o: %.c
 	@mkdir -p $(dir $@) && echo + CC $<
+	@echo + CC $<
 	@$(CC) -std=gnu11 $(CFLAGS) -c -o $@ $(realpath $<)
 	# @$(CC) -std=gnu11 $(CFLAGS) -c --verbose -o $@ $(realpath $<)
 
