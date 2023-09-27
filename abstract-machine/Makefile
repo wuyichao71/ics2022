@@ -54,7 +54,7 @@ $(shell mkdir -p $(DST_DIR))
 IMAGE_REL = build/$(NAME)-$(ARCH)
 IMAGE     = $(abspath $(IMAGE_REL))
 ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
-$(info WORK_DIR-->$(WORK_DIR))
+# $(info WORK_DIR-->$(WORK_DIR))
 
 ### Collect the files to be linked: object files (`.o`) and libraries (`.a`)
 OBJS      = $(addprefix $(DST_DIR)/, $(addsuffix .o, $(basename $(SRCS))))
@@ -106,8 +106,8 @@ endif
 ### Rule (compile): a single `.c` -> `.o` (gcc)
 $(DST_DIR)/%.o: %.c
 	@mkdir -p $(dir $@) && echo + CC $<
-	# @$(CC) -std=gnu11 $(CFLAGS) -c -o $@ $(realpath $<)
-	@$(CC) -std=gnu11 $(CFLAGS) -c --verbose -o $@ $(realpath $<)
+	@$(CC) -std=gnu11 $(CFLAGS) -c -o $@ $(realpath $<)
+	# @$(CC) -std=gnu11 $(CFLAGS) -c --verbose -o $@ $(realpath $<)
 
 ### Rule (compile): a single `.cc` -> `.o` (g++)
 $(DST_DIR)/%.o: %.cc
