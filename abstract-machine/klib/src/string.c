@@ -5,7 +5,10 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
-  panic("Not implemented");
+  size_t i = 0;
+  for(; s[i] != '\0'; i++);
+  return i;
+  /* panic("Not implemented"); */
 }
 
 char *strcpy(char *dst, const char *src) {
@@ -21,7 +24,10 @@ char *strcat(char *dst, const char *src) {
 }
 
 int strcmp(const char *s1, const char *s2) {
-  panic("Not implemented");
+  int dif;
+  for(int i = 0; (dif = s1[i] - s2[i]) == 0 && s1[i] != '\0' && s2[i] != '\0'; i++);
+  return dif;
+  /* panic("Not implemented"); */
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
