@@ -59,6 +59,7 @@ $(info IMAGE-->$(IMAGE))
 ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
 # wuyc
 $(info WORK_DIR-->$(WORK_DIR))
+$(info DST_DIR-->$(DST_DIR))
 # wuyc
 
 ### Collect the files to be linked: object files (`.o`) and libraries (`.a`)
