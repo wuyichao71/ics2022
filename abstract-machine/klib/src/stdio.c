@@ -15,10 +15,24 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
 int sprintf(char *out, const char *fmt, ...) {
   int out_i = 0;
+  int val_num = 0;
+  va_list ap;
+  va_start(ap,fmt);
   for(; *fmt; fmt++)
   {
     if(*fmt == '%')
     {
+      val_num++;
+      switch(*(++fmt))
+      {
+        case 's':
+          break;
+
+        case 'd':
+          break;
+        default:
+          break;
+      }
 
     }
     else
