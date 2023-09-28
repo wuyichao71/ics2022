@@ -24,23 +24,22 @@ int sprintf(char *out, const char *fmt, ...) {
   {
     if(*fmt == '%')
     {
-      switch(*(++fmt))
+      fmt++;
+      switch(*fmt)
       {
         case 's':
           s = va_arg(ap, char *);
           for(; *s; s++)
           {
-            *(out+out_i) = *s;
-            out_i++;
+            out[out_i++] = *s;
           }
-          *out = '\0';
+          out[out_i] = '\0';
           break;
         case 'd':
           break;
         default:
           break;
       }
-
     }
     else
       out[out_i++] = *fmt;
