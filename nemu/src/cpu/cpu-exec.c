@@ -34,6 +34,13 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
 void device_update();
+
+/* wuyc */
+#if CONFIG_ITRACE
+  int ring_start = 0;
+  int ring_end = 0;
+  char iringbuf[CONFIG_IRINGBUF_LEN][128];
+#endif
 void difftest_watchpoint(vaddr_t pc)
 {
   bool changed = check_watchpoint(pc);
@@ -41,9 +48,6 @@ void difftest_watchpoint(vaddr_t pc)
     nemu_state.state = NEMU_STOP;
 }
 /* wuyc */
-IFDEF(CONFIG_ITRACE, int ring_start = 0);
-IFDEF(CONFIG_ITRACE, int ring_end = 0);
-IFDEF(CONFIG_ITRACE, char iringbuf[CONFIG_IRINGBUF_LEN][128]);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -68,6 +72,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   uint8_t *inst = (uint8_t *)&s->isa.inst.val;
   for (i = ilen - 1; i >= 0; i --) {
     p += snprintf(p, 4, " %02x", inst[i]);
+    printf("%s\n", p);
   }
   int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
   int space_len = ilen_max - ilen;
