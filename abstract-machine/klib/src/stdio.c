@@ -19,9 +19,10 @@ int sprintf(char *out, const char *fmt, ...) {
   va_start(ap,fmt);
   for(; *fmt; fmt++)
   {
-    /* char *fmt_org = fmt; */
-    if(*(fmt++) == '%')
+    if(*fmt == '%')
     {
+      /* char *fmt_org = fmt; */
+      fmt++;
       /* va_list */
       char *s;
       int d;
@@ -42,6 +43,7 @@ int sprintf(char *out, const char *fmt, ...) {
         case 'd':
           d = va_arg(ap, int);
           div = d;
+          do
           {
             num_len++;
             div = div / 10;
@@ -54,7 +56,6 @@ int sprintf(char *out, const char *fmt, ...) {
             rem = d % 10;
             d = d / 10;
             *(out - i) = rem + '0';
-            putch(*(out - i));
           }
 
           break;
@@ -65,6 +66,7 @@ int sprintf(char *out, const char *fmt, ...) {
     else
       *(out++) = *fmt;
   }
+  *out = '\0';
   va_end(ap);
   return out - out_org;
   /* panic("Not implemented"); */
