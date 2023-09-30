@@ -34,7 +34,6 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
 void device_update();
-/* wuyc */
 void difftest_watchpoint(vaddr_t pc)
 {
   bool changed = check_watchpoint(pc);

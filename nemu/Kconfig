@@ -156,7 +156,7 @@ config IRINGBUF_COND
   default "true"
 
 config IRINGBUF_LEN
-  depends on TRACE
+  depends on ITRACE
   int "How long the iringbuf is (unit: number of instruction)"
   default 20
 
