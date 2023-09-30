@@ -37,10 +37,13 @@ void device_update();
 
 /* wuyc */
 #if CONFIG_ITRACE
-  int ring_start = 0;
-  int ring_end = 0;
-  char iringbuf[CONFIG_IRINGBUF_LEN][128];
+#define IRINGBUF_LEN (CONFIG_IRINGBUF_LEN+1)
+  int iring_start = 0;
+  int iring_end = 0;
+
+  char iringbuf[IRINGBUF_LEN][128];
 #endif
+
 void difftest_watchpoint(vaddr_t pc)
 {
   bool changed = check_watchpoint(pc);
@@ -71,7 +74,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
   int i;
   uint8_t *inst = (uint8_t *)&s->isa.inst.val;
   for (i = ilen - 1; i >= 0; i --) {
-    printf("%s\n", s->logbuf);
     p += snprintf(p, 4, " %02x", inst[i]);
   }
   int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
@@ -88,6 +90,11 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
+  /* wuyc */
+  snprintf(iringbuf[iring_end], sizeof(iringbuf[iring_end]), s->logbuf);
+  iring_end = (iring_end+1) % IRINGBUF_LEN;
+  if (iring_end == iring_start) iring_start++;
+  /* wuyc */
 #endif
 }
 
@@ -133,6 +140,12 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
+  printf("================\n");
+  for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
+  {
+    printf("%s", iringbuf[i]);
+  }
+  printf("================\n");
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
     /* case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break; */
