@@ -41,6 +41,9 @@ void difftest_watchpoint(vaddr_t pc)
     nemu_state.state = NEMU_STOP;
 }
 /* wuyc */
+IFDEF(CONFIG_ITRACE, int ring_start = 0);
+IFDEF(CONFIG_ITRACE, int ring_end = 0);
+IFDEF(CONFIG_ITRACE, char iringbuf[CONFIG_IRINGBUF_LEN][128]);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND

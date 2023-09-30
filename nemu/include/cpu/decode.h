@@ -26,11 +26,6 @@ typedef struct Decode {
   IFDEF(CONFIG_ITRACE, char logbuf[128]);
 } Decode;
 
-/* wuyc */
-/* IFDEF(CONFIG_ITRACE, int ring_start = 0); */
-/* IFDEF(CONFIG_ITRACE, int ring_end = 0); */
-IFDEF(CONFIG_ITRACE, char iringbuf[CONFIG_IRINGBUF_LEN][128]);
-/* wuyc */
 // --- pattern matching mechanism ---
 __attribute__((always_inline))
 static inline void pattern_decode(const char *str, int len,
