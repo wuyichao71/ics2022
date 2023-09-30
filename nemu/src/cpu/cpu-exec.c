@@ -169,6 +169,7 @@ void cpu_exec(uint64_t n) {
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
       /* wuyc */
+      /* if (nemu_state.state == NEMU_END && nemu_state.halt_pc != 0) */
       print_iringbuf();
       /* wuyc */
       // fall through
