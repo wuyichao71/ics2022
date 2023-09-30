@@ -143,7 +143,7 @@ void cpu_exec(uint64_t n) {
   printf("================\n");
   for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
   {
-    printf("%s", iringbuf[i]);
+    printf("%s\n", iringbuf[i]);
   }
   printf("================\n");
   switch (nemu_state.state) {
