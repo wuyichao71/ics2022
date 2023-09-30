@@ -14,38 +14,55 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *out, const char *fmt, ...) {
-  int out_i = 0;
-  /* int va_num = 0; */
+  char *out_org = out;
   va_list ap;
-  /* int d; */
-  char *s;
   va_start(ap,fmt);
   for(; *fmt; fmt++)
   {
-    if(*fmt == '%')
+    /* char *fmt_org = fmt; */
+    if(*(fmt++) == '%')
     {
-      fmt++;
+      char *s;
+      int d;
+      int num_len = 0;
+      int div, rem;
+
       switch(*fmt)
       {
+        /* %s(string) */
         case 's':
           s = va_arg(ap, char *);
-          for(; *s; s++)
-          {
-            out[out_i++] = *s;
-          }
-          out[out_i] = '\0';
+          for(; *s; s++) *(out++) = *s;
+          *(out++) = '\0';
           break;
+        /* %d(number) */
         case 'd':
+          d = va_arg(ap, int);
+          div = d;
+          {
+            num_len++;
+            div = div / 10;
+          } while(div != 0);
+          /* move org */
+          out += num_len;
+          *out = '\0';
+          for(char i = 1; i <= num_len; i++)
+          {
+            rem = d % 10;
+            d = d / 10;
+            *(out - i) = rem + '0';
+          }
+
           break;
         default:
           break;
       }
     }
     else
-      out[out_i++] = *fmt;
+      *(out++) = *fmt;
   }
   va_end(ap);
-  return out_i;
+  return out - out_org;
   /* panic("Not implemented"); */
 }
 
