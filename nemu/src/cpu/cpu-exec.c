@@ -127,12 +127,11 @@ static void print_iringbuf()
   Log("The iringbuf is:\n");
   for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
   {
-    char *fmt = "    %s\n";
+    char fmt[] = "    %s\n";
     if (i == (iring_end - 1) % IRINGBUF_LEN)
       strcpy(fmt, "--> %s\n");
     log_write(fmt, iringbuf[i]);
     printf(fmt, iringbuf[i]);
-
   }
 
 }
