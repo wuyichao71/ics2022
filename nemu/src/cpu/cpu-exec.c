@@ -124,7 +124,7 @@ void assert_fail_msg() {
 /* wuyc */
 static void print_iringbuf()
 {
-  Log("The iringbuf is:\n");
+  Log("The iringbuf is:");
   for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
   {
     char fmt[] = "    %s\n";
