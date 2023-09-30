@@ -22,8 +22,11 @@ int sprintf(char *out, const char *fmt, ...) {
     /* char *fmt_org = fmt; */
     if(*(fmt++) == '%')
     {
+      /* va_list */
       char *s;
       int d;
+      /* va_list */
+
       int num_len = 0;
       int div, rem;
 
@@ -46,11 +49,12 @@ int sprintf(char *out, const char *fmt, ...) {
           /* move org */
           out += num_len;
           *out = '\0';
-          for(char i = 1; i <= num_len; i++)
+          for(int i = 1; i <= num_len; i++)
           {
             rem = d % 10;
             d = d / 10;
             *(out - i) = rem + '0';
+            putch(*(out - i));
           }
 
           break;
