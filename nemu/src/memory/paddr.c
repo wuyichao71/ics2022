@@ -28,6 +28,9 @@ static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 #define Log_yellow(format, ...) \
     _Log(ANSI_FMT("[%s:%d %s] " format, ANSI_FG_YELLOW) "\n", \
         __FILE__, __LINE__, __func__, ## __VA_ARGS__)
+#define Log_cyan(format, ...) \
+    _Log(ANSI_FMT("[%s:%d %s] " format, ANSI_FG_CYAN) "\n", \
+        __FILE__, __LINE__, __func__, ## __VA_ARGS__)
 /* wuyc */
 
 uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
@@ -80,7 +83,7 @@ void paddr_write(paddr_t addr, int len, word_t data) {
   if (likely(in_pmem(addr))) //pmem_write(addr, len, data); 
   //wuyc
   {
-    Log_yellow("write " FMT_WORD " to " FMT_PADDR, data, addr);
+    Log_cyan("write " FMT_WORD " to " FMT_PADDR, data, addr);
     pmem_write(addr, len, data); 
     return;
   }
