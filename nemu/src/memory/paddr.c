@@ -67,7 +67,7 @@ word_t paddr_read(paddr_t addr, int len) {
   /* wuyc */
   {
     word_t ret = pmem_read(addr, len);
-    Log_yellow("read " FMT_WORD "from" FMT_PADDR " \n", ret, addr);
+    Log_yellow("read " FMT_WORD " from " FMT_PADDR " \n", ret, addr);
     return ret;
   }
   /* wuyc */
@@ -79,7 +79,7 @@ word_t paddr_read(paddr_t addr, int len) {
 void paddr_write(paddr_t addr, int len, word_t data) {
   if (likely(in_pmem(addr))) //pmem_write(addr, len, data); 
   {
-    Log_yellow("write " FMT_WORD "to" FMT_PADDR " \n", data, addr);
+    Log_yellow("write " FMT_WORD " to " FMT_PADDR " \n", data, addr);
     pmem_write(addr, len, data); 
     return;
   }
