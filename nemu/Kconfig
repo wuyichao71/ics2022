@@ -160,6 +160,21 @@ config IRINGBUF_LEN
   int "How long the iringbuf is (unit: number of instruction)"
   default 20
 
+config MTRACE
+  depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
+  bool "Enable memory tracer"
+  default y
+
+config MTRACE_BEGIN
+  depends on MTRACE
+  hex "Where the memory tracing is begun"
+  default 0x80000000
+
+config MTRACE_END
+  depends on MTRACE
+  hex "Where the memory tracing is ended"
+  default 0x88000000
+
 config WATCHPOINT
   bool "Enable watchpoint tracer"
   default y
