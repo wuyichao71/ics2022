@@ -26,11 +26,9 @@ static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 
 /* wuyc */
 #define Log_yellow(format, ...) \
-    _Log(ANSI_FMT("[%s:%d %s] " format, ANSI_FG_YELLOW) "\n", \
-        __FILE__, __LINE__, __func__, ## __VA_ARGS__)
+    _Log(ANSI_FMT(format, ANSI_FG_YELLOW) "\n", ## __VA_ARGS__)
 #define Log_cyan(format, ...) \
-    _Log(ANSI_FMT("[%s:%d %s] " format, ANSI_FG_CYAN) "\n", \
-        __FILE__, __LINE__, __func__, ## __VA_ARGS__)
+    _Log(ANSI_FMT(format, ANSI_FG_CYAN) "\n", ## __VA_ARGS__)
 /* wuyc */
 
 uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
