@@ -130,8 +130,9 @@ static void print_iringbuf()
     char fmt[] = "    %s\n";
     if (i == (iring_end - 1) % IRINGBUF_LEN)
       strcpy(fmt, "--> %s\n");
-    log_write(fmt, iringbuf[i]);
-    printf(fmt, iringbuf[i]);
+    _Log(fmt, iringbuf[i]);
+    /* log_write(fmt, iringbuf[i]); */
+    /* printf(fmt, iringbuf[i]); */
   }
 
 }
