@@ -122,19 +122,19 @@ void assert_fail_msg() {
 }
 
 /* wuyc */
-/* static void print_iringbuf() */
-/* { */
-/*   Log("The iringbuf is:"); */
-/*   for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN) */
-/*   { */
-/*     char fmt[] = "    %s\n"; */
-/*     if (i == (iring_end - 1) % IRINGBUF_LEN) */
-/*       strcpy(fmt, "--> %s\n"); */
-/*     _Log(fmt, iringbuf[i]); */
-/*     /1* log_write(fmt, iringbuf[i]); *1/ */
-/*     /1* printf(fmt, iringbuf[i]); *1/ */
-/*   } */
-/* } */
+static void print_iringbuf()
+{
+  Log("The iringbuf is:");
+  for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
+  {
+    char fmt[] = "    %s\n";
+    if (i == (iring_end - 1) % IRINGBUF_LEN)
+      strcpy(fmt, "--> %s\n");
+    /* _Log(fmt, iringbuf[i]); */
+    log_write(fmt, iringbuf[i]);
+    /* printf(fmt, iringbuf[i]); */
+  }
+}
 /* wuyc */
 
 /* Simulate how the CPU works. */
@@ -154,10 +154,12 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
-  for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
-  {
-    printf("%s\n", iringbuf[i]);
-  }
+  /* wuyc */
+  /* for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN) */
+  /* { */
+  /*   printf("%s\n", iringbuf[i]); */
+  /* } */
+  /* wuyc */
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
     /* case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break; */
@@ -169,8 +171,8 @@ void cpu_exec(uint64_t n) {
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
       /* wuyc */
-      /* if (nemu_state.state == NEMU_ABORT || (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0)) */
-        /* print_iringbuf(); */
+      if (nemu_state.state == NEMU_ABORT || (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0))
+        print_iringbuf();
       /* wuyc */
       // fall through
     case NEMU_QUIT: statistic();

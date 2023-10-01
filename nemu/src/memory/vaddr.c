@@ -19,10 +19,10 @@
 /* wuyc */
 #ifdef CONFIG_MTRACE
 #define Log_yellow(format, ...) \
-    _Log(ANSI_FMT(format, ANSI_FG_YELLOW) "\n", ## __VA_ARGS__)
+    log_write(ANSI_FMT(format, ANSI_FG_YELLOW) "\n", ## __VA_ARGS__)
 
 #define Log_cyan(format, ...) \
-    _Log(ANSI_FMT(format, ANSI_FG_CYAN) "\n", ## __VA_ARGS__)
+    log_write(ANSI_FMT(format, ANSI_FG_CYAN) "\n", ## __VA_ARGS__)
 
 static inline bool in_mtrace(vaddr_t addr) {
   return addr >= CONFIG_MTRACE_BEGIN && addr < CONFIG_MTRACE_END;
