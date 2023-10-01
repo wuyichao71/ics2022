@@ -31,14 +31,14 @@ word_t vaddr_read(vaddr_t addr, int len) {
   /* wuyc */
   /* return paddr_read(addr, len); */
   word_t ret = paddr_read(addr, len);
-  /* Log_yellow("read " FMT_WORD " from " FMT_PADDR, ret, addr); */
+  Log_yellow("read " FMT_WORD " from " FMT_PADDR, ret, addr);
   return ret;
   /* wuyc */
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
   /* wuyc */
-  /* Log_cyan("write " FMT_WORD " to " FMT_PADDR, data, addr); */
+  Log_cyan("write " FMT_WORD " to " FMT_PADDR, data, addr);
   /* wuyc */
   paddr_write(addr, len, data);
 }
