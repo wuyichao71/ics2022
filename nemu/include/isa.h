@@ -27,6 +27,10 @@ typedef concat(__GUEST_ISA__, _ISADecodeInfo) ISADecodeInfo;
 // monitor
 extern char isa_logo[];
 void init_isa();
+/* wuyc */
+char *strtab;
+void free_elf();
+/* wuyc */
 
 // reg
 extern CPU_state cpu;
