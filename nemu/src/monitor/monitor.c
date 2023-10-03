@@ -120,8 +120,13 @@ static void init_elf() {
   strtab = (char *)malloc(shdr[strtab_ndx].sh_size * sizeof(char));
   fseek(elfp, shdr[strtab_ndx].sh_offset, SEEK_SET);
   fread(strtab, shdr[strtab_ndx].sh_size, 1, elfp);
-  printf("%s\n", strtab+1);
+  /* printf("%s\n", strtab+1); */
 
+  symtab_hdr = (Elf32_Sym *)malloc(shdr[symtab_ndx].sh_offset);
+  for(int size = 0; size < shdr[symtab_ndx].sh_offset; size += sizeof(Elf32_Sym))
+  {
+    printf("0x%x\n", symtab_hdr[size / sizeof(Elf32_Sym)].st_value);
+  }
   /* printf("first shstr = \"%s\"\n", shstrtab+1); */
   /* for(int i = 0; i < ehdr.e_shnum; i++) */
   /* { */
@@ -136,6 +141,7 @@ static void init_elf() {
 void free_elf()
 {
   free(strtab);
+  free(symtab_hdr);
 }
 /* wuyc */
 

@@ -18,6 +18,9 @@
 
 // Located at src/isa/$(GUEST_ISA)/include/isa-def.h
 #include <isa-def.h>
+/* wuyc */
+#include <elf.h>
+/* wuyc */
 
 // The macro `__GUEST_ISA__` is defined in $(CFLAGS).
 // It will be expanded as "x86" or "mips32" ...
@@ -29,6 +32,7 @@ extern char isa_logo[];
 void init_isa();
 /* wuyc */
 char *strtab;
+Elf32_Sym *symtab_hdr;
 /* wuyc */
 
 // reg
