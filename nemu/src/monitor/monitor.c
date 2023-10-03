@@ -89,6 +89,7 @@ static void init_elf() {
   fread(&elf_header, sizeof(elf_header), 1, elfp);
   printf("e_shoff = %d\n", elf_header.e_shoff);
   printf("e_shnum = %d\n", elf_header.e_shnum);
+  printf("e_shstrndx = %d\n", elf_header.e_shstrndx);
   fseek(elfp, elf_header.e_shoff, SEEK_SET);
   /* for(int i = 0; i < elf_header.) */
   /* Elf32_Shdr section_header; */
