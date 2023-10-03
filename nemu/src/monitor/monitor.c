@@ -128,7 +128,7 @@ static void init_elf() {
   printf("%x, %ld\n", shdr[symtab_ndx].sh_size, sizeof(Elf32_Sym));
   for(int size = 0; size < shdr[symtab_ndx].sh_size; size += sizeof(Elf32_Sym))
   {
-    printf("%d\n", symtab_hdr[size / sizeof(Elf32_Sym)].st_name);
+    printf("%s\n", strtab + symtab_hdr[size / sizeof(Elf32_Sym)].st_name);
   }
   /* printf("first shstr = \"%s\"\n", shstrtab+1); */
   /* for(int i = 0; i < ehdr.e_shnum; i++) */
