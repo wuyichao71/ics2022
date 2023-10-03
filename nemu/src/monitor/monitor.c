@@ -86,6 +86,9 @@ static void init_elf() {
   }
   fclose(elfp);
 
+  Elf32_Ehdr elf_header;
+  printf("elf_header = %ld\n", sizeof(elf_header));
+
 }
 /* wuyc */
 
