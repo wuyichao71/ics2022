@@ -74,6 +74,12 @@ static long load_img() {
   return size;
 }
 
+/* wuyc */
+static void init_elf() {
+
+}
+/* wuyc */
+
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
@@ -81,7 +87,7 @@ static int parse_args(int argc, char *argv[]) {
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     /* wuyc */
-    {"elf"      , no_argument      , NULL, 'e'},
+    {"elf"      , required_argument, NULL, 'e'},
     /* wuyc */
     {"help"     , no_argument      , NULL, 'h'},
     {0          , 0                , NULL,  0 },
@@ -131,6 +137,10 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize devices. */
   IFDEF(CONFIG_DEVICE, init_device());
+
+  /* wuyc */
+  init_elf();
+  /* wuyc */
 
   /* Perform ISA dependent initialization. */
   init_isa();
