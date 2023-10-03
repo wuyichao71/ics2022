@@ -91,17 +91,21 @@ static void init_elf() {
   printf("e_shnum = %d\n", elf_header.e_shnum);
   printf("e_shstrndx = %d\n", elf_header.e_shstrndx);
   fseek(elfp, elf_header.e_shoff, SEEK_SET);
+  
+  Elf32_Shdr *section_header = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * elf_header.e_shnum);
 
   /* Elf32_Shdr section_header; */
   for(int i = 0; i < elf_header.e_shnum; i++)
   {
-    Elf32_Shdr section_header;
-    fread(&section_header, sizeof(section_header), 1, elfp);
-    printf("sh_offset = 0x%x\n", section_header.sh_offset);
+    fread(&section_header[i], sizeof(section_header), 1, elfp);
+  }
+  for(int i = 0; i < elf_header.e_shnum; i++)
+  {
+    printf("sh_offset = 0x%x\n", section_header[i].sh_offset);
   }
   printf("sizeof(Elf32_Sym) = %ld\n", sizeof(Elf32_Sym));
+  free(section_header);
   fclose(elfp);
-
 }
 /* wuyc */
 
