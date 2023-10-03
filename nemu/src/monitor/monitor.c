@@ -106,10 +106,16 @@ static void init_elf() {
   fseek(elfp, shstrtab_hdr.sh_offset, SEEK_SET);
   fread(shstrtab, shstrtab_hdr.sh_size, 1, elfp);
 
-  /* uint32_t symtab_ndx = 0, strtab_ndx = 0; */
+  uint32_t symtab_ndx = 0, strtab_ndx = 0;
   for(int i = 0; i < ehdr.e_shnum; i++)
-    printf("%s\n", shstrtab+shdr[i].sh_name);
-    /* printf("%d\n", shdr[i].sh_name); */
+  {
+    if(strcmp(shstrtab + shdr[i].sh_name, ".symtab"))
+      symtab_ndx = i;
+    else if(strcmp(shstrtab + shdr[i].sh_name, ".strtab"))
+      strtab_ndx = i;
+  }
+
+  printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx);
   /* printf("first shstr = \"%s\"\n", shstrtab+1); */
   /* for(int i = 0; i < ehdr.e_shnum; i++) */
   /* { */
