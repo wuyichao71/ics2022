@@ -105,13 +105,19 @@ static void init_elf() {
   char *shstrtab = (char *)malloc(shstrtab_hdr.sh_size*sizeof(char));
   fseek(elfp, shstrtab_hdr.sh_offset, SEEK_SET);
   fread(shstrtab, shstrtab_hdr.sh_size, 1, elfp);
-  printf("first shstr = \"%s\"\n", shstrtab+1);
+
+  /* uint32_t symtab_ndx = 0, strtab_ndx = 0; */
+  for(int i = 0; i < ehdr.e_shnum; i++)
+    /* printf("%s\n", shstrtab[shdr[i].sh_name]); */
+    printf("%d\n", shdr[i].sh_name);
+  /* printf("first shstr = \"%s\"\n", shstrtab+1); */
   /* for(int i = 0; i < ehdr.e_shnum; i++) */
   /* { */
   /*   printf("sh_offset = 0x%x\n", shdr[i].sh_offset); */
   /* } */
   /* printf("sizeof(Elf32_Sym) = %ld\n", sizeof(Elf32_Sym)); */
   free(shdr);
+  free(shstrtab);
   fclose(elfp);
 }
 /* wuyc */
