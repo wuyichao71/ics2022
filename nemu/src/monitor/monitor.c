@@ -41,6 +41,9 @@ static void welcome() {
 
 #ifndef CONFIG_TARGET_AM
 #include <getopt.h>
+/* wuyc */
+#include <elf.h>
+/* wuyc */
 
 void sdb_set_batch_mode();
 
@@ -76,6 +79,8 @@ static long load_img() {
 
 /* wuyc */
 static void init_elf() {
+  FILE *elfp = fopen(elf_file, "r");
+  fclose(elfp);
 
 }
 /* wuyc */
