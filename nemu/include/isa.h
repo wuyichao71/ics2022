@@ -29,7 +29,6 @@ extern char isa_logo[];
 void init_isa();
 /* wuyc */
 char *strtab;
-void free_elf();
 /* wuyc */
 
 // reg
