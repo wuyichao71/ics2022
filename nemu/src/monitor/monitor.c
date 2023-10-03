@@ -113,6 +113,7 @@ static void init_elf() {
       symtab_ndx = i;
     else if(strcmp(shstrtab + shdr[i].sh_name, ".strtab"))
       strtab_ndx = i;
+    printf("%s\n", shstrtab + shdr[i].sh_name);
   }
 
   printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx);
