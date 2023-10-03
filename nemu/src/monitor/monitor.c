@@ -85,12 +85,12 @@ static void init_elf() {
   {
     return;
   }
-  fclose(elfp);
 
   Elf32_Ehdr elf_header;
   fread(&elf_header, sizeof(elf_header), 1, elfp);
   /* Elf32_Shdr section_header; */
   printf("%d", elf_header.e_entry);
+  fclose(elfp);
 
 }
 /* wuyc */
