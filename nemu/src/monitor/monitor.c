@@ -109,9 +109,9 @@ static void init_elf() {
   uint32_t symtab_ndx = 0, strtab_ndx = 0;
   for(int i = 0; i < ehdr.e_shnum; i++)
   {
-    if(strcmp(shstrtab + shdr[i].sh_name, ".symtab"))
+    if(strcmp(shstrtab + shdr[i].sh_name, ".symtab") == 0)
       symtab_ndx = i;
-    else if(strcmp(shstrtab + shdr[i].sh_name, ".strtab"))
+    else if(strcmp(shstrtab + shdr[i].sh_name, ".strtab") == 0)
       strtab_ndx = i;
     printf("%s\n", shstrtab + shdr[i].sh_name);
   }
