@@ -80,6 +80,7 @@ static long load_img() {
 /* wuyc */
 static void init_elf() {
   FILE *elfp = fopen(elf_file, "r");
+  printf("%s\n", elf_file);
   if (elfp == NULL)
   {
     return;
