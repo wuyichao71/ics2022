@@ -108,8 +108,8 @@ static void init_elf() {
 
   /* uint32_t symtab_ndx = 0, strtab_ndx = 0; */
   for(int i = 0; i < ehdr.e_shnum; i++)
-    /* printf("%s\n", shstrtab[shdr[i].sh_name]); */
-    printf("%d\n", shdr[i].sh_name);
+    printf("%s\n", shstrtab+shdr[i].sh_name);
+    /* printf("%d\n", shdr[i].sh_name); */
   /* printf("first shstr = \"%s\"\n", shstrtab+1); */
   /* for(int i = 0; i < ehdr.e_shnum; i++) */
   /* { */
