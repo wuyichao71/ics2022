@@ -80,6 +80,10 @@ static long load_img() {
 /* wuyc */
 static void init_elf() {
   FILE *elfp = fopen(elf_file, "r");
+  if (elfp == NULL)
+  {
+    return;
+  }
   fclose(elfp);
 
 }
