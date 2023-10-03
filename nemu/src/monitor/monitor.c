@@ -79,15 +79,17 @@ static long load_img() {
 
 /* wuyc */
 static void init_elf() {
-  /* FILE *elfp = fopen(elf_file, "r"); */
-  /* if (elfp == NULL) */
-  /* { */
-  /*   return; */
-  /* } */
-  /* fclose(elfp); */
+  FILE *elfp = fopen(elf_file, "r");
+  if (elfp == NULL)
+  {
+    return;
+  }
+  fclose(elfp);
 
   Elf32_Ehdr elf_header;
   printf("elf_header = %ld\n", sizeof(elf_header));
+  Elf32_Shdr section_header;
+  printf("section_header = %ld\n", sizeof(section_header));
 
 }
 /* wuyc */
