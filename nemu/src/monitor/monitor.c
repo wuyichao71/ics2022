@@ -97,7 +97,7 @@ static void init_elf() {
   {
     Elf32_Shdr section_header;
     fread(&section_header, sizeof(section_header), 1, elfp);
-    printf("sh_offset = %d\n", section_header.sh_offset);
+    printf("sh_offset = 0x%x\n", section_header.sh_offset);
   }
   fclose(elfp);
 
