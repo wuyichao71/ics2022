@@ -85,26 +85,33 @@ static void init_elf() {
     return;
   }
 
-  Elf32_Ehdr elf_header;
-  fread(&elf_header, sizeof(elf_header), 1, elfp);
-  printf("e_shoff = %d\n", elf_header.e_shoff);
-  printf("e_shnum = %d\n", elf_header.e_shnum);
-  printf("e_shstrndx = %d\n", elf_header.e_shstrndx);
-  fseek(elfp, elf_header.e_shoff, SEEK_SET);
+  Elf32_Ehdr ehdr;
+  fread(&ehdr, sizeof(ehdr), 1, elfp);
+  printf("e_shoff = %d\n", ehdr.e_shoff);
+  printf("e_shnum = %d\n", ehdr.e_shnum);
+  printf("e_shstrndx = %d\n", ehdr.e_shstrndx);
+  fseek(elfp, ehdr.e_shoff, SEEK_SET);
   
-  Elf32_Shdr *section_header = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * elf_header.e_shnum);
+  Elf32_Shdr *shdr = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * ehdr.e_shnum);
 
-  /* Elf32_Shdr section_header; */
-  for(int i = 0; i < elf_header.e_shnum; i++)
+  /* read section header */
+  for(int i = 0; i < ehdr.e_shnum; i++)
   {
-    fread(&section_header[i], sizeof(Elf32_Shdr), 1, elfp);
+    fread(&shdr[i], sizeof(Elf32_Shdr), 1, elfp);
   }
-  for(int i = 0; i < elf_header.e_shnum; i++)
-  {
-    printf("sh_offset = 0x%x\n", section_header[i].sh_offset);
-  }
-  printf("sizeof(Elf32_Sym) = %ld\n", sizeof(Elf32_Sym));
-  free(section_header);
+
+  /* read section header string table */
+  Elf32_Shdr shstrtab_hdr = shdr[ehdr.e_shstrndx];
+  char *shstrtab = (char *)malloc(shstrtab_hdr.sh_size*sizeof(char));
+  fseek(elfp, shstrtab_hdr.sh_offset, SEEK_SET);
+  fread(shstrtab, shstrtab_hdr.sh_size, 1, elfp);
+  printf("first shstr = \"%s\"\n", shstrtab+1);
+  /* for(int i = 0; i < ehdr.e_shnum; i++) */
+  /* { */
+  /*   printf("sh_offset = 0x%x\n", shdr[i].sh_offset); */
+  /* } */
+  /* printf("sizeof(Elf32_Sym) = %ld\n", sizeof(Elf32_Sym)); */
+  free(shdr);
   fclose(elfp);
 }
 /* wuyc */
