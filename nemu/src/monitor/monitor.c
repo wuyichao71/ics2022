@@ -97,7 +97,7 @@ static void init_elf() {
   /* Elf32_Shdr section_header; */
   for(int i = 0; i < elf_header.e_shnum; i++)
   {
-    fread(&section_header[i], sizeof(section_header), 1, elfp);
+    fread(&section_header[i], sizeof(Elf32_Shdr), 1, elfp);
   }
   for(int i = 0; i < elf_header.e_shnum; i++)
   {
