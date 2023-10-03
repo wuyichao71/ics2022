@@ -99,6 +99,7 @@ static void init_elf() {
     fread(&section_header, sizeof(section_header), 1, elfp);
     printf("sh_offset = 0x%x\n", section_header.sh_offset);
   }
+  printf("sizeof(Elf32_Sym) = %ld\n", sizeof(Elf32_Sym));
   fclose(elfp);
 
 }
