@@ -123,6 +123,8 @@ static void init_elf() {
   /* printf("%s\n", strtab+1); */
 
   symtab_hdr = (Elf32_Sym *)malloc(shdr[symtab_ndx].sh_offset);
+  fseek(elfp, shdr[symtab_ndx].sh_offset, SEEK_SET);
+  fread(strtab, shdr[symtab_ndx].sh_size, 1, elfp);
   for(int size = 0; size < shdr[symtab_ndx].sh_size; size += sizeof(Elf32_Sym))
   {
     printf("0x%x\n", symtab_hdr[size / sizeof(Elf32_Sym)].st_value);
