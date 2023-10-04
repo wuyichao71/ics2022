@@ -175,6 +175,11 @@ config MTRACE_END
   hex "Where the memory tracing is ended"
   default 0x88000000
 
+config FTRACE
+  depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
+  bool "Enable function tracer"
+  default y
+
 config WATCHPOINT
   bool "Enable watchpoint tracer"
   default y
