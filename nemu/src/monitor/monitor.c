@@ -127,19 +127,16 @@ static void init_elf() {
   fread(symtab_hdr, shdr[symtab_ndx].sh_size, 1, elfp);
 
   word_t symtab_num = shdr[symtab_ndx].sh_size / sizeof(Elf32_Sym);
-  word_t func_num = 0;
+  func_num = 0;
   for(int i = 0; i < symtab_num; i++)
   {
-    /* printf("0x%x, %s\n", symtab_hdr[i].st_value, strtab + symtab_hdr[i].st_name); */
     if (ELF32_ST_TYPE(symtab_hdr[i].st_info) == STT_FUNC)
     {
-      /* printf("0x%x, 0x%x\n", symtab_hdr[i].st_info, STT_FUNC); */
       func_num++;
     }
   }
 
   func_hdr = (Func_Hdr *)malloc(func_num * sizeof(Func_Hdr));
-
   word_t fhdr_i = 0;
   for(int i = 0; i < symtab_num; i++)
   {
@@ -152,15 +149,7 @@ static void init_elf() {
       fhdr_i++;
     }
   }
-  /* printf("func_num = %d\n", func_num); */
 
-  /* printf("%x, %ld\n", shdr[symtab_ndx].sh_size, sizeof(Elf32_Sym)); */
-  /* printf("first shstr = \"%s\"\n", shstrtab+1); */
-  /* for(int i = 0; i < ehdr.e_shnum; i++) */
-  /* { */
-  /*   printf("sh_offset = 0x%x\n", shdr[i].sh_offset); */
-  /* } */
-  /* printf("sizeof(Elf32_Sym) = %ld\n", sizeof(Elf32_Sym)); */
   free(shdr);
   free(shstrtab);
   free(symtab_hdr);

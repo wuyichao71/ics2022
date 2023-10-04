@@ -39,6 +39,7 @@ typedef struct
   word_t st_size;
 } Func_Hdr;
 Func_Hdr *func_hdr;
+word_t func_num;
 /* wuyc */
 
 // reg
