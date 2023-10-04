@@ -127,12 +127,17 @@ static void init_elf() {
   fread(symtab_hdr, shdr[symtab_ndx].sh_size, 1, elfp);
 
   uint32_t symtab_num = shdr[symtab_ndx].sh_size / sizeof(Elf32_Sym);
-  /* uint32_t func_num = 0; */
+  uint32_t func_num = 0;
   for(int i = 0; i < symtab_num; i++)
   {
-    printf("0x%x, %s\n", symtab_hdr[i].st_value, strtab + symtab_hdr[i].st_name);
-    printf("0x%x, 0x%x\n", symtab_hdr[i].st_info, STT_FUNC);
+    /* printf("0x%x, %s\n", symtab_hdr[i].st_value, strtab + symtab_hdr[i].st_name); */
+    if (symtab_hdr[i].st_info & STT_FUNC)
+    {
+      printf("0x%x, 0x%x\n", symtab_hdr[i].st_info, STT_FUNC);
+      func_num++;
+    }
   }
+  printf("func_num = %d\n", func_num);
   /* printf("%x, %ld\n", shdr[symtab_ndx].sh_size, sizeof(Elf32_Sym)); */
   /* printf("first shstr = \"%s\"\n", shstrtab+1); */
   /* for(int i = 0; i < ehdr.e_shnum; i++) */
