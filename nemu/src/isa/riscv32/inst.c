@@ -78,12 +78,12 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 /* wuyc */
 #define IS_RA(i) (i == 1 || i == 5)
 
-static inline void print_header(vaddr_t pc)
+static inline void write_header(vaddr_t pc)
 {
-  printf(FMT_WORD ": ", pc);
+  log_write(FMT_WORD ": ", pc);
   for(int i = 0; i < level; i++)
   {
-    printf("  ");
+    log_write("  ");
   }
 }
 
@@ -101,7 +101,7 @@ static inline int find_func(vaddr_t pc)
   return name_ndx;
 }
 
-static void print_function(Decode *s)
+static void write_function(Decode *s)
 {
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
@@ -111,35 +111,35 @@ static void print_function(Decode *s)
   if (!IS_RA(rd) && IS_RA(rs1))
   {
     level--;
-    print_header(s->pc);
-    printf("ret  [%s]\n", strtab + find_func(s->pc));
+    write_header(s->pc);
+    log_write("ret  [%s]\n", strtab + find_func(s->pc));
   }
   else if (IS_RA(rd) && !IS_RA(rs1))
   {
-    print_header(s->pc);
-    printf("call [%s@" FMT_WORD "]\n", strtab + find_func(s->dnpc), s->dnpc);
+    write_header(s->pc);
+    log_write("call [%s@" FMT_WORD "]\n", strtab + find_func(s->dnpc), s->dnpc);
     level++;
   }
   else if (IS_RA(rd) && IS_RA(rs1) && rd != rs1)
   {
     level--;
-    print_header(s->pc);
-    printf("ret  []\n");
-    print_header(s->pc);
-    printf("call [@" FMT_WORD "]\n", s->dnpc);
+    write_header(s->pc);
+    log_write("ret  []\n");
+    write_header(s->pc);
+    log_write("call [@" FMT_WORD "]\n", s->dnpc);
     level++;
   }
   else if (IS_RA(rd) && IS_RA(rs1) && rd == rs1)
   {
-    print_header(s->pc);
-    printf("call [@" FMT_WORD "]\n", s->dnpc);
+    write_header(s->pc);
+    log_write("call [@" FMT_WORD "]\n", s->dnpc);
     level++;
   }
 }
 
 #define JUMP(...) do { \
   __VA_ARGS__; \
-  print_function(s); \
+  write_function(s); \
   } while(0)
   /* printf("0x%8x, 0x%8x\n", s->pc, s->dnpc); \ */
 
