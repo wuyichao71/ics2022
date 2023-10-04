@@ -19,7 +19,9 @@
 #include <cpu/decode.h>
 
 /* wuyc */
+#ifdef CONFIG_FTRACE
 static word_t level = 0;
+#endif
 /* wuyc */
 
 #define R(i) gpr(i)
@@ -76,6 +78,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 }
 
 /* wuyc */
+#ifdef CONFIG_FTRACE
 #define IS_RA(i) (i == 1 || i == 5)
 
 static inline void write_header(vaddr_t pc)
@@ -142,6 +145,12 @@ static void write_function(Decode *s)
   write_function(s); \
   } while(0)
   /* printf("0x%8x, 0x%8x\n", s->pc, s->dnpc); \ */
+
+#else
+
+#define JUMP(...) do { __VA_ARGS__; } while(0)
+
+#endif
 
 /* wuyc */
 

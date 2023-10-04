@@ -31,6 +31,7 @@ typedef concat(__GUEST_ISA__, _ISADecodeInfo) ISADecodeInfo;
 extern char isa_logo[];
 void init_isa();
 /* wuyc */
+#ifdef CONFIG_FTRACE
 char *strtab;
 typedef struct
 {
@@ -40,6 +41,7 @@ typedef struct
 } Func_Hdr;
 Func_Hdr *func_hdr;
 word_t func_num;
+#endif
 /* wuyc */
 
 // reg

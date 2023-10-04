@@ -42,14 +42,18 @@ static void welcome() {
 #ifndef CONFIG_TARGET_AM
 #include <getopt.h>
 /* wuyc */
+#ifdef CONFI_FTRACE
 #include <elf.h>
+#endif
 /* wuyc */
 
 void sdb_set_batch_mode();
 
 static char *log_file = NULL;
 /* wuyc */
+#ifdef CONFIG_FTRACE
 static char *elf_file = NULL;
+#endif
 /* wuyc */
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
@@ -78,6 +82,7 @@ static long load_img() {
 }
 
 /* wuyc */
+#ifdef CONFIG_FTRACE
 static void init_elf() {
   FILE *elfp = fopen(elf_file, "r");
   if (elfp == NULL)
@@ -161,6 +166,7 @@ void free_elf()
   free(strtab);
   free(func_hdr);
 }
+#endif
 /* wuyc */
 
 static int parse_args(int argc, char *argv[]) {
@@ -170,7 +176,9 @@ static int parse_args(int argc, char *argv[]) {
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     /* wuyc */
+#ifdef CONFIG_FTRACE
     {"elf"      , required_argument, NULL, 'e'},
+#endif
     /* wuyc */
     {"help"     , no_argument      , NULL, 'h'},
     {0          , 0                , NULL,  0 },
@@ -186,7 +194,9 @@ static int parse_args(int argc, char *argv[]) {
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
       /* wuyc */
+#ifdef CONFIG_FTRACE
       case 'e': elf_file = optarg; break;
+#endif
       /* wuyc */
       case 1: img_file = optarg; return 0;
       default:
@@ -222,7 +232,9 @@ void init_monitor(int argc, char *argv[]) {
   IFDEF(CONFIG_DEVICE, init_device());
 
   /* wuyc */
+#ifdef CONFIG_FTRACE
   init_elf();
+#endif
   /* wuyc */
 
   /* Perform ISA dependent initialization. */
