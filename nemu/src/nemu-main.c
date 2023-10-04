@@ -23,7 +23,9 @@ void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
 /* wuyc */
+#ifdef CONFIG_FTRACE
 void free_elf();
+#endif
 /* wuyc */
 
 int main(int argc, char *argv[]) {
@@ -38,6 +40,9 @@ int main(int argc, char *argv[]) {
   engine_start();
   /* printf("Test\n"); */
   /* bool success; */
+#ifdef CONFIG_FTRACE
+  free_elf();
+#endif
   /* expr("100+(10*20)/3", &success); */
 /* wuyc */
 

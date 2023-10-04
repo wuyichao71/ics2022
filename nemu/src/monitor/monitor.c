@@ -42,7 +42,7 @@ static void welcome() {
 #ifndef CONFIG_TARGET_AM
 #include <getopt.h>
 /* wuyc */
-#ifdef CONFI_FTRACE
+#ifdef CONFIG_FTRACE
 #include <elf.h>
 #endif
 /* wuyc */
