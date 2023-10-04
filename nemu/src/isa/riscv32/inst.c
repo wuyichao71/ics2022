@@ -87,19 +87,49 @@ static inline void print_header(vaddr_t pc)
   }
 }
 
+static inline int find_func(vaddr_t pc)
+{
+  int name_ndx = 0;
+  for(int i = 0; i < func_num; i++)
+  {
+    int pc_diff = pc - func_hdr[i].st_value;
+    if (pc_diff >= 0 && pc_diff < func_hdr[i].st_size)
+    {
+      name_ndx = func_hdr[i].st_name;
+    }
+  }
+  return name_ndx;
+}
+
 static void print_function(Decode *s)
 {
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
   int rd  = BITS(i, 11, 7);
   /* printf("rs1 = %d, rd = %d\n", rs1, rd); */
+
   if (!IS_RA(rd) && IS_RA(rs1))
   {
     level--;
     print_header(s->pc);
-    printf("ret  []\n");
+    printf("ret  [%s]\n", strtab + find_func(s->pc));
   }
   else if (IS_RA(rd) && !IS_RA(rs1))
+  {
+    print_header(s->pc);
+    printf("call [@" FMT_WORD "]\n", s->dnpc);
+    level++;
+  }
+  else if (IS_RA(rd) && IS_RA(rs1) && rd != rs1)
+  {
+    level--;
+    print_header(s->pc);
+    printf("ret  []\n");
+    print_header(s->pc);
+    printf("call [@" FMT_WORD "]\n", s->dnpc);
+    level++;
+  }
+  else if (IS_RA(rd) && IS_RA(rs1) && rd == rs1)
   {
     print_header(s->pc);
     printf("call [@" FMT_WORD "]\n", s->dnpc);
