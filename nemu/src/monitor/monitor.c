@@ -145,7 +145,7 @@ static void init_elf() {
       func_hdr[fhdr_i].st_name = symtab_hdr[i].st_name;
       func_hdr[fhdr_i].st_value = symtab_hdr[i].st_value;
       func_hdr[fhdr_i].st_size = symtab_hdr[i].st_size;
-      printf("value = 0x%08x, size = %4d, name = %s\n", func_hdr[fhdr_i].st_value, func_hdr[fhdr_i].st_size, strtab + func_hdr[fhdr_i].st_name);
+      /* printf("value = 0x%08x, size = %4d, name = %s\n", func_hdr[fhdr_i].st_value, func_hdr[fhdr_i].st_size, strtab + func_hdr[fhdr_i].st_name); */
       fhdr_i++;
     }
   }
