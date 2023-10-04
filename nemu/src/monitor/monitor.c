@@ -51,9 +51,9 @@ void sdb_set_batch_mode();
 
 static char *log_file = NULL;
 /* wuyc */
-#ifdef CONFIG_FTRACE
+/* #ifdef CONFIG_FTRACE */
 static char *elf_file = NULL;
-#endif
+/* #endif */
 /* wuyc */
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
@@ -176,9 +176,9 @@ static int parse_args(int argc, char *argv[]) {
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     /* wuyc */
-#ifdef CONFIG_FTRACE
+/* #ifdef CONFIG_FTRACE */
     {"elf"      , required_argument, NULL, 'e'},
-#endif
+/* #endif */
     /* wuyc */
     {"help"     , no_argument      , NULL, 'h'},
     {0          , 0                , NULL,  0 },
@@ -194,9 +194,9 @@ static int parse_args(int argc, char *argv[]) {
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
       /* wuyc */
-#ifdef CONFIG_FTRACE
+/* #ifdef CONFIG_FTRACE */
       case 'e': elf_file = optarg; break;
-#endif
+/* #endif */
       /* wuyc */
       case 1: img_file = optarg; return 0;
       default:
