@@ -92,7 +92,7 @@ static void print_function(Decode *s)
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
   int rd  = BITS(i, 11, 7);
-  printf("rs1 = %d, rd = %d\n", rs1, rd);
+  /* printf("rs1 = %d, rd = %d\n", rs1, rd); */
   if (!IS_RA(rd) && IS_RA(rs1))
   {
     print_header(s->pc);
@@ -110,18 +110,8 @@ static void print_function(Decode *s)
 #define JUMP(...) do { \
   __VA_ARGS__; \
   print_function(s); \
-  printf("0x%8x, 0x%8x\n", s->pc, s->dnpc); \
   } while(0)
-  /* uint32_t i = s->isa.inst.val; \ */
-  /* int rs1 = BITS(i, 19, 15); \ */
-  /* if (IS_RA(rd)) { \ */
-  /*   print_call(s->pc, s->dnpc); \ */
-  /*   level++; \ */
-  /* } \ */
-  /* else if (IS_RA(rs1)) { \ */
-  /*   print_return(s->pc, s->dnpc); \ */
-  /*   level--; \ */
-  /* } \ */
+  /* printf("0x%8x, 0x%8x\n", s->pc, s->dnpc); \ */
 
 /* wuyc */
 
