@@ -36,11 +36,13 @@ static bool g_print_step = false;
 void device_update();
 
 /* wuyc */
+#ifdef CONFIG_IRINGBUF
 #define IRINGBUF_LEN (CONFIG_IRINGBUF_LEN+1)
 int iring_start = 0;
 int iring_end = 0;
 
 char iringbuf[IRINGBUF_LEN][128];
+#endif
 
 void difftest_watchpoint(vaddr_t pc)
 {
@@ -89,9 +91,11 @@ static void exec_once(Decode *s, vaddr_t pc) {
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
   /* wuyc */
+#ifdef CONFIG_IRINGBUF
   snprintf(iringbuf[iring_end], sizeof(iringbuf[iring_end]), s->logbuf);
   iring_end = (iring_end+1) % IRINGBUF_LEN;
   if (iring_end == iring_start) iring_start++;
+#endif
   /* wuyc */
 #endif
 }
@@ -122,6 +126,7 @@ void assert_fail_msg() {
 }
 
 /* wuyc */
+#ifdef CONFIG_IRIGNBUF
 static void write_iringbuf()
 {
   Log("The iringbuf is:");
@@ -135,6 +140,7 @@ static void write_iringbuf()
     /* printf(fmt, iringbuf[i]); */
   }
 }
+#endif
 /* wuyc */
 
 /* Simulate how the CPU works. */
@@ -171,8 +177,10 @@ void cpu_exec(uint64_t n) {
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
       /* wuyc */
+#ifdef CONFIG_IRINGBUF
       if (nemu_state.state == NEMU_ABORT || (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0))
         write_iringbuf();
+#endif
       /* wuyc */
       // fall through
     case NEMU_QUIT: statistic();
