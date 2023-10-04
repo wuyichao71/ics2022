@@ -95,9 +95,9 @@ static void print_function(Decode *s)
   /* printf("rs1 = %d, rd = %d\n", rs1, rd); */
   if (!IS_RA(rd) && IS_RA(rs1))
   {
+    level--;
     print_header(s->pc);
     printf("ret  []\n");
-    level--;
   }
   else if (IS_RA(rd) && !IS_RA(rs1))
   {
