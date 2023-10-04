@@ -150,10 +150,10 @@ config ITRACE_COND
   default "true"
 
 # wuyc
-config IRINGBUF_COND
+config IRINGBUF
   depends on ITRACE
-  string "Only output iringbuf when the condition is true"
-  default "true"
+  bool "Enable iringbuf"
+  default y
 
 config IRINGBUF_LEN
   depends on ITRACE

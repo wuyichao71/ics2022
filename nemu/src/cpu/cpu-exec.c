@@ -122,7 +122,7 @@ void assert_fail_msg() {
 }
 
 /* wuyc */
-static void print_iringbuf()
+static void write_iringbuf()
 {
   Log("The iringbuf is:");
   for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
@@ -172,7 +172,7 @@ void cpu_exec(uint64_t n) {
           nemu_state.halt_pc);
       /* wuyc */
       if (nemu_state.state == NEMU_ABORT || (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0))
-        print_iringbuf();
+        write_iringbuf();
       /* wuyc */
       // fall through
     case NEMU_QUIT: statistic();
