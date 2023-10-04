@@ -24,9 +24,9 @@
 
 /* wuyc */
 
-extern char *strtab;
-extern Func_Hdr *func_hdr;
-extern word_t func_num;
+/* extern char *strtab; */
+/* extern Func_Hdr *func_hdr; */
+/* extern word_t func_num; */
 /* wuyc */
 
 enum {
