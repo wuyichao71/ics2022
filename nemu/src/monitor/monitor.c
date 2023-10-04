@@ -130,7 +130,7 @@ static void init_elf() {
   uint32_t func_num = 0;
   for(int i = 0; i < symtab_num; i++)
   {
-    /* printf("0x%x, %s\n", symtab_hdr[i].st_value, strtab + symtab_hdr[i].st_name); */
+    printf("0x%x, %s\n", symtab_hdr[i].st_value, strtab + symtab_hdr[i].st_name);
     if (symtab_hdr[i].st_info & STT_FUNC)
     {
       printf("0x%x, 0x%x\n", symtab_hdr[i].st_info, STT_FUNC);
