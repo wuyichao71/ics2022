@@ -87,9 +87,9 @@ static void init_elf() {
 
   Elf32_Ehdr ehdr;
   fread(&ehdr, sizeof(ehdr), 1, elfp);
-  printf("e_shoff = %d\n", ehdr.e_shoff);
-  printf("e_shnum = %d\n", ehdr.e_shnum);
-  printf("e_shstrndx = %d\n", ehdr.e_shstrndx);
+  /* printf("e_shoff = %d\n", ehdr.e_shoff); */
+  /* printf("e_shnum = %d\n", ehdr.e_shnum); */
+  /* printf("e_shstrndx = %d\n", ehdr.e_shstrndx); */
   fseek(elfp, ehdr.e_shoff, SEEK_SET);
   
   Elf32_Shdr *shdr = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * ehdr.e_shnum);
@@ -115,12 +115,12 @@ static void init_elf() {
       strtab_ndx = i;
     /* printf("%s\n", shstrtab + shdr[i].sh_name); */
   }
-  printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx);
+  /* printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx); */
 
   strtab = (char *)malloc(shdr[strtab_ndx].sh_size * sizeof(char));
   fseek(elfp, shdr[strtab_ndx].sh_offset, SEEK_SET);
   fread(strtab, shdr[strtab_ndx].sh_size, 1, elfp);
-  printf("%s\n", strtab+1);
+  /* printf("%s\n", strtab+1); */
 
   Elf32_Sym *symtab_hdr = (Elf32_Sym *)malloc(shdr[symtab_ndx].sh_size);
   fseek(elfp, shdr[symtab_ndx].sh_offset, SEEK_SET);
@@ -145,7 +145,7 @@ static void init_elf() {
       func_hdr[fhdr_i].st_name = symtab_hdr[i].st_name;
       func_hdr[fhdr_i].st_value = symtab_hdr[i].st_value;
       func_hdr[fhdr_i].st_size = symtab_hdr[i].st_size;
-      printf("value = 0x%08x, size = %4d, name = %s\n", func_hdr[fhdr_i].st_value, func_hdr[fhdr_i].st_size, strtab + func_hdr[fhdr_i].st_name);
+      /* printf("value = 0x%08x, size = %4d, name = %s\n", func_hdr[fhdr_i].st_value, func_hdr[fhdr_i].st_size, strtab + func_hdr[fhdr_i].st_name); */
       fhdr_i++;
     }
   }
