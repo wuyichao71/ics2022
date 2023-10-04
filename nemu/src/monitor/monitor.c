@@ -131,7 +131,7 @@ static void init_elf() {
   for(int i = 0; i < symtab_num; i++)
   {
     printf("0x%x, %s\n", symtab_hdr[i].st_value, strtab + symtab_hdr[i].st_name);
-    printf("0x%x\n", symtab_hdr[i].st_info);
+    printf("0x%x, 0x%x\n", symtab_hdr[i].st_info, STT_FUNC);
   }
   /* printf("%x, %ld\n", shdr[symtab_ndx].sh_size, sizeof(Elf32_Sym)); */
   /* printf("first shstr = \"%s\"\n", shstrtab+1); */
