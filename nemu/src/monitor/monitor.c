@@ -126,9 +126,11 @@ static void init_elf() {
   fseek(elfp, shdr[symtab_ndx].sh_offset, SEEK_SET);
   fread(symtab_hdr, shdr[symtab_ndx].sh_size, 1, elfp);
   uint32_t symtab_num = shdr[symtab_ndx].sh_size / sizeof(Elf32_Sym);
+  /* uint32_t func_num = 0; */
   for(int i = 0; i < symtab_num; i++)
   {
     printf("0x%x, %s\n", symtab_hdr[i].st_value, strtab + symtab_hdr[i].st_name);
+    printf("%d\n", symtab_hdr[i].st_info);
   }
   /* printf("%x, %ld\n", shdr[symtab_ndx].sh_size, sizeof(Elf32_Sym)); */
   /* printf("first shstr = \"%s\"\n", shstrtab+1); */
