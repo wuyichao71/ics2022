@@ -22,13 +22,6 @@
 #define Mr vaddr_read
 #define Mw vaddr_write
 
-/* wuyc */
-
-/* extern char *strtab; */
-/* extern Func_Hdr *func_hdr; */
-/* extern word_t func_num; */
-/* wuyc */
-
 enum {
   /* TYPE_I, TYPE_U, TYPE_S, */
   /* wuyc */
