@@ -126,7 +126,7 @@ void assert_fail_msg() {
 }
 
 /* wuyc */
-#ifdef CONFIG_IRIGNBUF
+#ifdef CONFIG_IRINGBUF
 static void write_iringbuf()
 {
   Log("The iringbuf is:");

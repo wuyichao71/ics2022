@@ -156,7 +156,7 @@ config IRINGBUF
   default y
 
 config IRINGBUF_LEN
-  depends on ITRACE
+  depends on IRINGBUF
   int "How long the iringbuf is (unit: number of instruction)"
   default 20
 
