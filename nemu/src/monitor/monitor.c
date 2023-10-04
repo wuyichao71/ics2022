@@ -131,7 +131,7 @@ static void init_elf() {
   for(int i = 0; i < symtab_num; i++)
   {
     printf("0x%x, %s\n", symtab_hdr[i].st_value, strtab + symtab_hdr[i].st_name);
-    if (ELF32_ST_TYPE(symtab_hdr[i].st_info))
+    if (ELF32_ST_TYPE(symtab_hdr[i].st_info) == STT_FUNC)
     {
       printf("0x%x, 0x%x\n", symtab_hdr[i].st_info, STT_FUNC);
       func_num++;
