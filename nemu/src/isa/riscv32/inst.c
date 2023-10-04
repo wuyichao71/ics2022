@@ -102,7 +102,7 @@ static void print_function(Decode *s)
   else if (IS_RA(rd) && !IS_RA(rs1))
   {
     print_header(s->pc);
-    printf("call [" FMT_WORD "]", s->dnpc);
+    printf("call [@" FMT_WORD "]\n", s->dnpc);
     level++;
   }
 }
