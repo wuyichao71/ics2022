@@ -19,7 +19,7 @@
 #include <cpu/decode.h>
 
 /* wuyc */
-/* static word_t level = 0; */
+static word_t level = 0;
 /* wuyc */
 
 #define R(i) gpr(i)
@@ -78,13 +78,33 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 /* wuyc */
 #define IS_RA(i) (i == 1 || i == 5)
 
-void print_function(Decode *s)
+static inline void print_header(vaddr_t pc)
+{
+  printf(FMT_WORD ": ", pc);
+  for(int i = 0; i < level; i++)
+  {
+    printf("  ");
+  }
+}
+
+static void print_function(Decode *s)
 {
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
   int rd  = BITS(i, 11, 7);
   printf("rs1 = %d, rd = %d\n", rs1, rd);
-
+  if (!IS_RA(rd) && IS_RA(rs1))
+  {
+    print_header(s->pc);
+    printf("ret  []\n");
+    level--;
+  }
+  else if (IS_RA(rd) && !IS_RA(rs1))
+  {
+    print_header(s->pc);
+    printf("call [" FMT_WORD "]", s->dnpc);
+    level++;
+  }
 }
 
 #define JUMP(...) do { \
