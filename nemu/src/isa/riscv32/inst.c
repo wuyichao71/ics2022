@@ -18,6 +18,10 @@
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
 
+/* wuyc */
+/* static word_t level = 0; */
+/* wuyc */
+
 #define R(i) gpr(i)
 #define Mr vaddr_read
 #define Mw vaddr_write
@@ -73,6 +77,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 
 #define JUMP(...) do { \
   __VA_ARGS__; \
+  printf("0x%8x, 0x%8x\n", s->pc, s->dnpc); \
   } while(0)
 
 static int decode_exec(Decode *s) {
