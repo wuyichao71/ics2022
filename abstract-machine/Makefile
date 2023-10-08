@@ -64,6 +64,10 @@ ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
 
 ### Collect the files to be linked: object files (`.o`) and libraries (`.a`)
 OBJS      = $(addprefix $(DST_DIR)/, $(addsuffix .o, $(basename $(SRCS))))
+# wuyc
+PRES      = $(addprefix $(DST_DIR)/, $(addsuffix .i, $(basename $(SRCS))))
+# $(info $(PRES))
+# wuyc
 LIBS     := $(sort $(LIBS) am klib) # lazy evaluation ("=") causes infinite recursions
 LINKAGE   = $(OBJS) \
   $(addsuffix -$(ARCH).a, $(join \
@@ -113,7 +117,14 @@ endif
 $(DST_DIR)/%.o: %.c
 	@mkdir -p $(dir $@) && echo + CC $<
 	@$(CC) -std=gnu11 $(CFLAGS) -c -o $@ $(realpath $<)
+	# @$(CC) -std=gnu11 $(CFLAGS) -E -o $@ $(realpath $<)
 	# @$(CC) -std=gnu11 $(CFLAGS) -c --verbose -o $@ $(realpath $<)
+
+# wuyc
+$(DST_DIR)/%.i: %.c
+	@echo + CC -E $<
+	@$(CC) -std=gnu11 $(CFLAGS) -E -o $@ $(realpath $<)
+# wuyc
 
 ### Rule (compile): a single `.cc` -> `.o` (g++)
 $(DST_DIR)/%.o: %.cc
@@ -130,11 +141,14 @@ $(DST_DIR)/%.o: %.S
 	@mkdir -p $(dir $@) && echo + AS $<
 	@$(AS) $(ASFLAGS) -c -o $@ $(realpath $<)
 
+# wuyc
+$(DST_DIR)/%.i: %.S
+	echo + AS -E $<
+	@touch $@ 
+# wuyc
+
 ### Rule (recursive make): build a dependent library (am, klib, ...)
 $(LIBS): %:
-	# wuyc
-	# @echo HERO
-	# wuyc
 	@$(MAKE) -s -C $(AM_HOME)/$* archive
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `IMAGE.elf`, the final ELF binary to be packed into image (ld)
@@ -157,8 +171,8 @@ $(ARCHIVE): $(OBJS)
 
 ### Build order control
 image: image-dep
-archive: $(ARCHIVE)
-image-dep: $(OBJS) am $(LIBS)
+archive: $(ARCHIVE) $(PRES)
+image-dep: $(OBJS) $(PRES) am $(LIBS)
 	@echo \# Creating image [$(ARCH)]
 .PHONY: image image-dep archive run $(LIBS)
 
