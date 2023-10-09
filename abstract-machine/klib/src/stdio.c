@@ -10,13 +10,7 @@ int printf(const char *fmt, ...) {
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  panic("Not implemented");
-}
-
-int sprintf(char *out, const char *fmt, ...) {
   char *out_org = out;
-  va_list ap;
-  va_start(ap,fmt);
   for(; *fmt; fmt++)
   {
     if(*fmt == '%')
@@ -67,6 +61,15 @@ int sprintf(char *out, const char *fmt, ...) {
       *(out++) = *fmt;
   }
   *out = '\0';
+  return out - out_org;
+  /* panic("Not implemented"); */
+}
+
+int sprintf(char *out, const char *fmt, ...) {
+  char *out_org = out;
+  va_list ap;
+  va_start(ap,fmt);
+  vsprintf(out, fmt, ap);
   va_end(ap);
   return out - out_org;
   /* panic("Not implemented"); */
