@@ -15,19 +15,41 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   {
     if(*fmt == '%')
     {
-      /* char *fmt_org = fmt; */
+      const char *fmt_org = fmt;
       fmt++;
-      /* va_list */
+
+      // Flag characters
+      int flag_label = 1;
+      int special = 0, left = 0, plus = 0, space = 0, zeropad = 0;
+      while (flag_label)
+      {
+        switch (*fmt)
+        {
+          case '#': special = 1;    break;
+          case '0': zeropad = 1;    break;
+          case '-': left = 1;       break;
+          case ' ': space = 1;      break;
+          case '+': plus = 1;       break;
+          default:  flag_label = 0; break;
+        }
+      }
+      *(&special) = special;
+      *(&zeropad) = zeropad;
+      *(&left) = left;
+      *(&space) = space;
+      *(&plus) = plus;
+      
+
+      // va_list
       char *s;
       int d;
-      /* va_list */
 
       int num_len = 0;
       int div, rem;
 
       switch(*fmt)
       {
-        /* %s(string) */
+        // %s(string)
         case 's':
           s = va_arg(ap, char *);
           for(; *s; s++) 
@@ -35,9 +57,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             *out = *s;
             out++;
           }
-          /* *(out++) = '\0'; */
-          break;
-        /* %d(number) */
+          continue;
+        // %d(number)
         case 'd':
           d = va_arg(ap, int);
           div = d;
@@ -55,10 +76,15 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             d = d / 10;
             *(out - i) = rem + '0';
           }
-
           break;
+        // no match
         default:
-          break;
+          for(const char *str = fmt_org; str <= fmt; str++)
+          {
+            *out = *str;
+            out++;
+          }
+          continue;
       }
     }
     else
