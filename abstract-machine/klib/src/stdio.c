@@ -35,7 +35,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             *out = *s;
             out++;
           }
-          *(out++) = '\0';
+          /* *(out++) = '\0'; */
           break;
         /* %d(number) */
         case 'd':
