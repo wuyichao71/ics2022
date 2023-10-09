@@ -30,7 +30,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         /* %s(string) */
         case 's':
           s = va_arg(ap, char *);
-          for(; *s; s++) *(out++) = *s;
+          for(; *s; s++) 
+          {
+            *out = *s;
+            out++;
+          }
           *(out++) = '\0';
           break;
         /* %d(number) */
@@ -58,7 +62,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       }
     }
     else
-      *(out++) = *fmt;
+      *out++ = *fmt;
   }
   *out = '\0';
   return out - out_org;
