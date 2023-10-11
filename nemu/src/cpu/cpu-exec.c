@@ -38,8 +38,8 @@ void device_update();
 /* wuyc */
 #ifdef CONFIG_IRINGBUF
 #define IRINGBUF_LEN (CONFIG_IRINGBUF_LEN+1)
-int iring_start = 0;
-int iring_end = 0;
+static int iring_start = 0;
+static int iring_end = 0;
 
 char iringbuf[IRINGBUF_LEN][128];
 #endif
@@ -92,9 +92,11 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
   /* wuyc */
 #ifdef CONFIG_IRINGBUF
+  printf("iring_end = %d, iring_start = %d\n", iring_end, iring_start);
   snprintf(iringbuf[iring_end], sizeof(iringbuf[iring_end]), "%s", s->logbuf);
   iring_end = (iring_end+1) % IRINGBUF_LEN;
   if (iring_end == iring_start) iring_start++;
+  printf("iring_end = %d, iring_start = %d\n", iring_end, iring_start);
 #endif
   /* wuyc */
 #endif
