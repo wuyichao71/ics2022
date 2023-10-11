@@ -266,7 +266,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             num = (signed short)num;
             break;
           case 'l':
-            num = va_arg(ap, long int);
+            num = (unsigned long int)va_arg(ap, long int);
+            num = (signed long int)num;
             break;
           case 'q':
             num = va_arg(ap, long long int);
