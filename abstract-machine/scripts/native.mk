@@ -21,6 +21,10 @@ image:
 run: image
 	$(IMAGE)
 
+# wuyc
+batch: image
+	$(IMAGE)
+# wuyc
 
 gdb: image
 	gdb -ex "handle SIGUSR1 SIGUSR2 SIGSEGV noprint nostop" $(IMAGE)
