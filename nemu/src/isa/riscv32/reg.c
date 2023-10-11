@@ -33,7 +33,7 @@ void isa_reg_display() {
     if ((i + 1) % 4 == 0)
       printf("\n");
   }
-  printf("%4s: " FMT_WORD, "pc", cpu.pc);
+  printf("%4s: " FMT_WORD "\n", "pc", cpu.pc);
 
   /* wuyc */
 }
