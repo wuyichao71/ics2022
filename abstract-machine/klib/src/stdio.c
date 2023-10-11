@@ -119,7 +119,7 @@ static inline int fmt_output_string(char *s, char *out, int slen, int field_widt
   return slen;
 }
 
-static inline int fmt_output_number(long long int num, char *out, int slen, int base, int field_width, int precision, Flags flags)
+static inline int fmt_output_number(unsigned long long int num, char *out, int slen, int base, int field_width, int precision, Flags flags)
 /* static inline int fmt_output_number(int num, char *out, int slen, int base, int field_width, int precision, Flags flags) */
 {
   char sign = 0;
@@ -131,7 +131,7 @@ static inline int fmt_output_number(long long int num, char *out, int slen, int 
   if (precision < 0 && flags.zeropad)
     char_pre = '0';
 
-  if (num < 0)
+  if ((signed long long int)num < 0)
   {
     sign = '-';
     num = -num;
@@ -224,7 +224,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
       // For %d
       int is_integer = 0;
-      long long int num;
+      unsigned long long int num;
       /* int num; */
       int base = 10;
 
@@ -258,7 +258,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         switch (length_modifier)
         {
           case 's':
-            num = (char)va_arg(ap, int);
+            num = (unsigned char)va_arg(ap, int);
             break;
           case 'h':
             num = (short int)va_arg(ap, int);
