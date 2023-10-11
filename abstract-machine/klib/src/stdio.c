@@ -258,20 +258,20 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         switch (length_modifier)
         {
           case 's':
-            num = (uint8_t)va_arg(ap, int);
+            num = (unsigned char)va_arg(ap, int);
             num = (signed char)num;
             break;
           case 'h':
-            num = (uint16_t)va_arg(ap, int);
+            num = (unsigned short)va_arg(ap, int);
             num = (signed short)num;
             break;
           case 'l':
-            num = va_arg(ap, uint32_t);
+            num = va_arg(ap, unsigned int);
             /* printf("%ld\n", sizeof(unsigned long int)); */
             /* num = (signed long int)num; */
             break;
           case 'q':
-            num = va_arg(ap, uint32_t);
+            num = va_arg(ap, unsigned int);
             /* printf("%ld\n", sizeof(long long int)); */
             /* num = (signed long long int)num; */
             break;
