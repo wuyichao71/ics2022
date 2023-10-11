@@ -119,7 +119,8 @@ static inline int fmt_output_string(char *s, char *out, int slen, int field_widt
   return slen;
 }
 
-static inline int fmt_output_number(long long int num, char *out, int slen, int base, int field_width, int precision, Flags flags)
+/* static inline int fmt_output_number(long long int num, char *out, int slen, int base, int field_width, int precision, Flags flags) */
+static inline int fmt_output_number(int num, char *out, int slen, int base, int field_width, int precision, Flags flags)
 {
   char sign = 0;
   char tmp_str[100];
@@ -223,7 +224,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
       // For %d
       int is_integer = 0;
-      long long int num;
+      /* long long int num; */
+      int num;
       int base = 10;
 
       // For %f
