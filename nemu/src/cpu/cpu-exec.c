@@ -92,7 +92,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
   /* wuyc */
 #ifdef CONFIG_IRINGBUF
-  snprintf(iringbuf[iring_end], sizeof(iringbuf[iring_end]), s->logbuf);
+  snprintf(iringbuf[iring_end], sizeof(iringbuf[iring_end]), "%s", s->logbuf);
   iring_end = (iring_end+1) % IRINGBUF_LEN;
   if (iring_end == iring_start) iring_start++;
 #endif
