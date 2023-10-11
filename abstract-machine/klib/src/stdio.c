@@ -271,7 +271,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             /* num = (signed long int)num; */
             break;
           case 'q':
-            num = va_arg(ap, uint32_t);
+            num = va_arg(ap, uint64_t);
             /* printf("%ld\n", sizeof(long long int)); */
             /* num = (signed long long int)num; */
             break;
