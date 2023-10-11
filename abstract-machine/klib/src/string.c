@@ -70,7 +70,10 @@ int memcmp(const void *s1, const void *s2, size_t n) {
   /* int dif = 0; */
   size_t i = 0;
   for(; i < n && *(uint8_t *)(s1+i) == *(uint8_t *)(s2+i); i++);
-  return *(uint8_t *)(s1+i) - *(uint8_t *)(s2+i);
+  if (i == n)
+    return 0;
+  else
+    return *(char *)(s1+i) - *(char *)(s2+i);
   /* panic("Not implemented"); */
 }
 
