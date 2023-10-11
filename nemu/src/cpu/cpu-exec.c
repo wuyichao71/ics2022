@@ -42,6 +42,8 @@ static int iring_start = 0;
 static int iring_end = 0;
 
 char iringbuf[IRINGBUF_LEN][128];
+#define Log_blue(format, ...) \
+    log_write(ANSI_FMT(format, ANSI_FG_BLUE) "\n", ## __VA_ARGS__)
 #endif
 
 void difftest_watchpoint(vaddr_t pc)
@@ -131,7 +133,7 @@ void assert_fail_msg() {
 #ifdef CONFIG_IRINGBUF
 static void write_iringbuf()
 {
-  log_write("The iringbuf is:");
+  Log_blue("The iringbuf is:");
   for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
   {
     /* printf("iring_start = %d, iring_end = %d\n", iring_start, iring_end); */
