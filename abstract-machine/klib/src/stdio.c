@@ -14,9 +14,9 @@ typedef struct
   uint8_t zeropad:1;
 } Flags;
 
-int printf(const char *fmt, ...) {
-  panic("Not implemented");
-}
+/* int printf(const char *fmt, ...) { */
+/*   panic("Not implemented"); */
+/* } */
 
 /* static char *_out; */
 /* static void (*_putch)(char); */
@@ -119,7 +119,7 @@ static inline int fmt_output_string(char *s, char *out, int slen, int field_widt
   return slen;
 }
 
-static inline int fmt_output_number(unsigned long long int num, char *out, int slen, int base, int field_width, int precision, Flags flags)
+static inline int fmt_output_number(uint64_t num, char *out, int slen, int base, int field_width, int precision, Flags flags)
 /* static inline int fmt_output_number(int num, char *out, int slen, int base, int field_width, int precision, Flags flags) */
 {
   char sign = 0;
@@ -224,7 +224,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
       // For %d
       int is_integer = 0;
-      unsigned long long int num;
+      uint64_t num;
       /* int num; */
       int base = 10;
 
@@ -266,11 +266,13 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             num = (signed short)num;
             break;
           case 'l':
-            num = va_arg(ap, unsigned long int);
+            num = va_arg(ap, uint64_t);
+            /* printf("%ld\n", sizeof(unsigned long int)); */
             /* num = (signed long int)num; */
             break;
           case 'q':
-            num = va_arg(ap, unsigned long int);
+            num = va_arg(ap, uint64_t);
+            /* printf("%ld\n", sizeof(long long int)); */
             /* num = (signed long long int)num; */
             break;
           default:
