@@ -18,7 +18,14 @@
 #include "../local-include/reg.h"
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
+  /* wuyc */
+  /* for (int i = 0; i < ARRLEN(cpu.gpr); i++) */
+  /* { */
+    /* printf("%d\n", i); */
+  /* } */
   return false;
+  /* return false; */
+  /* wuyc */
 }
 
 void isa_difftest_attach() {
