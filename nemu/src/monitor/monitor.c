@@ -16,6 +16,13 @@
 #include <isa.h>
 #include <memory/paddr.h>
 
+// wuyc
+#ifdef CONFIG_FTRACE
+char *strtab = NULL;
+Func_Hdr *func_hdr = NULL;
+word_t func_num = 0;
+#endif
+
 void init_rand();
 void init_log(const char *log_file);
 void init_mem();
@@ -91,7 +98,8 @@ static void init_elf() {
   }
 
   Elf32_Ehdr ehdr;
-  fread(&ehdr, sizeof(ehdr), 1, elfp);
+  int ret = fread(&ehdr, sizeof(ehdr), 1, elfp);
+	assert(ret == 1);
   /* printf("e_shoff = %d\n", ehdr.e_shoff); */
   /* printf("e_shnum = %d\n", ehdr.e_shnum); */
   /* printf("e_shstrndx = %d\n", ehdr.e_shstrndx); */
@@ -102,14 +110,16 @@ static void init_elf() {
   /* read section header */
   for(int i = 0; i < ehdr.e_shnum; i++)
   {
-    fread(&shdr[i], sizeof(Elf32_Shdr), 1, elfp);
+    ret = fread(&shdr[i], sizeof(Elf32_Shdr), 1, elfp);
+		assert(ret == 1);
   }
 
   /* read section header string table */
   Elf32_Shdr shstrtab_hdr = shdr[ehdr.e_shstrndx];
   char *shstrtab = (char *)malloc(shstrtab_hdr.sh_size*sizeof(char));
   fseek(elfp, shstrtab_hdr.sh_offset, SEEK_SET);
-  fread(shstrtab, shstrtab_hdr.sh_size, 1, elfp);
+  ret = fread(shstrtab, shstrtab_hdr.sh_size, 1, elfp);
+	assert(ret == 1);
 
   word_t symtab_ndx = 0, strtab_ndx = 0;
   for(int i = 0; i < ehdr.e_shnum; i++)
@@ -124,12 +134,14 @@ static void init_elf() {
 
   strtab = (char *)malloc(shdr[strtab_ndx].sh_size * sizeof(char));
   fseek(elfp, shdr[strtab_ndx].sh_offset, SEEK_SET);
-  fread(strtab, shdr[strtab_ndx].sh_size, 1, elfp);
+  ret = fread(strtab, shdr[strtab_ndx].sh_size, 1, elfp);
+	assert(ret == 1);
   /* printf("%s\n", strtab+1); */
 
   Elf32_Sym *symtab_hdr = (Elf32_Sym *)malloc(shdr[symtab_ndx].sh_size);
   fseek(elfp, shdr[symtab_ndx].sh_offset, SEEK_SET);
-  fread(symtab_hdr, shdr[symtab_ndx].sh_size, 1, elfp);
+  ret = fread(symtab_hdr, shdr[symtab_ndx].sh_size, 1, elfp);
+	assert(ret == 1);
 
   word_t symtab_num = shdr[symtab_ndx].sh_size / sizeof(Elf32_Sym);
   func_num = 0;
