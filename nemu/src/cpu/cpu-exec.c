@@ -92,11 +92,11 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
   /* wuyc */
 #ifdef CONFIG_IRINGBUF
-  printf("iring_end = %d, iring_start = %d\n", iring_end, iring_start);
+  /* printf("iring_end = %d, iring_start = %d\n", iring_end, iring_start); */
   snprintf(iringbuf[iring_end], sizeof(iringbuf[iring_end]), "%s", s->logbuf);
   iring_end = (iring_end+1) % IRINGBUF_LEN;
-  if (iring_end == iring_start) iring_start++;
-  printf("iring_end = %d, iring_start = %d\n", iring_end, iring_start);
+  if (iring_end == iring_start) iring_start = (iring_start + 1) % IRINGBUF_LEN;
+  /* printf("iring_end = %d, iring_start = %d\n", iring_end, iring_start); */
 #endif
   /* wuyc */
 #endif
@@ -134,7 +134,7 @@ static void write_iringbuf()
   log_write("The iringbuf is:");
   for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
   {
-    printf("iring_start = %d, iring_end = %d\n", iring_start, iring_end);
+    /* printf("iring_start = %d, iring_end = %d\n", iring_start, iring_end); */
     char fmt[] = "    %s\n";
     if (i == (iring_end - 1) % IRINGBUF_LEN)
       strcpy(fmt, "--> %s\n");
