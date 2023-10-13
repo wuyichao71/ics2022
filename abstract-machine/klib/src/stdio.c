@@ -14,9 +14,28 @@ typedef struct
   uint8_t zeropad:1;
 } Flags;
 
-/* int printf(const char *fmt, ...) { */
-/*   panic("Not implemented"); */
-/* } */
+static char *_out = NULL;
+int _vsprintf(const char *fmt, va_list ap);
+
+static inline void _output_ch(char ch)
+{
+  if (_out == NULL)
+    putch(ch);
+  else
+    *(_out++) = ch;
+}
+
+int printf(const char *fmt, ...) {
+  int slen;
+  va_list ap;
+  va_start(ap,fmt);
+  _out = NULL;
+  slen = _vsprintf(fmt, ap);
+  va_end(ap);
+  return slen;
+
+  /* panic("Not implemented"); */
+}
 
 /* static char *_out; */
 /* static void (*_putch)(char); */
@@ -90,7 +109,7 @@ static inline int fmt_length_modifier(const char **fmt)
   return -1;
 }
 
-static inline int fmt_output_string(char *s, char *out, int slen, int field_width, int precision, Flags flags)
+static inline int fmt_output_string(char *s, int slen, int field_width, int precision, Flags flags)
 {
   int len = strlen(s);
   if (precision >= 0)
@@ -99,27 +118,30 @@ static inline int fmt_output_string(char *s, char *out, int slen, int field_widt
   {
     while (field_width > len)
     {
-      *(out + slen) = ' ';
+      /* *(out + slen) = ' '; */
+      _output_ch(' ');
       slen++;
       field_width--;
     }
   }
   for (int i = 0; i < len; i++)
   {
-    *(out + slen) = *s;
+    /* *(out + slen) = *s; */
+      _output_ch(*s);
     slen++;
     s++;
   }
   while (field_width > len)
   {
-      *(out + slen) = ' ';
+      /* *(out + slen) = ' '; */
+      _output_ch(' ');
       slen++;
       field_width--;
   }
   return slen;
 }
 
-static inline int fmt_output_number(uint64_t num, char *out, int slen, int base, int field_width, int precision, Flags flags)
+static inline int fmt_output_number(uint64_t num, int slen, int base, int field_width, int precision, Flags flags)
 /* static inline int fmt_output_number(int num, char *out, int slen, int base, int field_width, int precision, Flags flags) */
 {
   char sign = 0;
@@ -161,7 +183,8 @@ static inline int fmt_output_number(uint64_t num, char *out, int slen, int base,
   {
     while (field_width > 0)
     {
-      *(out + slen) = char_pre;
+      /* *(out + slen) = char_pre; */
+      _output_ch(char_pre);
       slen++;
       field_width--;
     }
@@ -169,26 +192,30 @@ static inline int fmt_output_number(uint64_t num, char *out, int slen, int base,
 
   if (sign)
   {
-    *(out + slen) = sign;
+    /* *(out + slen) = sign; */
+    _output_ch(sign);
     slen++;
   }
 
   while (precision > num_len)
   {
-      *(out + slen) = '0';
+      /* *(out + slen) = '0'; */
+      _output_ch('0');
       slen++;
       precision--;
   }
 
   for (int i = num_len; i > 0; i--)
   {
-    *(out + slen) = tmp_str[i - 1];
+    /* *(out + slen) = tmp_str[i - 1]; */
+    _output_ch(tmp_str[i - 1]);
     slen++;
   }
 
   while (field_width > 0)
   {
-    *(out + slen) = ' ';
+    /* *(out + slen) = ' '; */
+    _output_ch(' ');
     slen++;
     field_width--;
   }
@@ -197,7 +224,7 @@ static inline int fmt_output_number(uint64_t num, char *out, int slen, int base,
 }
 
 
-int vsprintf(char *out, const char *fmt, va_list ap) {
+int _vsprintf(const char *fmt, va_list ap) {
   int slen = 0;
   for(; *fmt; fmt++)
   {
@@ -236,7 +263,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         // %s(string)
         case 's':
           s = va_arg(ap, char *);
-          slen = fmt_output_string(s, out, slen, field_width, precision, flags);
+          slen = fmt_output_string(s, slen, field_width, precision, flags);
           continue;
 
         // %d(number)
@@ -247,7 +274,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         default:
           for(const char *str = fmt_org; str <= fmt; str++)
           {
-            *(out + slen) = *str;
+            /* *(out + slen) = *str; */
+            _output_ch(*str);
             slen++;
           }
           continue;
@@ -279,7 +307,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
             num = va_arg(ap, int);
             break;
         }
-        slen = fmt_output_number(num, out, slen, base, field_width, precision, flags);
+        slen = fmt_output_number(num, slen, base, field_width, precision, flags);
       }
       else if (is_float)
       {
@@ -287,13 +315,22 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
     }
     else
     {
-      *(out + slen) = *fmt;
+      /* *(out + slen) = *fmt; */
+      _output_ch(*fmt);
       slen++;
     }
   }
-  *(out + slen) = '\0';
+  /* *(out + slen) = '\0'; */
+  _output_ch('\0');
   return slen;
   /* panic("Not implemented"); */
+}
+
+int vsprintf(char *out, const char *fmt, va_list ap) {
+  int slen;
+  _out = out;
+  slen = _vsprintf(fmt, ap);
+  return slen;
 }
 
 int sprintf(char *out, const char *fmt, ...) {
