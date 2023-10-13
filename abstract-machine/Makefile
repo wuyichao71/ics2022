@@ -24,7 +24,7 @@ ifeq ($(wildcard $(AM_HOME)/am/include/am.h),)
   $(error $$AM_HOME must be an AbstractMachine repo)
 endif
 
-$(info mainargs --> $(mainargs))
+# $(info mainargs --> $(mainargs))
 
 ### Check: environment variable `$ARCH` must be in the supported list
 ARCHS = $(basename $(notdir $(shell ls $(AM_HOME)/scripts/*.mk)))
@@ -105,6 +105,7 @@ LDFLAGS  += -z noexecstack
 ## 4. Arch-Specific Configurations
 
 ### Paste in arch-specific configurations (e.g., from `scripts/x86_64-qemu.mk`)
+$(info mainargs --> $(mainargs))
 -include $(AM_HOME)/scripts/$(ARCH).mk
 
 ### Fall back to native gcc/binutils if there is no cross compiler
@@ -155,9 +156,6 @@ $(LIBS): %:
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `IMAGE.elf`, the final ELF binary to be packed into image (ld)
 $(IMAGE).elf: $(OBJS) am $(LIBS)
-	# wuyc
-	# @echo OBJS "-->" $(OBJS)
-	# wuyc
 	@echo + LD "->" $(IMAGE_REL).elf
 	@$(LD) $(LDFLAGS) -o $(IMAGE).elf --start-group $(LINKAGE) --end-group
 
