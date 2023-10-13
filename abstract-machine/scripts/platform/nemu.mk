@@ -18,7 +18,7 @@ NEMU_BATCH_FLAGS += $(NEMUFLAGS) --batch -e $(IMAGE).elf
 
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
 # $(info mainargs --> $(mainargs))
-$(info PP -> $(PP))
+mainargs = hello
 CFLAGS += -I$(AM_HOME)/am/src/platform/nemu/include
 .PHONY: $(AM_HOME)/am/src/platform/nemu/trm.c
 
