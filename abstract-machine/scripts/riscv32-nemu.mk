@@ -1,3 +1,4 @@
+$(info mainargs --> $(mainargs))
 include $(AM_HOME)/scripts/isa/riscv32.mk
 include $(AM_HOME)/scripts/platform/nemu.mk
 CFLAGS  += -DISA_H=\"riscv/riscv.h\"
