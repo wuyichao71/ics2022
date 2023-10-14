@@ -178,7 +178,7 @@ $(ARCHIVE): $(OBJS)
 
 ### Build order control
 image: image-dep
-archive: $(ARCHIVE) $(PRES) $(MAINARGS)
+archive: $(ARCHIVE) $(PRES) mainargscmd $(MAINARGS)
 image-dep: $(OBJS) $(PRES) am $(LIBS)
 	@echo \# Creating image [$(ARCH)]
 
