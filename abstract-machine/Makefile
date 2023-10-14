@@ -157,7 +157,7 @@ $(DST_DIR)/%.i: %.S
 # wuyc
 
 ### Rule (recursive make): build a dependent library (am, klib, ...)
-$(LIBS): %:
+$(LIBS): % : mainargs
 	@$(MAKE) -s -C $(AM_HOME)/$* archive
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `IMAGE.elf`, the final ELF binary to be packed into image (ld)
@@ -180,7 +180,8 @@ image: image-dep
 archive: $(ARCHIVE) $(PRES)
 image-dep: $(OBJS) $(PRES) am $(LIBS)
 	@echo \# Creating image [$(ARCH)]
-.PHONY: image image-dep archive run $(LIBS)
+mainargs:
+.PHONY: image image-dep archive run $(LIBS) mainargs
 
 ### Clean a single project (remove `build/`)
 clean:
