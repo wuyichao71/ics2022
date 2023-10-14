@@ -178,13 +178,13 @@ $(ARCHIVE): $(OBJS)
 
 ### Build order control
 image: image-dep
-archive: $(ARCHIVE) $(PRES)
+archive: $(ARCHIVE) $(PRES) mainargs
 image-dep: $(OBJS) $(PRES) am $(LIBS)
 	@echo \# Creating image [$(ARCH)]
 
 # wuyc
 mainargs:
-	@record mainargs
+	@echo + build mainargs.txt
 	echo $(mainargs) > $(MAINARGS)
 # wuyc
 .PHONY: image image-dep archive run $(LIBS)
