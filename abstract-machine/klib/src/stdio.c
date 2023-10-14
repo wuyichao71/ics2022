@@ -268,15 +268,17 @@ int _vsprintf(const char *fmt, va_list ap) {
           slen = fmt_output_string(s, slen, field_width, precision, flags);
           continue;
 
-        // %d(number)
+        // %d(signed number)
         case 'd':
           is_integer = 1;
           flags.sign = 1;
           break;
+        // %x(unsigned number)
         case 'x':
           is_integer = 1;
           base = 16;
           flags.sign = 1;
+          break;
         // no match
         default:
           for(const char *str = fmt_org; str <= fmt; str++)
