@@ -187,7 +187,7 @@ mainargs:
 	@echo + build mainargs.txt
 	echo $(mainargs) > $(MAINARGS)
 # wuyc
-.PHONY: image image-dep archive run $(LIBS)
+.PHONY: image image-dep archive run $(LIBS) mainargs
 
 ### Clean a single project (remove `build/`)
 clean:
