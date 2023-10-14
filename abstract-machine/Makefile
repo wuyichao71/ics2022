@@ -120,8 +120,8 @@ endif
 $(DST_DIR)/%.o: %.c
 	@mkdir -p $(dir $@) && echo + CC $<
 	@$(CC) -std=gnu11 $(CFLAGS) -c -o $@ $(realpath $<)
-	# @$(CC) -std=gnu11 $(CFLAGS) -E -o $@ $(realpath $<)
-	# @$(CC) -std=gnu11 $(CFLAGS) -c --verbose -o $@ $(realpath $<)
+# @$(CC) -std=gnu11 $(CFLAGS) -E -o $@ $(realpath $<)
+# @$(CC) -std=gnu11 $(CFLAGS) -c --verbose -o $@ $(realpath $<)
 
 # wuyc
 $(DST_DIR)/%.i: %.c
@@ -133,6 +133,12 @@ $(DST_DIR)/%.i: %.c
 $(DST_DIR)/%.o: %.cc
 	@mkdir -p $(dir $@) && echo + CXX $<
 	@$(CXX) -std=c++17 $(CXXFLAGS) -c -o $@ $(realpath $<)
+
+# wuyc
+$(DST_DIR)/%.i: %.cc
+	@mkdir -p $(dir $@) && echo + CXX $<
+	@$(CXX) -std=c++17 $(CXXFLAGS) -E -o $@ $(realpath $<)
+# wuyc
 
 ### Rule (compile): a single `.cpp` -> `.o` (g++)
 $(DST_DIR)/%.o: %.cpp
