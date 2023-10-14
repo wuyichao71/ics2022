@@ -136,7 +136,7 @@ $(DST_DIR)/%.o: %.cc
 	@$(CXX) -std=c++17 $(CXXFLAGS) -c -o $@ $(realpath $<)
 
 # wuyc
-$(DST_DIR)/%.i: %.cc $(MAINARGS)
+$(DST_DIR)/%.i: %.cc
 	@mkdir -p $(dir $@) && echo + CXX $<
 	@$(CXX) -std=c++17 $(CXXFLAGS) -E -o $@ $(realpath $<)
 # wuyc
@@ -158,7 +158,7 @@ $(DST_DIR)/%.i: %.S
 # wuyc
 
 ### Rule (recursive make): build a dependent library (am, klib, ...)
-$(LIBS): % : mainargscmd $(MAINARGS)
+$(LIBS): % : 
 	@$(MAKE) -s -C $(AM_HOME)/$* archive
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `IMAGE.elf`, the final ELF binary to be packed into image (ld)
@@ -178,16 +178,11 @@ $(ARCHIVE): $(OBJS)
 
 ### Build order control
 image: image-dep
-archive: $(ARCHIVE) $(PRES) mainargscmd $(MAINARGS)
+archive: $(ARCHIVE) $(PRES) 
 image-dep: $(OBJS) $(PRES) am $(LIBS)
 	@echo \# Creating image [$(ARCH)]
 
-# wuyc
-mainargscmd:
-	@echo + build mainargs.txt
-	echo $(mainargs) > $(MAINARGS)
-# wuyc
-.PHONY: image image-dep archive run $(LIBS) mainargscmd
+.PHONY: image image-dep archive run $(LIBS)
 
 ### Clean a single project (remove `build/`)
 clean:
