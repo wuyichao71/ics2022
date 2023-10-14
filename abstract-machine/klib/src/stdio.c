@@ -12,6 +12,7 @@ typedef struct
   uint8_t plus:1;
   uint8_t space:1;
   uint8_t zeropad:1;
+  uint8_t sign:1;
 } Flags;
 
 static char *_out = NULL;
@@ -147,13 +148,14 @@ static inline int fmt_output_number(uint64_t num, int slen, int base, int field_
   char sign = 0;
   char tmp_str[100];
   char char_pre = ' ';
+  const char digits[] = "0123456789abcdefghijklmnopqrstuvwxyz";
   int num_len = 0;
   int rem;
 
   if (precision < 0 && flags.zeropad)
     char_pre = '0';
 
-  if ((signed long long int)num < 0)
+  if (flags.sign && (signed long long int)num < 0)
   {
     sign = '-';
     num = -num;
@@ -167,7 +169,7 @@ static inline int fmt_output_number(uint64_t num, int slen, int base, int field_
   {
     rem = num % base;
     num /= base;
-    tmp_str[num_len] = rem + '0';
+    tmp_str[num_len] = digits[rem];
     num_len++;
   } while (num > 0);
 
@@ -269,7 +271,12 @@ int _vsprintf(const char *fmt, va_list ap) {
         // %d(number)
         case 'd':
           is_integer = 1;
+          flags.sign = 1;
           break;
+        case 'x':
+          is_integer = 1;
+          base = 16;
+          flags.sign = 1;
         // no match
         default:
           for(const char *str = fmt_org; str <= fmt; str++)
