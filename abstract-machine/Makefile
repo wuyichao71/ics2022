@@ -136,13 +136,13 @@ $(DST_DIR)/%.o: %.cc
 	@$(CXX) -std=c++17 $(CXXFLAGS) -c -o $@ $(realpath $<)
 
 # wuyc
-$(DST_DIR)/%.i: %.cc
+$(DST_DIR)/%.i: %.cc $(MAINARGS)
 	@mkdir -p $(dir $@) && echo + CXX $<
 	@$(CXX) -std=c++17 $(CXXFLAGS) -E -o $@ $(realpath $<)
 # wuyc
 
 ### Rule (compile): a single `.cpp` -> `.o` (g++)
-$(DST_DIR)/%.o: %.cpp
+$(DST_DIR)/%.o: %.cpp 
 	@mkdir -p $(dir $@) && echo + CXX $<
 	@$(CXX) -std=c++17 $(CXXFLAGS) -c -o $@ $(realpath $<)
 
