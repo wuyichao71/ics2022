@@ -16,20 +16,6 @@
 #include <isa.h>
 #include <memory/paddr.h>
 
-/* wuyc */
-#ifdef CONFIG_MTRACE
-#define Log_yellow(format, ...) \
-    log_write(ANSI_FMT(format, ANSI_FG_YELLOW) "\n", ## __VA_ARGS__)
-
-#define Log_cyan(format, ...) \
-    log_write(ANSI_FMT(format, ANSI_FG_CYAN) "\n", ## __VA_ARGS__)
-
-static inline bool in_mtrace(vaddr_t addr) {
-  return addr >= CONFIG_MTRACE_BEGIN && addr < CONFIG_MTRACE_END;
-}
-#endif
-
-/* wuyc */
 
 word_t vaddr_ifetch(vaddr_t addr, int len) {
   return paddr_read(addr, len);
@@ -37,22 +23,18 @@ word_t vaddr_ifetch(vaddr_t addr, int len) {
 
 word_t vaddr_read(vaddr_t addr, int len) {
   /* wuyc */
-  /* return paddr_read(addr, len); */
-  word_t ret = paddr_read(addr, len);
-#ifdef CONFIG_MTRACE
-  if(in_mtrace(addr))
-    Log_yellow("read " FMT_WORD " from " FMT_PADDR, ret, addr);
-#endif
-  return ret;
+  return paddr_read(addr, len);
+  /* word_t ret = paddr_read(addr, len); */
+  /* return ret; */
   /* wuyc */
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
   /* wuyc */
-#ifdef CONFIG_MTRACE
-  if(in_mtrace(addr))
-    Log_cyan("write " FMT_WORD " to " FMT_PADDR, data, addr);
-#endif
+/* #ifdef CONFIG_MTRACE */
+/*   if(in_mtrace(addr)) */
+/*     Log_cyan("write " FMT_WORD " to " FMT_PADDR, data, addr); */
+/* #endif */
   /* wuyc */
   paddr_write(addr, len, data);
 }
