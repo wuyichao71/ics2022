@@ -36,19 +36,16 @@ void *malloc(size_t size) {
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
   /* panic("Not implemented"); */
   static char *addr = NULL;
-  char *old = NULL;
   if (addr == NULL)
     addr = (char *)heap.start;
-  else
+
+  size = (size_t)ROUNDUP(size, 8);
+  char *old = addr;
+  addr += size;
+  assert((uintptr_t)heap.start <= (uintptr_t)addr && (uintptr_t)addr < (uintptr_t)heap.end);
+  for (uint64_t *p = (uint64_t *)old; p < (uint64_t *)addr; p++)
   {
-    size = (size_t)ROUNDUP(size, 8);
-    old = addr;
-    addr += size;
-    assert((uintptr_t)heap.start <= (uintptr_t)addr && (uintptr_t)addr < (uintptr_t)heap.end);
-    for (uint64_t *p = (uint64_t *)old; p < (uint64_t *)addr; p++)
-    {
-      *p = 0;
-    }
+    *p = 0;
   }
   return old;
 #endif
