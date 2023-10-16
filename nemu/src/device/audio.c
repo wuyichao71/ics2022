@@ -39,8 +39,8 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
   {
     for (i = 0; i < count; i++)
       stream[i] = sbuf[i];
-    for(; i < len; i++)
-      stream[i] = 0;
+    /* for(; i < len; i++) */
+    /*   stream[i] = 0; */
     count = 0;
   }
   else
