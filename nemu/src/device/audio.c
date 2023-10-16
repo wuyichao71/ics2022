@@ -31,8 +31,9 @@ static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 /* wuyc */
 static volatile int count = 0;
-static bool audio_is_opened = false;
+/* static bool audio_is_opened = false; */
 
+/*
 static void audio_play(void *userdata, uint8_t *stream, int len) {
   int i;
   if (len >= count)
@@ -52,6 +53,7 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
     count -= len;
   }
 }
+*/
 /* wuyc */
 
 /*
