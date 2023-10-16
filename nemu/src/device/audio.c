@@ -30,7 +30,7 @@ enum {
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 /* wuyc */
-static int count = 0;
+static volatile int count = 0;
 
 static void audio_play(void *userdata, uint8_t *stream, int len) {
   int i;
