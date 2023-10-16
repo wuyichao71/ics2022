@@ -36,7 +36,7 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
     count = io_read(AM_AUDIO_STATUS).count;
   for(char *p = ctl->buf.start; p < (char *)ctl->buf.end; p++)
   {
-    outb(AUDIO_SBUF_ADDR + count, *p);
+    *(char *)(AUDIO_SBUF_ADDR + count) = *p;
     count++;
   }
 }
