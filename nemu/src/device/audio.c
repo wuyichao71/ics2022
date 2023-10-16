@@ -64,11 +64,11 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   {
     if (audio_base[reg_init])
     {
-      if (audio_is_opened)
-      {
-        SDL_CloseAudio();
-        audio_is_opened = false;
-      }
+      /* if (audio_is_opened) */
+      /* { */
+      /*   SDL_CloseAudio(); */
+      /*   audio_is_opened = false; */
+      /* } */
       SDL_AudioSpec s = {};
       s.format = AUDIO_S16SYS;
       s.freq = audio_base[reg_freq];
