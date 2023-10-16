@@ -14,7 +14,7 @@ void __am_audio_init() {
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
   /* cfg->present = true; */
   cfg->present = false;
-  /* cfg->bufsize = inl(AUDIO_SBUF_SIZE_ADDR); */
+  cfg->bufsize = inl(AUDIO_SBUF_SIZE_ADDR);
 }
 
 void __am_audio_ctrl(AM_AUDIO_CTRL_T *ctrl) {
@@ -29,13 +29,13 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
 }
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
-  /* int bufsize = io_read(AM_AUDIO_CONFIG).bufsize; */
-  /* volatile int count = io_read(AM_AUDIO_STATUS).count; */
-  /* while ((int)ctl->buf.end - (int)ctl->buf.start > bufsize - count) */
-    /* count = io_read(AM_AUDIO_STATUS).count; */
-  /* for(char *p = ctl->buf.start; p < (char *)ctl->buf.end; p++) */
-  /* { */
-    /* outb(AUDIO_SBUF_ADDR + count, *p); */
-    /* count++; */
-  /* } */
+  int bufsize = io_read(AM_AUDIO_CONFIG).bufsize;
+  volatile int count = io_read(AM_AUDIO_STATUS).count;
+  while ((int)ctl->buf.end - (int)ctl->buf.start > bufsize - count)
+    count = io_read(AM_AUDIO_STATUS).count;
+  for(char *p = ctl->buf.start; p < (char *)ctl->buf.end; p++)
+  {
+    outb(AUDIO_SBUF_ADDR + count, *p);
+    count++;
+  }
 }
