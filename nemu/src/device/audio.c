@@ -76,6 +76,11 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   }
 }
 
+static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
+  if (is_write)
+    count++;
+}
+
 void init_audio() {
   uint32_t space_size = sizeof(uint32_t) * nr_reg;
   audio_base = (uint32_t *)new_space(space_size);
@@ -86,5 +91,8 @@ void init_audio() {
 #endif
 
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
-  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
+  /* wuyc */
+  /* add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL); */
+  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, audio_sbuf_handler);
+  /* wuyc */
 }
