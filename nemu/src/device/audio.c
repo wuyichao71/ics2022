@@ -29,8 +29,51 @@ enum {
 
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
+/* wuyc */
+static volatile int count = 0;
+static bool audio_is_opened = false;
+
+static void audio_play(void *userdata, uint8_t *stream, int len) {
+  for (int i = 0; i < len; i++)
+    stream[i] = sbuf[i];
+}
+/* wuyc */
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
+  assert(offset == sizeof(uint32_t) * reg_sbuf_size);
+  if (!is_write && offset == reg_sbuf_size * sizeof(uint32_t))
+    audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
+  else if (is_write && offset == reg_init * sizeof(uint32_t))
+  {
+    if (audio_base[reg_init])
+    {
+      if (audio_is_opened)
+      {
+        SDL_closeAudio();
+        audio_is_opened = false;
+      }
+      SDL_AudioSpec s = {};
+      s.format = AUDIO_S16SYS;
+      s.freq = audio_base[reg_freq];
+      s.channels = audio_base[reg_channels];
+      s.samples = audio_base[reg_samples];
+      s.callback = audio_play;
+      s.userdata = NULL;
+
+      count = 0;
+      int ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
+      if (ret == 0)
+      {
+        SDL_OpenAudio(&s, NULL);
+        SDL_PauseAudio(0);
+        audio_is_opened = true;
+      }
+
+      audio_base[reg_init] = 0;
+    }
+  }
+
+
 }
 
 void init_audio() {
