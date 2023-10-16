@@ -55,7 +55,6 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
 /* wuyc */
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
-  /* assert(offset == sizeof(uint32_t) * reg_sbuf_size); */
   if (!is_write && offset == reg_sbuf_size * sizeof(uint32_t))
     audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
   else if (!is_write && offset == reg_count * sizeof(uint32_t))
@@ -64,11 +63,11 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   {
     if (audio_base[reg_init])
     {
-      /* if (audio_is_opened) */
-      /* { */
-      /*   SDL_CloseAudio(); */
-      /*   audio_is_opened = false; */
-      /* } */
+      if (audio_is_opened)
+      {
+        SDL_CloseAudio();
+        audio_is_opened = false;
+      }
       SDL_AudioSpec s = {};
       s.format = AUDIO_S16SYS;
       s.freq = audio_base[reg_freq];
@@ -102,12 +101,13 @@ void init_audio() {
 #ifdef CONFIG_HAS_PORT_IO
   add_pio_map ("audio", CONFIG_AUDIO_CTL_PORT, audio_base, space_size, audio_io_handler);
 #else
-  add_mmio_map("audio", CONFIG_AUDIO_CTL_MMIO, audio_base, space_size, audio_io_handler);
+  /* add_mmio_map("audio", CONFIG_AUDIO_CTL_MMIO, audio_base, space_size, audio_io_handler); */
+  add_mmio_map("audio", CONFIG_AUDIO_CTL_MMIO, audio_base, space_size, NULL);
 #endif
 
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
   /* wuyc */
-  /* add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL); */
-  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, audio_sbuf_handler);
+  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
+  /* add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, audio_sbuf_handler); */
   /* wuyc */
 }
