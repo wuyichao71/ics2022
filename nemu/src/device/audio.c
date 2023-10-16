@@ -49,7 +49,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
     {
       if (audio_is_opened)
       {
-        SDL_closeAudio();
+        SDL_CloseAudio();
         audio_is_opened = false;
       }
       SDL_AudioSpec s = {};
