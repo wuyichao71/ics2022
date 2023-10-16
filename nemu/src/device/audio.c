@@ -31,7 +31,6 @@ static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 /* wuyc */
 static int count = 0;
-static bool audio_is_opened = false;
 
 static void audio_play(void *userdata, uint8_t *stream, int len) {
   int i;
@@ -63,11 +62,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   {
     if (audio_base[reg_init])
     {
-      if (audio_is_opened)
-      {
-        SDL_CloseAudio();
-        audio_is_opened = false;
-      }
       SDL_AudioSpec s = {};
       s.format = AUDIO_S16SYS;
       s.freq = audio_base[reg_freq];
@@ -76,7 +70,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       s.callback = audio_play;
       s.userdata = NULL;
 
-      count = 0;
+      /* count = 0; */
       int ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
       if (ret == 0)
       {
