@@ -35,7 +35,7 @@ static bool audio_is_opened = false;
 
 static void audio_play(void *userdata, uint8_t *stream, int len) {
   for (int i = 0; i < len; i++)
-    stream[i] = i % 10;
+    stream[i] = sfuf[i];
 }
 /* wuyc */
 
@@ -74,8 +74,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       audio_base[reg_init] = 0;
     }
   }
-
-
 }
 
 void init_audio() {
