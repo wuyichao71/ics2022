@@ -54,6 +54,7 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
 }
 /* wuyc */
 
+/*
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   if (!is_write && offset == reg_sbuf_size * sizeof(uint32_t))
     audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
@@ -94,6 +95,7 @@ static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
   if (is_write)
     count++;
 }
+*/
 
 void init_audio() {
   uint32_t space_size = sizeof(uint32_t) * nr_reg;
