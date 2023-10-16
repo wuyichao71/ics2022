@@ -34,7 +34,7 @@ static volatile int count = 0;
 
 static void audio_play(void *userdata, uint8_t *stream, int len) {
   int i;
-  else if (len >= count)
+  if (len >= count)
   {
     for (i = 0; i < count; i++)
       stream[i] = sbuf[i];
@@ -76,7 +76,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       if (ret == 0)
       {
         SDL_OpenAudio(&s, NULL);
-        SDL_PauseAudio(0);
+        SDL_PauseAudio(1);
         audio_base[reg_init] = 0;
       } 
     } 
