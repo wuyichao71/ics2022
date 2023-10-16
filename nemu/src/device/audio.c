@@ -54,8 +54,8 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
 /* wuyc */
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
-  if (!is_write && offset == reg_sbuf_size * sizeof(uint32_t))
-    audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
+  /* if (!is_write && offset == reg_sbuf_size * sizeof(uint32_t)) */
+    /* audio_base[reg_sbuf_size] = CONFIG_SB_SIZE; */
   else if (!is_write && offset == reg_count * sizeof(uint32_t))
     audio_base[reg_count] = count;
   else if (is_write && offset == reg_init * sizeof(uint32_t))
@@ -102,5 +102,6 @@ void init_audio() {
   /* wuyc */
   /* add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL); */
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, audio_sbuf_handler);
+  audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
   /* wuyc */
 }
