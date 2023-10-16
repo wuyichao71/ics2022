@@ -40,7 +40,7 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
 /* wuyc */
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
-  assert(offset == sizeof(uint32_t) * reg_sbuf_size);
+  /* assert(offset == sizeof(uint32_t) * reg_sbuf_size); */
   if (!is_write && offset == reg_sbuf_size * sizeof(uint32_t))
     audio_base[reg_sbuf_size] = CONFIG_SB_SIZE;
   else if (is_write && offset == reg_init * sizeof(uint32_t))
