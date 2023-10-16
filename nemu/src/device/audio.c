@@ -34,9 +34,10 @@ static volatile int count = 0;
 static bool audio_is_opened = false;
 
 static void audio_play(void *userdata, uint8_t *stream, int len) {
+  int i;
   if (len >= count)
   {
-    for (int i = 0; i < count; i++)
+    for (i = 0; i < count; i++)
       stream[i] = sbuf[i];
     for(; i < len; i++)
       stream[i] = 0;
@@ -44,12 +45,11 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
   }
   else
   {
-    for (int i = 0; i < len; i++)
+    for (i = 0; i < len; i++)
       stream[i] = sbuf[i];
     for (; i < count; i++)
       stream[i - len] = stream[i];
     count -= len;
-
   }
 }
 /* wuyc */
