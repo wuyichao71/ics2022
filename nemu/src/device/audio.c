@@ -34,7 +34,10 @@ static volatile int count = 0;
 
 static void audio_play(void *userdata, uint8_t *stream, int len) {
   int i;
-  if (len >= count)
+  if (count == 0)
+    return;
+
+  else if (len >= count)
   {
     for (i = 0; i < count; i++)
       stream[i] = sbuf[i];
