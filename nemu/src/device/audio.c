@@ -35,7 +35,7 @@ static bool audio_is_opened = false;
 
 static void audio_play(void *userdata, uint8_t *stream, int len) {
   for (int i = 0; i < len; i++)
-    stream[i] = i % 256;
+    stream[i] = i % 128;
 }
 /* wuyc */
 
