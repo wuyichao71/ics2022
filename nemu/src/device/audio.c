@@ -70,7 +70,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       s.callback = audio_play;
       s.userdata = NULL;
 
-      /* count = 0; */
+      count = 0;
       int ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
       if (ret == 0)
       {
