@@ -16,6 +16,13 @@
 #include <isa.h>
 #include <memory/paddr.h>
 
+// wuyc
+#ifdef CONFIG_FTRACE
+char *strtab = NULL;
+Func_Hdr *func_hdr = NULL;
+word_t func_num = 0;
+#endif
+
 void init_rand();
 void init_log(const char *log_file);
 void init_mem();
@@ -41,10 +48,20 @@ static void welcome() {
 
 #ifndef CONFIG_TARGET_AM
 #include <getopt.h>
+/* wuyc */
+#ifdef CONFIG_FTRACE
+#include <elf.h>
+#endif
+/* wuyc */
 
 void sdb_set_batch_mode();
 
 static char *log_file = NULL;
+/* wuyc */
+/* #ifdef CONFIG_FTRACE */
+static char *elf_file = NULL;
+/* #endif */
+/* wuyc */
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
@@ -71,22 +88,128 @@ static long load_img() {
   return size;
 }
 
+/* wuyc */
+#ifdef CONFIG_FTRACE
+static void init_elf() {
+  FILE *elfp = fopen(elf_file, "r");
+  if (elfp == NULL)
+  {
+    return;
+  }
+
+  Elf32_Ehdr ehdr;
+  int ret = fread(&ehdr, sizeof(ehdr), 1, elfp);
+	assert(ret == 1);
+  /* printf("e_shoff = %d\n", ehdr.e_shoff); */
+  /* printf("e_shnum = %d\n", ehdr.e_shnum); */
+  /* printf("e_shstrndx = %d\n", ehdr.e_shstrndx); */
+  fseek(elfp, ehdr.e_shoff, SEEK_SET);
+  
+  Elf32_Shdr *shdr = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * ehdr.e_shnum);
+
+  /* read section header */
+  for(int i = 0; i < ehdr.e_shnum; i++)
+  {
+    ret = fread(&shdr[i], sizeof(Elf32_Shdr), 1, elfp);
+		assert(ret == 1);
+  }
+
+  /* read section header string table */
+  Elf32_Shdr shstrtab_hdr = shdr[ehdr.e_shstrndx];
+  char *shstrtab = (char *)malloc(shstrtab_hdr.sh_size*sizeof(char));
+  fseek(elfp, shstrtab_hdr.sh_offset, SEEK_SET);
+  ret = fread(shstrtab, shstrtab_hdr.sh_size, 1, elfp);
+	assert(ret == 1);
+
+  word_t symtab_ndx = 0, strtab_ndx = 0;
+  for(int i = 0; i < ehdr.e_shnum; i++)
+  {
+    if(strcmp(shstrtab + shdr[i].sh_name, ".symtab") == 0)
+      symtab_ndx = i;
+    else if(strcmp(shstrtab + shdr[i].sh_name, ".strtab") == 0)
+      strtab_ndx = i;
+    /* printf("%s\n", shstrtab + shdr[i].sh_name); */
+  }
+  /* printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx); */
+
+  strtab = (char *)malloc(shdr[strtab_ndx].sh_size * sizeof(char));
+  fseek(elfp, shdr[strtab_ndx].sh_offset, SEEK_SET);
+  ret = fread(strtab, shdr[strtab_ndx].sh_size, 1, elfp);
+	assert(ret == 1);
+  /* printf("%s\n", strtab+1); */
+
+  Elf32_Sym *symtab_hdr = (Elf32_Sym *)malloc(shdr[symtab_ndx].sh_size);
+  fseek(elfp, shdr[symtab_ndx].sh_offset, SEEK_SET);
+  ret = fread(symtab_hdr, shdr[symtab_ndx].sh_size, 1, elfp);
+	assert(ret == 1);
+
+  word_t symtab_num = shdr[symtab_ndx].sh_size / sizeof(Elf32_Sym);
+  func_num = 0;
+  for(int i = 0; i < symtab_num; i++)
+  {
+    if (ELF32_ST_TYPE(symtab_hdr[i].st_info) == STT_FUNC)
+    {
+      func_num++;
+    }
+  }
+
+  func_hdr = (Func_Hdr *)malloc(func_num * sizeof(Func_Hdr));
+  word_t fhdr_i = 0;
+  for(int i = 0; i < symtab_num; i++)
+  {
+    if (ELF32_ST_TYPE(symtab_hdr[i].st_info) == STT_FUNC)
+    {
+      func_hdr[fhdr_i].st_name = symtab_hdr[i].st_name;
+      func_hdr[fhdr_i].st_value = symtab_hdr[i].st_value;
+      func_hdr[fhdr_i].st_size = symtab_hdr[i].st_size;
+      /* printf("value = 0x%08x, size = %4d, name = %s\n", func_hdr[fhdr_i].st_value, func_hdr[fhdr_i].st_size, strtab + func_hdr[fhdr_i].st_name); */
+      fhdr_i++;
+    }
+  }
+
+  free(shdr);
+  free(shstrtab);
+  free(symtab_hdr);
+  fclose(elfp);
+}
+
+void free_elf()
+{
+  free(strtab);
+  free(func_hdr);
+}
+#endif
+/* wuyc */
+
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
     {"log"      , required_argument, NULL, 'l'},
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
+    /* wuyc */
+/* #ifdef CONFIG_FTRACE */
+    {"elf"      , required_argument, NULL, 'e'},
+/* #endif */
+    /* wuyc */
     {"help"     , no_argument      , NULL, 'h'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
+  /* wuyc */
+  /* while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) { */
+  /* wuyc */
+  while ( (o = getopt_long(argc, argv, "-bhl:d:p:e:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
+      /* wuyc */
+/* #ifdef CONFIG_FTRACE */
+      case 'e': elf_file = optarg; break;
+/* #endif */
+      /* wuyc */
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -94,6 +217,7 @@ static int parse_args(int argc, char *argv[]) {
         printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
+        printf("\t-e,--elf=FILE           input elf FILE\n");
         printf("\n");
         exit(0);
     }
@@ -118,6 +242,12 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize devices. */
   IFDEF(CONFIG_DEVICE, init_device());
+
+  /* wuyc */
+#ifdef CONFIG_FTRACE
+  init_elf();
+#endif
+  /* wuyc */
 
   /* Perform ISA dependent initialization. */
   init_isa();

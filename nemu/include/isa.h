@@ -18,6 +18,9 @@
 
 // Located at src/isa/$(GUEST_ISA)/include/isa-def.h
 #include <isa-def.h>
+/* wuyc */
+/* #include <elf.h> */
+/* wuyc */
 
 // The macro `__GUEST_ISA__` is defined in $(CFLAGS).
 // It will be expanded as "x86" or "mips32" ...
@@ -27,6 +30,19 @@ typedef concat(__GUEST_ISA__, _ISADecodeInfo) ISADecodeInfo;
 // monitor
 extern char isa_logo[];
 void init_isa();
+/* wuyc */
+#ifdef CONFIG_FTRACE
+extern char *strtab;
+typedef struct
+{
+  word_t st_name;
+  word_t st_value;
+  word_t st_size;
+} Func_Hdr;
+extern Func_Hdr *func_hdr;
+extern word_t func_num;
+#endif
+/* wuyc */
 
 // reg
 extern CPU_state cpu;

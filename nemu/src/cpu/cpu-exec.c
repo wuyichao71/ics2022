@@ -18,7 +18,9 @@
 #include <cpu/difftest.h>
 #include <locale.h>
 /* wuyc */
+#ifdef CONFIG_WATCHPOINT
 #include <watchpoint.h>
+#endif
 /* wuyc */
 
 /* The assembly code of instructions executed is only output to the screen
@@ -34,13 +36,28 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
 void device_update();
+
 /* wuyc */
+#ifdef CONFIG_IRINGBUF
+#define IRINGBUF_LEN (CONFIG_IRINGBUF_LEN+1)
+static int iring_start = 0;
+static int iring_end = 0;
+
+char iringbuf[IRINGBUF_LEN][128];
+#define Log_blue(format, ...) \
+    log_write(ANSI_FMT(format, ANSI_FG_BLUE) "\n", ## __VA_ARGS__)
+#endif
+
+#ifndef CONFIG_TARGET_AM
+#ifdef CONFIG_WATCHPOINT
 void difftest_watchpoint(vaddr_t pc)
 {
   bool changed = check_watchpoint(pc);
   if (changed)
     nemu_state.state = NEMU_STOP;
 }
+#endif
+#endif
 /* wuyc */
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
@@ -81,6 +98,15 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
+  /* wuyc */
+#ifdef CONFIG_IRINGBUF
+  /* printf("iring_end = %d, iring_start = %d\n", iring_end, iring_start); */
+  snprintf(iringbuf[iring_end], sizeof(iringbuf[iring_end]), "%s", s->logbuf);
+  iring_end = (iring_end+1) % IRINGBUF_LEN;
+  if (iring_end == iring_start) iring_start = (iring_start + 1) % IRINGBUF_LEN;
+  /* printf("iring_end = %d, iring_start = %d\n", iring_end, iring_start); */
+#endif
+  /* wuyc */
 #endif
 }
 
@@ -109,6 +135,25 @@ void assert_fail_msg() {
   statistic();
 }
 
+/* wuyc */
+#ifdef CONFIG_IRINGBUF
+static void write_iringbuf()
+{
+  Log_blue("The iringbuf is:");
+  for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
+  {
+    /* printf("iring_start = %d, iring_end = %d\n", iring_start, iring_end); */
+    char fmt[] = "    %s\n";
+    if (i == (iring_end - 1) % IRINGBUF_LEN)
+      strcpy(fmt, "--> %s\n");
+    /* _Log(fmt, iringbuf[i]); */
+    log_write(fmt, iringbuf[i]);
+    /* printf(fmt, iringbuf[i]); */
+  }
+}
+#endif
+/* wuyc */
+
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
   g_print_step = (n < MAX_INST_TO_PRINT);
@@ -126,6 +171,12 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
+  /* wuyc */
+  /* for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN) */
+  /* { */
+  /*   printf("%s\n", iringbuf[i]); */
+  /* } */
+  /* wuyc */
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
     /* case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break; */
@@ -136,6 +187,12 @@ void cpu_exec(uint64_t n) {
            (nemu_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
+      /* wuyc */
+#ifdef CONFIG_IRINGBUF
+      if (nemu_state.state == NEMU_ABORT || (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0))
+        write_iringbuf();
+#endif
+      /* wuyc */
       // fall through
     case NEMU_QUIT: statistic();
   }

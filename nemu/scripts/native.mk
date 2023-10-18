@@ -26,12 +26,24 @@ $(BINARY): compile_git
 
 override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 override ARGS += $(ARGS_DIFF)
+# wuyc
+BATCH_ARGS += $(ARGS) --batch
+# $(info ARGS-->$(ARGS))
+# wuyc
+
 
 # Command to execute NEMU
 IMG ?=
 NEMU_EXEC := $(BINARY) $(ARGS) $(IMG)
+# wuyc
+BATCH_NEMU_EXEC := $(BINARY) $(BATCH_ARGS) $(IMG)
+# wuyc
 
 run-env: $(BINARY) $(DIFF_REF_SO)
+
+batch: run-env
+	$(call git_commit, "run NEMU")
+	$(BATCH_NEMU_EXEC)
 
 run: run-env
 	$(call git_commit, "run NEMU")

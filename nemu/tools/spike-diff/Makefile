@@ -43,7 +43,7 @@ BINARY = $(BUILD_DIR)/$(NAME)
 SRCS = difftest.cc
 
 $(BINARY): $(SPIKE) $(SRCS)
-	g++ -O2 -shared -fPIC -fvisibility=hidden $(INC_PATH) $(SRCS) $(INC_LIBS) -o $@
+	g++ -O2 -shared -fPIC -fvisibility=hidden -std=c++17 $(INC_PATH) $(SRCS) $(INC_LIBS) -o $@
 
 clean:
 	rm -rf $(BUILD_DIR)

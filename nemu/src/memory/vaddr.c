@@ -16,14 +16,25 @@
 #include <isa.h>
 #include <memory/paddr.h>
 
+
 word_t vaddr_ifetch(vaddr_t addr, int len) {
   return paddr_read(addr, len);
 }
 
 word_t vaddr_read(vaddr_t addr, int len) {
+  /* wuyc */
   return paddr_read(addr, len);
+  /* word_t ret = paddr_read(addr, len); */
+  /* return ret; */
+  /* wuyc */
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
+  /* wuyc */
+/* #ifdef CONFIG_MTRACE */
+/*   if(in_mtrace(addr)) */
+/*     Log_cyan("write " FMT_WORD " to " FMT_PADDR, data, addr); */
+/* #endif */
+  /* wuyc */
   paddr_write(addr, len, data);
 }
