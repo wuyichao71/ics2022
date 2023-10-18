@@ -197,7 +197,7 @@ config FTRACE
 
 config WATCHPOINT
   bool "Enable watchpoint tracer"
-  default y
+  default n
 # wuyc
 
 config DIFFTEST
