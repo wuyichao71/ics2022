@@ -313,7 +313,7 @@ int _vsprintf(const char *fmt, va_list ap) {
             /* num = (signed long long int)num; */
             break;
           default:
-            num = va_arg(ap, int);
+            num = va_arg(ap, unsigned int);
             break;
         }
         slen = fmt_output_number(num, slen, base, field_width, precision, flags);
