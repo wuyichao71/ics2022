@@ -76,7 +76,7 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
   word_t ret = host_read(map->space + offset, len);
   /* wuyc */
 #ifdef CONFIG_DTRACE
-  /* if(in_dtrace(addr)) */
+  if(in_dtrace(addr))
     Log_bg_yellow("%s: read " FMT_WORD " from " FMT_PADDR, map->name, ret, addr);
 #endif
   /* wuyc */
@@ -89,7 +89,7 @@ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
   paddr_t offset = addr - map->low;
   /* wuyc */
 #ifdef CONFIG_DTRACE
-  /* if(in_dtrace(addr)) */
+  if(in_dtrace(addr))
     Log_bg_cyan("%s: write " FMT_WORD " to " FMT_PADDR, map->name, data, addr);
 #endif
   /* wuyc */
