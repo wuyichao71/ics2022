@@ -48,14 +48,16 @@ char iringbuf[IRINGBUF_LEN][128];
     log_write(ANSI_FMT(format, ANSI_FG_BLUE) "\n", ## __VA_ARGS__)
 #endif
 
+#ifndef CONFIG_TARGET_AM
+#ifdef CONFIG_WATCHPOINT
 void difftest_watchpoint(vaddr_t pc)
 {
-#ifdef CONFIG_WATCHPOINT
   bool changed = check_watchpoint(pc);
   if (changed)
     nemu_state.state = NEMU_STOP;
-#endif
 }
+#endif
+#endif
 /* wuyc */
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
