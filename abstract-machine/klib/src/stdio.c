@@ -268,22 +268,31 @@ int _vsprintf(const char *fmt, va_list ap) {
           slen = fmt_output_string(s, slen, field_width, precision, flags);
           continue;
 
-        // %d(signed number)
+        // %d(signed number, base 10)
         case 'd':
           is_integer = 1;
           flags.sign = 1;
           break;
-        // %u(signed number)
+        // %u(unsigned number, base 10)
         case 'u':
           is_integer = 1;
           flags.sign = 0;
           break;
-        // %x(unsigned number)
+        // %x(unsigned number, base 16)
         case 'x':
           is_integer = 1;
           base = 16;
           flags.sign = 0;
           break;
+        // %p(void *)
+        case 'p':
+          base = 16;
+          flags.sign = 0;
+          _output_ch('0');
+          _output_ch('x');
+          num = (uint64_t)va_arg(ap, uint32_t);
+          slen = fmt_output_number(num, slen, base, field_width, precision, flags);
+          continue;
         // no match
         default:
           for(const char *str = fmt_org; str <= fmt; str++)
