@@ -290,7 +290,7 @@ int _vsprintf(const char *fmt, va_list ap) {
           flags.sign = 0;
           _output_ch('0');
           _output_ch('x');
-          num = (uint64_t)va_arg(ap, uint32_t);
+          num = va_arg(ap, uint32_t);
           slen = fmt_output_number(num, slen, base, field_width, precision, flags);
           continue;
         // no match
