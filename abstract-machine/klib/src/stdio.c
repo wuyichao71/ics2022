@@ -277,7 +277,7 @@ int _vsprintf(const char *fmt, va_list ap) {
         case 'x':
           is_integer = 1;
           base = 16;
-          flags.sign = 1;
+          flags.sign = 0;
           break;
         // no match
         default:
