@@ -273,6 +273,11 @@ int _vsprintf(const char *fmt, va_list ap) {
           is_integer = 1;
           flags.sign = 1;
           break;
+        // %u(signed number)
+        case 'u':
+          is_integer = 1;
+          flags.sign = 0;
+          break;
         // %x(unsigned number)
         case 'x':
           is_integer = 1;
