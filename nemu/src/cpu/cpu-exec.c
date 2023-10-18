@@ -51,9 +51,9 @@ char iringbuf[IRINGBUF_LEN][128];
 #ifdef CONFIG_WATCHPOINT
 void difftest_watchpoint(vaddr_t pc)
 {
-  bool changed = check_watchpoint(pc);
-  if (changed)
-    nemu_state.state = NEMU_STOP;
+  /* bool changed = check_watchpoint(pc); */
+  /* if (changed) */
+    /* nemu_state.state = NEMU_STOP; */
 }
 #endif
 /* wuyc */
