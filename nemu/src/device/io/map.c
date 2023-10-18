@@ -23,6 +23,21 @@
 static uint8_t *io_space = NULL;
 static uint8_t *p_space = NULL;
 
+/* wuyc */
+#ifdef CONFIG_MTRACE
+#define Log_bg_yellow(format, ...) \
+    log_write(ANSI_FMT(format, ANSI_BG_YELLOW) "\n", ## __VA_ARGS__)
+
+#define Log_bg_cyan(format, ...) \
+    log_write(ANSI_FMT(format, ANSI_BG_CYAN) "\n", ## __VA_ARGS__)
+
+static inline bool in_dtrace(vaddr_t addr) {
+  return addr >= CONFIG_DTRACE_BEGIN && addr < CONFIG_DTRACE_END;
+}
+#endif
+
+/* wuyc */
+
 uint8_t* new_space(int size) {
   uint8_t *p = p_space;
   // page aligned;
@@ -34,6 +49,7 @@ uint8_t* new_space(int size) {
 
 static void check_bound(IOMap *map, paddr_t addr) {
   if (map == NULL) {
+    /* printf("hhhhhh\n"); */
     Assert(map != NULL, "address (" FMT_PADDR ") is out of bound at pc = " FMT_WORD, addr, cpu.pc);
   } else {
     Assert(addr <= map->high && addr >= map->low,
@@ -58,6 +74,12 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
   paddr_t offset = addr - map->low;
   invoke_callback(map->callback, offset, len, false); // prepare data to read
   word_t ret = host_read(map->space + offset, len);
+  /* wuyc */
+#ifdef CONFIG_DTRACE
+  if(in_dtrace(addr))
+    Log_bg_yellow("%s: read " FMT_WORD " from " FMT_PADDR, map->name, ret, addr);
+#endif
+  /* wuyc */
   return ret;
 }
 
@@ -65,6 +87,12 @@ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
   paddr_t offset = addr - map->low;
+  /* wuyc */
+#ifdef CONFIG_DTRACE
+  if(in_dtrace(addr))
+    Log_bg_cyan("%s: write " FMT_WORD " to " FMT_PADDR, map->name, data, addr);
+#endif
+  /* wuyc */
   host_write(map->space + offset, len, data);
   invoke_callback(map->callback, offset, len, true);
 }

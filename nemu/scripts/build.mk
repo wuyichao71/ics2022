@@ -22,10 +22,22 @@ CXX := g++
 endif
 LD := $(CXX)
 INCLUDES = $(addprefix -I, $(INC_PATH))
-CFLAGS  := -O2 -MMD -Wall -Werror $(INCLUDES) $(CFLAGS)
+CFLAGS  := -O2 -MMD -Wall -Werror $(INCLUDES) $(CFLAGS) -fPIE
 LDFLAGS := -O2 $(LDFLAGS)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
+
+# wuyc
+PRES = $(SRCS:%.c=$(OBJ_DIR)/%.i) $(CXXSRC:%.cc=$(OBJ_DIR)/%.i)
+
+$(OBJ_DIR)/%.i: %.c
+	@echo + CC -E $<
+	@$(CC) $(CFLAGS) -E -o $@ $<
+
+$(OBJ_DIR)/%.i: %.cc
+	@echo + CXX -E $<
+	@$(CXX) $(CFLAGS) $(CXXFLAGS) -E -o $@ $<
+# wuyc
 
 # Compilation patterns
 $(OBJ_DIR)/%.o: %.c
@@ -49,9 +61,14 @@ $(OBJ_DIR)/%.o: %.cc
 
 app: $(BINARY)
 
+# wuyc
+pre: $(BINARY) $(PRES)
+# wuyc
+
 $(BINARY): $(OBJS) $(ARCHIVES)
 	@echo + LD $@
 	@$(LD) -o $@ $(OBJS) $(LDFLAGS) $(ARCHIVES) $(LIBS)
+
 
 clean:
 	-rm -rf $(BUILD_DIR)

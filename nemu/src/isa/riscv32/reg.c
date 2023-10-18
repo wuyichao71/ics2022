@@ -33,6 +33,8 @@ void isa_reg_display() {
     if ((i + 1) % 4 == 0)
       printf("\n");
   }
+  printf("%4s: " FMT_WORD "\n", "pc", cpu.pc);
+
   /* wuyc */
 }
 
@@ -45,6 +47,11 @@ word_t isa_reg_str2val(const char *s, bool *success) {
       *success = true;
       return gpr(i);
     }
+  }
+  if (strcmp(s, "pc") == 0)
+  {
+      *success = true;
+      return cpu.pc;
   }
 
   *success = false;
