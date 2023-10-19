@@ -286,6 +286,7 @@ int _vsprintf(const char *fmt, va_list ap) {
           break;
         // %p(void *)
         case 'p':
+          is_integer = 1;
           base = 16;
           flags.sign = 0;
           _output_ch('0');
