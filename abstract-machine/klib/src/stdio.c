@@ -290,9 +290,10 @@ int _vsprintf(const char *fmt, va_list ap) {
           flags.sign = 0;
           _output_ch('0');
           _output_ch('x');
-          num = va_arg(ap, uint32_t);
-          slen = fmt_output_number(num, slen, base, field_width, precision, flags);
-          continue;
+          /* num = va_arg(ap, uint32_t); */
+          /* slen = fmt_output_number(num, slen, base, field_width, precision, flags); */
+          break;
+          /* continue; */
         // no match
         default:
           for(const char *str = fmt_org; str <= fmt; str++)
