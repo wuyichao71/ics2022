@@ -160,6 +160,7 @@ static word_t write_csr(word_t src1, word_t csr)
     case 0x305:
       t = cpu.mtvec;
       cpu.mtvec = src1;
+      printf("0x%08x\n", cpu.mtvec);
       break;
     default:
       panic("Should not reach here!");
