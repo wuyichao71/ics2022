@@ -152,15 +152,25 @@ static void write_function(Decode *s)
 
 #endif
 
+#define WRITE_CSR(scr) {t = csr; csr = src1;} while (0)
+
 static word_t write_csr(word_t src1, word_t csr)
 {
   word_t t;
   switch (csr)
   {
+    case 0x300:
+      WRITE_CSR(cpu.mstatus);
+      break;
     case 0x305:
-      t = cpu.mtvec;
-      cpu.mtvec = src1;
-      printf("0x%08x\n", cpu.mtvec);
+      WRITE_CSR(cpu.mtvec);
+      /* printf("0x%08x\n", cpu.mtvec); */
+      break;
+    case 0x341:
+      WRITE_CSR(cpu.mepc);
+      break;
+    case 0x342:
+      WRITE_CSR(cpu.mcause);
       break;
     default:
       panic("Should not reach here!");
