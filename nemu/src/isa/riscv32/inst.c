@@ -155,12 +155,12 @@ static void write_function(Decode *s)
 static word_t write_csr(word_t src1, word_t csr)
 {
   word_t t;
-  printf("%x\n", csr);
   switch (csr)
   {
     case 0x305:
       t = cpu.mtvec;
       cpu.mtvec = src1;
+      break;
     default:
       panic("Should not reach here!");
   }
