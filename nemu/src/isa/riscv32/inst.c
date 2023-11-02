@@ -152,57 +152,34 @@ static void write_function(Decode *s)
 
 #endif
 
-/* #define WRITE_CSR(CSR) do {t = CSR; CSR = src1;} while(0) */
+#define RW_CSR(CSR) do { \
+  if (is_write) CSR = src1; \
+  else return CSR; \
+  } while(0)
 
-static void write_csr(word_t csr, word_t src1)
+static word_t rw_csr(word_t csr, word_t src1, bool is_write)
 {
   switch (csr)
   {
     case 0x300:
-      /* WRITE_CSR(cpu.mstatus); */
-      cpu.mstatus = src1;
+      RW_CSR(cpu.mstatus);
       break;
     case 0x305:
-      /* WRITE_CSR(cpu.mtvec); */
-      /* printf("0x%08x\n", cpu.mtvec); */
-      /* t = cpu.mtvec; */
-      cpu.mtvec = src1;
+      RW_CSR(cpu.mtvec);
       break;
     case 0x341:
-      /* WRITE_CSR(cpu.mepc); */
-      cpu.mepc = src1;
+      RW_CSR(cpu.mepc);
       break;
     case 0x342:
-      /* WRITE_CSR(cpu.mcause); */
-      cpu.mcause = src1;
+      RW_CSR(cpu.mcause);
       break;
     default:
       panic("Should not reach here!");
   }
+  return 0;
 }
 
-static word_t read_csr(word_t csr)
-{
-  switch (csr)
-  {
-    case 0x300:
-      return cpu.mstatus;
-    case 0x305:
-      return cpu.mtvec;
-    case 0x341:
-      /* WRITE_CSR(cpu.mepc); */
-      return cpu.mepc;
-      break;
-    case 0x342:
-      /* WRITE_CSR(cpu.mcause); */
-      return cpu.mcause;
-      break;
-    default:
-      panic("Should not reach here!");
-  }
-}
-
-#define SET_CSR(cmd) do {word_t t = read_csr(imm); write_csr(imm, cmd); R(rd) = t;} while(0)
+#define SET_CSR(cmd) do {word_t t = rw_csr(imm, 0, false); rw_csr(imm, cmd, true); R(rd) = t;} while(0)
 
 
 /* wuyc */
