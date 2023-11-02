@@ -24,7 +24,8 @@ typedef struct {
   /* wuyc */
   word_t mtvec;
   vaddr_t mepc;
-
+  word_t mstatus;
+  word_t mcause;
   /* wuyc */
 } riscv32_CPU_state;
 
