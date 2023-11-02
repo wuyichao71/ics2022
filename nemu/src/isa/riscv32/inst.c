@@ -156,6 +156,7 @@ static void write_function(Decode *s)
   printf(#CSR "=" FMT_WORD "\n", CSR); \
   if (is_write) CSR = src1; \
   else return CSR; \
+  printf(#CSR "=" FMT_WORD "\n", CSR); \
   } while(0)
 
 static word_t rw_csr(word_t csr, word_t src1, bool is_write)
