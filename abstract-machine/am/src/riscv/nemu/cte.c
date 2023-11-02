@@ -24,7 +24,6 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
   // initialize exception entry
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
   /* wuyc */
-  /* unsigned int a = 0x1800; */
   asm volatile("csrw mstatus, %0" : : "r"(0x1800));
   /* wuyc */
 
