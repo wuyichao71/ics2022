@@ -153,13 +153,12 @@ static void write_function(Decode *s)
 #endif
 
 #define RW_CSR(CSR) do { \
-  printf(#CSR "=" FMT_WORD "\n", CSR); \
-  if (is_write) CSR = src1; \
-  else return CSR; \
-  printf(#CSR "=" FMT_WORD "\n", CSR); \
+  if (rw == 'w') CSR = src1; \
+  else if (rw == 'r') return CSR; \
+  else panic("argument rw is wrong!"); \
   } while(0)
 
-static word_t rw_csr(word_t csr, word_t src1, bool is_write)
+static word_t rw_csr(word_t csr, word_t src1, char rw)
 {
   switch (csr)
   {
@@ -181,7 +180,7 @@ static word_t rw_csr(word_t csr, word_t src1, bool is_write)
   return 0;
 }
 
-#define SET_CSR(cmd) do {word_t t = rw_csr(imm, 0, false); rw_csr(imm, cmd, true); R(rd) = t;} while(0)
+#define SET_CSR(cmd) do {word_t t = rw_csr(imm, 0, 'r'); rw_csr(imm, cmd, 'w'); R(rd) = t;} while(0)
 
 
 /* wuyc */
