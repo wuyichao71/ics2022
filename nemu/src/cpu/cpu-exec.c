@@ -189,6 +189,7 @@ void cpu_exec(uint64_t n) {
           nemu_state.halt_pc);
       /* wuyc */
 #ifdef CONFIG_IRINGBUF
+      printf("HHHH\n");
       if (nemu_state.state == NEMU_ABORT || (nemu_state.state == NEMU_END && nemu_state.halt_ret != 0))
         write_iringbuf();
 #endif
