@@ -22,9 +22,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   cpu.mepc = epc;
   cpu.mcause = NO;
   /* printf("0x%08x\n", NO); */
-  cpu.pc = cpu.mtvec;
+  /* cpu.pc = cpu.mtvec; */
 
-  return cpu.pc;
+  return cpu.mtvec;
 }
 
 word_t isa_query_intr() {
