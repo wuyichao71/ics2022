@@ -152,7 +152,10 @@ static void write_function(Decode *s)
 
 #endif
 
-#define WRITE_CSR(scr) do {t = csr; csr = src1;} while (0)
+#define WRITE_CSR(scr) do { \
+  t = csr; \
+  csr = src1; \
+  } while (0)
 
 static word_t write_csr(word_t src1, word_t csr)
 {
@@ -163,10 +166,10 @@ static word_t write_csr(word_t src1, word_t csr)
       WRITE_CSR(cpu.mstatus);
       break;
     case 0x305:
-      /* WRITE_CSR(cpu.mtvec); */
+      WRITE_CSR(cpu.mtvec);
       printf("0x%08x\n", cpu.mtvec);
-      t = cpu.mtvec;
-      cpu.mtvec = src1;
+      /* t = cpu.mtvec; */
+      /* cpu.mtvec = src1; */
       break;
     case 0x341:
       WRITE_CSR(cpu.mepc);
