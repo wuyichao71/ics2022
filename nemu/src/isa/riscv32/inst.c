@@ -152,7 +152,7 @@ static void write_function(Decode *s)
 
 #endif
 
-#define WRITE_CSR(scr) {t = csr; csr = src1;} while (0)
+#define WRITE_CSR(scr) do {t = csr; csr = src1;} while (0)
 
 static word_t write_csr(word_t src1, word_t csr)
 {
