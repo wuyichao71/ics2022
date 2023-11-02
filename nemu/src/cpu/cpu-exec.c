@@ -139,7 +139,6 @@ void assert_fail_msg() {
 #ifdef CONFIG_IRINGBUF
 static void write_iringbuf()
 {
-  printf("HHHH\n");
   Log_blue("The iringbuf is:");
   for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
   {
