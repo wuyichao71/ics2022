@@ -139,6 +139,7 @@ void assert_fail_msg() {
 #ifdef CONFIG_IRINGBUF
 static void write_iringbuf()
 {
+  printf("HHHH\n");
   Log_blue("The iringbuf is:");
   for(int i = iring_start; i != iring_end; i = (i + 1) % IRINGBUF_LEN)
   {
@@ -191,7 +192,6 @@ void cpu_exec(uint64_t n) {
 #ifdef CONFIG_IRINGBUF
       /* if (nemu_state.state == NEMU_ABORT || nemu_state.halt_ret != 0) */
         write_iringbuf();
-        printf("HHHH\n");
 #endif
       /* wuyc */
       // fall through
