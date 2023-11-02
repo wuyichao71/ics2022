@@ -152,33 +152,58 @@ static void write_function(Decode *s)
 
 #endif
 
-#define WRITE_CSR(CSR) do {t = CSR; CSR = src1;} while(0)
+/* #define WRITE_CSR(CSR) do {t = CSR; CSR = src1;} while(0) */
 
-static word_t write_csr(word_t src1, word_t csr)
+static void write_csr(word_t csr, word_t src1)
 {
-  word_t t;
   switch (csr)
   {
     case 0x300:
-      WRITE_CSR(cpu.mstatus);
+      /* WRITE_CSR(cpu.mstatus); */
+      cpu.mstatus = src1;
       break;
     case 0x305:
-      WRITE_CSR(cpu.mtvec);
+      /* WRITE_CSR(cpu.mtvec); */
       /* printf("0x%08x\n", cpu.mtvec); */
       /* t = cpu.mtvec; */
-      /* cpu.mtvec = src1; */
+      cpu.mtvec = src1;
       break;
     case 0x341:
-      WRITE_CSR(cpu.mepc);
+      /* WRITE_CSR(cpu.mepc); */
+      cpu.mepc = src1;
       break;
     case 0x342:
-      WRITE_CSR(cpu.mcause);
+      /* WRITE_CSR(cpu.mcause); */
+      cpu.mcause = src1;
       break;
     default:
       panic("Should not reach here!");
   }
-  return t;
 }
+
+static word_t read_csr(word_t csr)
+{
+  switch (csr)
+  {
+    case 0x300:
+      return cpu.mstatus;
+    case 0x305:
+      return cpu.mtvec;
+    case 0x341:
+      /* WRITE_CSR(cpu.mepc); */
+      return cpu.mepc;
+      break;
+    case 0x342:
+      /* WRITE_CSR(cpu.mcause); */
+      return cpu.mcause;
+      break;
+    default:
+      panic("Should not reach here!");
+  }
+}
+
+#define SET_CSR(cmd) do {word_t t =read_csr(imm); write_csr(imm, cmd); R(rd) = t;} while(0)
+
 
 /* wuyc */
 
@@ -218,8 +243,9 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 001 ????? 00000 11", lh     , I, R(rd) = SEXT(Mr(src1 + imm, 2), 16));
   INSTPAT("??????? ????? ????? 101 ????? 00000 11", lhu    , I, R(rd) = Mr(src1 + imm, 2));
   INSTPAT("??????? ????? ????? 110 ????? 00100 11", ori    , I, R(rd) = src1 | imm);
-  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, R(rd) = write_csr(src1, imm));
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, SET_CSR(src1));
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, bool success; s->dnpc = isa_raise_intr(isa_reg_str2val("a7", &success), s->pc););
+  /* INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, R(rd) = write_csr(src1, imm)); */
   /* wuyc */
   INSTPAT("??????? ????? ????? 010 ????? 01000 11", sw     , S, Mw(src1 + imm, 4, src2));
   /* wuyc */
