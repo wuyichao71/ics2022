@@ -11,9 +11,9 @@ Context* __am_irq_handle(Context *c) {
     if ((i + 1) % 4 == 0)
       printf("\n");
   }
-  printf("%4s: 0x08x\n", "mcause", c->mcause);
-  printf("%4s: 0x08x\n", "mstatus", c->mstatus);
-  printf("%4s: 0x08x\n", "mepc", c->mepc);
+  printf("%4s: 0x%08x\n", "mcause", c->mcause);
+  printf("%4s: 0x%08x\n", "mstatus", c->mstatus);
+  printf("%4s: 0x%08x\n", "mepc", c->mepc);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
