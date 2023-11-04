@@ -18,6 +18,7 @@ Context* __am_irq_handle(Context *c) {
   printf("%4s: 0x%08x\n", "mepc", c->mepc);
   */
   /* wuyc */
+  printf("0x%08x\n", c);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
