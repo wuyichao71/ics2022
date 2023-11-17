@@ -73,9 +73,9 @@ LINKAGE   = $(OBJS) $(foreach l,$(LIBS),$(NAVY_HOME)/libs/$(l)/build/$(l)-$(ISA)
 ## 3. General Compilation Flags
 
 ### (Cross) compilers, e.g., mips-linux-gnu-g++
-AS        = $(CROSS_COMPILE)gcc
-CC        = $(CROSS_COMPILE)gcc
-CXX       = $(CROSS_COMPILE)g++
+AS        = $(CROSS_COMPILE)gcc-10
+CC        = $(CROSS_COMPILE)gcc-10
+CXX       = $(CROSS_COMPILE)g++-10
 LD        = $(CROSS_COMPILE)ld
 
 ### Compilation flags
@@ -99,6 +99,7 @@ ASFLAGS  +=  $(CFLAGS)
 $(DST_DIR)/%.o: %.c
 	@mkdir -p $(dir $@) && echo + CC $<
 	@$(CC) -std=gnu11 $(CFLAGS) -c -o $@ $(realpath $<)
+# @$(CC) -std=gnu11 $(CFLAGS) -c --verbose -o $@ $(realpath $<)
 
 ### Rule (compile): a single `.cc` -> `.o` (g++)
 $(DST_DIR)/%.o: %.cc
