@@ -7,7 +7,8 @@ void do_syscall(Context *c) {
 
   switch (a[0]) {
     /* wuyc */
-    case SYS_exit: sys_exit(c->GPR2);break;
+    /* case SYS_exit: sys_exit(c->GPR2);break; */
+    case SYS_exit: break;
     case SYS_yield: yield(); c->GPRx = 0; break;
     /* wuyc */
     default: panic("Unhandled syscall ID = %d", a[0]);
