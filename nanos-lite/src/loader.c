@@ -26,7 +26,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read(phdr, ehdr.e_phoff, phsize);
   for (int i = 0; i < ehdr.e_phnum; i++)
   {
-    printf("%d\n", phdr[i].p_filesz);
+    printf("0x%x\n", phdr[i].p_filesz);
   }
   /* printf("Size of ph: %d\n", ehdr.e_phnum * sizeof(Elf_Phdr)); */
   free(phdr);
