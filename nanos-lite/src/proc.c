@@ -1,6 +1,6 @@
 #include <proc.h>
 /* wuyc */
-#include <loader.h>
+#include "loader.h"
 /* wuyc */
 
 #define MAX_NR_PROC 4

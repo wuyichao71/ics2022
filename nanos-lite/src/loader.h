@@ -1,6 +1,7 @@
 #ifndef __LOADER_H__
 #define __LOADER_H__
 #include <common.h>
+
 #if defined(__ISA_AM_NATIVE__)
 # define EXCEPT_TYPE EM_X86_64
 #elif defined(__ISA_X86__) || defined(__ISA_X86_64__)

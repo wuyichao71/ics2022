@@ -1,8 +1,8 @@
 #include <proc.h>
 #include <elf.h>
 /* wuyc */
-#include <ramdisk.h>
-#include <loader.h>
+#include "ramdisk.h"
+#include "loader.h"
 /* wuyc */
 
 #ifdef __LP64__
