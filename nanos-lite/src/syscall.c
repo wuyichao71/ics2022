@@ -13,6 +13,7 @@ void do_syscall(Context *c) {
     /* wuyc */
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
+  printf("HHH\n");
 }
 
 /* wuyc */
