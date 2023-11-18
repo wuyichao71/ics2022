@@ -4,7 +4,7 @@
 /* wuyc */
 
 static Context* do_event(Event e, Context* c) {
-  printf("%d\n", c->mcause);
+  printf("%d\n", c->GPR1);
   switch (e.event) {
     /* wuyc */
     case EVENT_SYSCALL: do_syscall(c); break;
