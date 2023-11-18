@@ -15,9 +15,14 @@
 static uintptr_t loader(PCB *pcb, const char *filename) {
   /* TODO(); */
   Elf_Ehdr ehdr;
+  Elf_Phdr *phdr;
+
   ramdisk_read(&ehdr, 0, sizeof(ehdr));
+  phdr = (Elf_Phdr *)malloc(ehdr.e_phnum * sizeof(Elf_Phdr));
+  printf("Size of ph: %d\n", ehdr.e_phnum * sizeof(Elf_Phdr));
+  free(phdr);
   /* printf("Elf_Ehdr = %p\n", ehdr.e_entry); */
-  printf("e_phoff = %d\n", ehdr.e_phoff);
+
   return ehdr.e_entry;
 }
 
