@@ -16,8 +16,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   /* TODO(); */
   Elf_Ehdr ehdr;
   ramdisk_read(&ehdr, 0, sizeof(ehdr));
-  printf("Elf_Ehdr = %p\n", ehdr.e_entry);
-  return 0;
+  /* printf("Elf_Ehdr = %p\n", ehdr.e_entry); */
+  printf("e_phoff = %d\n", ehdr.e_phoff);
+  return ehdr.e_entry;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
