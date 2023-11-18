@@ -15,20 +15,22 @@
 static uintptr_t loader(PCB *pcb, const char *filename) {
   /* TODO(); */
   Elf_Ehdr ehdr;
-  int phsize;
+  /* int phsize; */
 
   ramdisk_read(&ehdr, 0, sizeof(ehdr));
 
-  Elf_Phdr phdr[ehdr.e_phnum];
+  /* Elf_Phdr phdr[ehdr.e_phnum]; */
+  Elf_Phdr *phdr = (Elf_Phdr *)(&ramdisk_start + ehdr.e_phoff);
 
-  phsize = ehdr.e_phnum * sizeof(Elf_Phdr);
+  /* phsize = ehdr.e_phnum * sizeof(Elf_Phdr); */
   /* phdr = (Elf_Phdr *)malloc(phsize); */
 
-  ramdisk_read(phdr, ehdr.e_phoff, phsize);
+  /* ramdisk_read(phdr, ehdr.e_phoff, phsize); */
   for (int i = 0; i < ehdr.e_phnum; i++)
   {
     if (phdr[i].p_type == PT_LOAD)
     {
+      /* ramdisk_read() */
       printf("0x%x\n", phdr[i].p_filesz);
     }
   }
