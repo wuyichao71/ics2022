@@ -15,21 +15,21 @@
 static uintptr_t loader(PCB *pcb, const char *filename) {
   /* TODO(); */
   Elf_Ehdr ehdr;
-  Elf_Phdr *phdr;
   int phsize;
 
   ramdisk_read(&ehdr, 0, sizeof(ehdr));
 
+  Elf_Phdr phdr[ehdr.e_phnum];
+
   phsize = ehdr.e_phnum * sizeof(Elf_Phdr);
-  phdr = (Elf_Phdr *)malloc(phsize);
+  /* phdr = (Elf_Phdr *)malloc(phsize); */
 
   ramdisk_read(phdr, ehdr.e_phoff, phsize);
   for (int i = 0; i < ehdr.e_phnum; i++)
   {
-    printf("0x%x\n", phdr[i].p_filesz);
   }
   /* printf("Size of ph: %d\n", ehdr.e_phnum * sizeof(Elf_Phdr)); */
-  free(phdr);
+  /* free(phdr); */
   /* printf("Elf_Ehdr = %p\n", ehdr.e_entry); */
 
   return ehdr.e_entry;
