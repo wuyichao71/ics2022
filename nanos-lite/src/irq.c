@@ -1,6 +1,6 @@
 #include <common.h>
 /* wuyc */
-#include "syscall.h"
+void do_syscall(Context *c);
 /* wuyc */
 
 static Context* do_event(Event e, Context* c) {
