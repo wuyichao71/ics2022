@@ -7,7 +7,7 @@ void do_syscall(Context *c) {
 
   switch (a[0]) {
     /* wuyc */
-    case SYS_exit: sys_exit(c->GPR2); break;
+    case SYS_exit: sys_exit(c->GPR2); c->GPRx = 0; break;
     /* case SYS_exit: c->GPRx=0; break; */
     case SYS_yield: yield(); c->GPRx = 0; break;
     /* wuyc */
