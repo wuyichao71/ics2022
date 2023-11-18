@@ -1,5 +1,8 @@
 #include <proc.h>
 #include <elf.h>
+/* wuyc */
+#include <ramdisk.h>
+/* wuyc */
 
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
@@ -10,7 +13,10 @@
 #endif
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  TODO();
+  /* TODO(); */
+  Elf_Ehdr ehdr;
+  ramdisk_read(&ehdr, 0, sizeof(ehdr));
+  printf("Elf_Ehdr = %p\n", ehdr.e_entry);
   return 0;
 }
 

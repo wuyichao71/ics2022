@@ -1,4 +1,7 @@
 #include <proc.h>
+/* wuyc */
+#include <loader.h>
+/* wuyc */
 
 #define MAX_NR_PROC 4
 
@@ -23,6 +26,9 @@ void init_proc() {
   switch_boot_pcb();
 
   Log("Initializing processes...");
+  /* wuyc */
+  naive_uload(NULL, NULL);
+  /* wuyc */
 
   // load program here
 
