@@ -16,15 +16,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   /* TODO(); */
   Elf_Ehdr ehdr;
   /* int phsize; */
-
   ramdisk_read(&ehdr, 0, sizeof(ehdr));
-
   /* Elf_Phdr phdr[ehdr.e_phnum]; */
   Elf_Phdr *phdr = (Elf_Phdr *)(&ramdisk_start + ehdr.e_phoff);
-
   /* phsize = ehdr.e_phnum * sizeof(Elf_Phdr); */
   /* phdr = (Elf_Phdr *)malloc(phsize); */
-
   /* ramdisk_read(phdr, ehdr.e_phoff, phsize); */
   for (int i = 0; i < ehdr.e_phnum; i++)
   {
@@ -32,7 +28,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     {
       ramdisk_read((void *)phdr[i].p_vaddr, phdr[i].p_offset, phdr[i].p_filesz);
       memset((void *)(phdr[i].p_vaddr + phdr[i].p_filesz), 0, phdr[i].p_memsz - phdr[i].p_filesz);
-      printf("0x%x\n", phdr[i].p_filesz);
+      /* printf("0x%x\n", phdr[i].p_filesz); */
     }
   }
   /* printf("Size of ph: %d\n", ehdr.e_phnum * sizeof(Elf_Phdr)); */
