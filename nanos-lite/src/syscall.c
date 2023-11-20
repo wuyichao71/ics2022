@@ -18,7 +18,7 @@ void do_syscall(Context *c) {
     case SYS_exit: STRACE(sys_exit, "(%d)", c->GPR2); sys_exit(c->GPR2); break;
     /* case SYS_exit: c->GPRx=0; break; */
     case SYS_yield: yield(); c->GPRx = 0; STRACE(sys_yield, SYS_format("()"), c->GPRx); break;
-    case SYS_write: break;
+    case SYS_write: printf("hhh\n"); break;
     /* wuyc */
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
