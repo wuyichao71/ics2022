@@ -22,7 +22,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   cpu.mepc = epc;
   cpu.mcause = NO;
 #ifdef CONFIG_ETRACE
-  printf(FMT_WORD ": trigger exception(ID: %d)\n", cpu.mepc, cpu.mcause);
+  log_write(FMT_WORD ": trigger exception(ID: %d)\n", cpu.mepc, cpu.mcause);
 #endif
   /* printf("0x%08x\n", cpu.mtvec); */
   /* printf("0x%08x\n", cpu.mcause); */
