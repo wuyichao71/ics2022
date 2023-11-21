@@ -195,6 +195,11 @@ config FTRACE
   bool "Enable function tracer"
   default y
 
+config ETRACE
+  depends on TRACE
+  bool "Enable exception tracer"
+  default y
+
 config WATCHPOINT
   bool "Enable watchpoint tracer"
   default n
