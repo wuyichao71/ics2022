@@ -67,9 +67,20 @@ int _write(int fd, void *buf, size_t count) {
   /* return 0; */
 }
 
+/* wuyc */
+extern char _end;
 void *_sbrk(intptr_t increment) {
+  static intptr_t program_break = _end;
+  intptr_t ret = program_break, new = program_break + increment;
+  if (_syscall_(SYS_brk, new, 0, 0) == 0)
+  {
+    program_break = new;
+    return (void *)ret;
+  }
+
   return (void *)-1;
 }
+/* wuyc */
 
 int _read(int fd, void *buf, size_t count) {
   _exit(SYS_read);
