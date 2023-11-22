@@ -2,7 +2,7 @@
 #include "syscall.h"
 
 /* wuyc */
-/* #define __STRACE__ */
+#define __STRACE__
 #ifdef __STRACE__
 # define SYS_format(format) format "         = %d"
 # define STRACE(SYS_type, format, ...) printf(#SYS_type format "\n", ## __VA_ARGS__)
@@ -30,7 +30,7 @@ void do_syscall(Context *c) {
     /* case SYS_exit: c->GPRx=0; break; */
     case SYS_yield: c->GPRx = sys_yield(); STRACE(sys_yield, SYS_format("()"), c->GPRx); break;
     case SYS_write: c->GPRx = sys_write(a[1], (const void *)a[2], a[3]); 
-                    STRACE(sys_write, "(%d, 0x%08x, %d)", a[1], a[2], a[3], c->GPRx); break;
+                    STRACE(sys_write, SYS_format("(%d, 0x%08x, %d)"), a[1], a[2], a[3], c->GPRx); break;
     /* wuyc */
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
