@@ -14,6 +14,8 @@
 void sys_exit(int code);
 size_t sys_write(int fd, const void *buf, size_t count);
 uintptr_t sys_yield();
+int sys_brk(uintptr_t addr);
+
 /* wuyc */
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -26,13 +28,26 @@ void do_syscall(Context *c) {
 
   switch (a[0]) {
     /* wuyc */
-    case SYS_exit: STRACE(sys_exit, "(%d)", a[1]); sys_exit(a[1]); break;
+    case SYS_exit: 
+      STRACE(sys_exit, "(%d)", a[1]); 
+      sys_exit(a[1]); 
+      break;
     /* case SYS_exit: c->GPRx=0; break; */
-    case SYS_yield: c->GPRx = sys_yield(); STRACE(sys_yield, SYS_format("()"), c->GPRx); break;
-    case SYS_write: c->GPRx = sys_write(a[1], (const void *)a[2], a[3]); 
-                    STRACE(sys_write, SYS_format("(%d, 0x%08x, %d)"), a[1], a[2], a[3], c->GPRx); break;
+    case SYS_yield: 
+      c->GPRx = sys_yield(); 
+      STRACE(sys_yield, SYS_format("()"), c->GPRx); 
+      break;
+    case SYS_write: 
+      c->GPRx = sys_write(a[1], (const void *)a[2], a[3]); 
+      STRACE(sys_write, SYS_format("(%d, 0x%08x, %d)"), a[1], a[2], a[3], c->GPRx); 
+      break;
+    case SYS_brk: 
+      c->GPRx = sys_brk(a[1]); 
+      STRACE(sys_brk, SYS_format("(%d)"), a[1], c->GPRx); 
+      break;
     /* wuyc */
-    default: panic("Unhandled syscall ID = %d", a[0]);
+    default: 
+      panic("Unhandled syscall ID = %d", a[0]);
   }
   /* printf("HHH\n"); */
 }
@@ -59,5 +74,12 @@ size_t sys_write(int fd, const void *buf, size_t count)
     }
   }
   return count;
+}
+
+int sys_brk(uintptr_t addr)
+{
+  static uintptr_t program_break;
+  *(&program_break) = addr;
+  return 0;
 }
 /* wuyc */
