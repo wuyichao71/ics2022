@@ -43,7 +43,7 @@ void do_syscall(Context *c) {
       break;
     case SYS_brk: 
       c->GPRx = sys_brk(a[1]); 
-      STRACE(sys_brk, SYS_format("(%d)"), a[1], c->GPRx); 
+      STRACE(sys_brk, SYS_format("(0x%08x)"), a[1], c->GPRx); 
       break;
     /* wuyc */
     default: 
