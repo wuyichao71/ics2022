@@ -70,7 +70,7 @@ int _write(int fd, void *buf, size_t count) {
 /* wuyc */
 extern char _end;
 void *_sbrk(intptr_t increment) {
-  static intptr_t program_break = _end;
+  static intptr_t program_break = (intptr_t)&_end;
   intptr_t ret = program_break, new = program_break + increment;
   if (_syscall_(SYS_brk, new, 0, 0) == 0)
   {

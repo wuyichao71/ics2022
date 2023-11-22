@@ -14,7 +14,7 @@
 void sys_exit(int code);
 size_t sys_write(int fd, const void *buf, size_t count);
 uintptr_t sys_yield();
-int sys_brk(uintptr_t addr);
+int sys_brk(intptr_t addr);
 
 /* wuyc */
 void do_syscall(Context *c) {
@@ -76,9 +76,9 @@ size_t sys_write(int fd, const void *buf, size_t count)
   return count;
 }
 
-int sys_brk(uintptr_t addr)
+int sys_brk(intptr_t addr)
 {
-  static uintptr_t program_break;
+  static intptr_t program_break;
   *(&program_break) = addr;
   return 0;
 }
