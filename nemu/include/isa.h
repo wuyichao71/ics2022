@@ -39,15 +39,15 @@ typedef struct elf_node
 } Elf_Node;
 
 #ifdef CONFIG_FTRACE
-extern char *strtab;
+/* extern char *strtab; */
 typedef struct
 {
   word_t st_name;
   word_t st_value;
   word_t st_size;
 } Func_Hdr;
-extern Func_Hdr *func_hdr;
-extern word_t func_num;
+/* extern Func_Hdr *func_hdr; */
+/* extern word_t func_num; */
 
 typedef struct elf_func_node
 {
@@ -57,7 +57,7 @@ typedef struct elf_func_node
   struct elf_func_node *next;
 } Elf_Func_Node;
 
-Elf_Func_Node elf_func_header;
+extern Elf_Func_Node elf_func_header;
 
 extern Elf_Func_Node *elf_func_header_p;
 #endif
