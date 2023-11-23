@@ -179,8 +179,10 @@ static void init_elf() {
 
 void free_elf()
 {
+#ifdef CONFIG_FTRACE
   free(strtab);
   free(func_hdr);
+#endif
 }
 #endif
 /* wuyc */
