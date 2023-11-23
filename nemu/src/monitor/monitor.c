@@ -169,7 +169,7 @@ static void init_elf() {
         func_node_p->func_num++;
       }
     }
-    printf("func_num = %d\n", func_node_p->func_num);
+    /* printf("func_num = %d\n", func_node_p->func_num); */
 
     func_node_p->func_hdr = (Func_Hdr *)malloc(func_node_p->func_num * sizeof(Func_Hdr));
     word_t fhdr_i = 0;
@@ -180,7 +180,7 @@ static void init_elf() {
         func_node_p->func_hdr[fhdr_i].st_name = symtab_hdr[i].st_name;
         func_node_p->func_hdr[fhdr_i].st_value = symtab_hdr[i].st_value;
         func_node_p->func_hdr[fhdr_i].st_size = symtab_hdr[i].st_size;
-        /* printf("value = 0x%08x, size = %4d, name = %s\n", func_hdr[fhdr_i].st_value, func_hdr[fhdr_i].st_size, strtab + func_hdr[fhdr_i].st_name); */
+        printf("value = 0x%08x, size = %4d, name = %s\n", func_hdr[fhdr_i].st_value, func_hdr[fhdr_i].st_size, strtab + func_hdr[fhdr_i].st_name);
         fhdr_i++;
       }
     }
