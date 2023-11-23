@@ -117,7 +117,7 @@ static void write_function(Decode *s)
   int rs1 = BITS(i, 19, 15);
   int rd  = BITS(i, 11, 7);
   int fi;
-  Elf_Func_Node fn;
+  Elf_Func_Node fn = {};
   /* printf("rs1 = %d, rd = %d\n", rs1, rd); */
 
   if (!IS_RA(rd) && IS_RA(rs1))
