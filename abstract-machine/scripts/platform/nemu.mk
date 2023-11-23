@@ -14,6 +14,9 @@ LDFLAGS   += --gc-sections -e _start
 # NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
 # wuyc
 NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt -e $(IMAGE).elf
+# ifneq ($(wildcard $(shell dirname $(IMAGE).elf)/ramdisk.img),)
+	# $(error hhhhhh)
+# endif
 NEMU_BATCH_FLAGS += $(NEMUFLAGS) --batch
 # wuyc
 
