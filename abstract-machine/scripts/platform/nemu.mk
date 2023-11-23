@@ -19,6 +19,7 @@ RAMDISK = $(wildcard $(shell dirname $(IMAGE).elf)/ramdisk.img)
 #   $(error $(RAMDISK))
 #   NEMUFLAGS += -e $(RAMDISK)
 # endif
+$(info $(shell dirname $(IMAGE).elf))
 $(info $(RAMDISK))
 NEMU_BATCH_FLAGS += $(NEMUFLAGS) --batch
 # wuyc
