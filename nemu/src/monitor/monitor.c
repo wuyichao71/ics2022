@@ -18,9 +18,11 @@
 
 // wuyc
 #ifdef CONFIG_FTRACE
-char *strtab = NULL;
-Func_Hdr *func_hdr = NULL;
-word_t func_num = 0;
+Elf_Func_Node elf_func_header = {};
+Elf_Func_Node *elf_func_header_p = &elf_func_header;
+/* char *strtab = NULL; */
+/* Func_Hdr *func_hdr = NULL; */
+/* word_t func_num = 0; */
 #endif
 
 void init_rand();
@@ -60,7 +62,7 @@ static char *log_file = NULL;
 /* wuyc */
 /* #ifdef CONFIG_FTRACE */
 /* static char *elf_file = NULL; */
-static Elf_Node elf_header;
+static Elf_Node elf_header = {};
 static Elf_Node *elf_header_p = &elf_header;
 /* #endif */
 /* wuyc */
@@ -94,8 +96,7 @@ static long load_img() {
 #ifdef CONFIG_FTRACE
 static void init_elf() {
   /* FILE *elfp = fopen(elf_file, "r"); */
-  elf_func_header.next = NULL;
-  elf_func_header_p = &elf_func_header;
+  /* elf_func_header.next = NULL; */
   Elf_Node *elf_node_p = elf_header_p->next;
   Elf_Func_Node *func_node_p = elf_func_header_p;
   /* func_node_p->next = NULL; */
@@ -149,7 +150,7 @@ static void init_elf() {
 
     func_node_p->strtab = (char *)malloc(shdr[strtab_ndx].sh_size * sizeof(char));
     fseek(elfp, shdr[strtab_ndx].sh_offset, SEEK_SET);
-    ret = fread(strtab, shdr[strtab_ndx].sh_size, 1, elfp);
+    ret = fread(func_node_p->strtab, shdr[strtab_ndx].sh_size, 1, elfp);
     assert(ret == 1);
     /* printf("%s\n", strtab+1); */
 
@@ -233,7 +234,7 @@ static int parse_args(int argc, char *argv[]) {
   };
   int o;
   /* wuyc */
-  elf_header_p->next = NULL;
+  /* elf_header_p->next = NULL; */
   Elf_Node *elf_p = elf_header_p;
   /* while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) { */
   /* wuyc */
