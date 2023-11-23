@@ -135,8 +135,8 @@ static void write_function(Decode *s)
     fi = find_func(s->dnpc, &fn);
     /* printf("%s %d\n", fn.strtab+1, fi); */
     assert(fi != -1);
-
-    log_write("call [%s:%d:%s@" FMT_WORD "]\n", fn.strtab+1, fi, fn.strtab + fi, s->dnpc);
+    /* log_write("call [%s:%d:%s@" FMT_WORD "]\n", fn.strtab+1, fi, fn.strtab + fi, s->dnpc); */
+    log_write("call [%s@" FMT_WORD "]\n", fn.strtab + fi, s->dnpc);
     level++;
   }
   else if (IS_RA(rd) && IS_RA(rs1) && rd != rs1)
@@ -153,7 +153,8 @@ static void write_function(Decode *s)
     write_header(s->pc);
     fi = find_func(s->dnpc, &fn);
     assert(fi != -1);
-    log_write("call [%s:%d:%s@" FMT_WORD "]\n", fn.strtab+1, fi, fn.strtab + fi, s->dnpc);
+    /* log_write("call [%s:%d:%s@" FMT_WORD "]\n", fn.strtab+1, fi, fn.strtab + fi, s->dnpc); */
+    log_write("call [%s@" FMT_WORD "]\n", fn.strtab + fi, s->dnpc);
     level++;
   }
 }
