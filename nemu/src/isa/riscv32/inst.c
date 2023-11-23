@@ -90,7 +90,7 @@ static inline void write_header(vaddr_t pc)
   }
 }
 
-static inline int find_func(vaddr_t pc)
+static inline int find_func(vaddr_t pc, Elf_Func_Node *out_func_p)
 {
   Elf_Func_Node *func_p = elf_func_header_p->next;
   int name_ndx = -1;
@@ -102,6 +102,7 @@ static inline int find_func(vaddr_t pc)
       if (pc_diff >= 0 && pc_diff < func_p->func_hdr[i].st_size)
       {
         name_ndx = func_p->func_hdr[i].st_name;
+        *out_func_p = *func_p;
         return name_ndx;
       }
     }
@@ -115,18 +116,23 @@ static void write_function(Decode *s)
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
   int rd  = BITS(i, 11, 7);
+  int fi;
+  Elf_Func_Node fn;
   /* printf("rs1 = %d, rd = %d\n", rs1, rd); */
 
   if (!IS_RA(rd) && IS_RA(rs1))
   {
     level--;
     write_header(s->pc);
-    log_write("ret  [%s]\n", strtab + find_func(s->pc));
+    fi = find_func(s->pc, &fn);
+
+    log_write("ret  [%s]\n", fn.strtab + fi);
   }
   else if (IS_RA(rd) && !IS_RA(rs1))
   {
     write_header(s->pc);
-    log_write("call [%s@" FMT_WORD "]\n", strtab + find_func(s->dnpc), s->dnpc);
+    fi = find_func(s->dnpc, &fn)
+    log_write("call [%s@" FMT_WORD "]\n", fn.strtab + fi, s->dnpc);
     level++;
   }
   else if (IS_RA(rd) && IS_RA(rs1) && rd != rs1)
