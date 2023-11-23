@@ -59,7 +59,7 @@ void sdb_set_batch_mode();
 static char *log_file = NULL;
 /* wuyc */
 /* #ifdef CONFIG_FTRACE */
-static char *elf_file = NULL;
+/* static char *elf_file = NULL; */
 static ELF_NODE elf_header;
 static ELF_NODE *elf_header_p = &elf_header;
 static ELF_NODE *elf_p = &elf_header;
