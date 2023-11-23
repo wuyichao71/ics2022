@@ -94,10 +94,11 @@ static long load_img() {
 #ifdef CONFIG_FTRACE
 static void init_elf() {
   /* FILE *elfp = fopen(elf_file, "r"); */
+  elf_func_header.next = NULL;
   elf_func_header_p = &elf_func_header;
   Elf_Node *elf_node_p = elf_header_p->next;
   Elf_Func_Node *func_node_p = elf_func_header_p;
-  func_node_p->next = NULL;
+  /* func_node_p->next = NULL; */
 
   while (elf_node_p != NULL)
   {
