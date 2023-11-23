@@ -94,7 +94,8 @@ static long load_img() {
 /* wuyc */
 #ifdef CONFIG_FTRACE
 static void init_elf() {
-  FILE *elfp = fopen(elf_file, "r");
+  /* FILE *elfp = fopen(elf_file, "r"); */
+  FILE *elfp = fopen(elf_header_p->next->elf_file, "r");
   if (elfp == NULL)
   {
     return;
