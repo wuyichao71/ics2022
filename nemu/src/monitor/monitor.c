@@ -60,8 +60,8 @@ static char *log_file = NULL;
 /* wuyc */
 /* #ifdef CONFIG_FTRACE */
 /* static char *elf_file = NULL; */
-static ELF_NODE elf_header;
-static ELF_NODE *elf_header_p = &elf_header;
+static Elf_Node elf_header;
+static Elf_Node *elf_header_p = &elf_header;
 /* #endif */
 /* wuyc */
 static char *diff_so_file = NULL;
@@ -94,92 +94,107 @@ static long load_img() {
 #ifdef CONFIG_FTRACE
 static void init_elf() {
   /* FILE *elfp = fopen(elf_file, "r"); */
-  FILE *elfp = fopen(elf_header_p->next->elf_file, "r");
-  if (elfp == NULL)
+  elf_func_header_p = &elf_func_header;
+  Elf_Node *elf_node_p = elf_header_p->next;
+  Elf_Func_Node *func_node_p = elf_func_header_p;
+  func_node_p->next = NULL;
+
+  while (elf_node_p != NULL)
   {
-    return;
-  }
-
-  Elf32_Ehdr ehdr;
-  int ret = fread(&ehdr, sizeof(ehdr), 1, elfp);
-	assert(ret == 1);
-  /* printf("e_shoff = %d\n", ehdr.e_shoff); */
-  /* printf("e_shnum = %d\n", ehdr.e_shnum); */
-  /* printf("e_shstrndx = %d\n", ehdr.e_shstrndx); */
-  fseek(elfp, ehdr.e_shoff, SEEK_SET);
-  
-  Elf32_Shdr *shdr = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * ehdr.e_shnum);
-
-  /* read section header */
-  for(int i = 0; i < ehdr.e_shnum; i++)
-  {
-    ret = fread(&shdr[i], sizeof(Elf32_Shdr), 1, elfp);
-		assert(ret == 1);
-  }
-
-  /* read section header string table */
-  Elf32_Shdr shstrtab_hdr = shdr[ehdr.e_shstrndx];
-  char *shstrtab = (char *)malloc(shstrtab_hdr.sh_size*sizeof(char));
-  fseek(elfp, shstrtab_hdr.sh_offset, SEEK_SET);
-  ret = fread(shstrtab, shstrtab_hdr.sh_size, 1, elfp);
-	assert(ret == 1);
-
-  word_t symtab_ndx = 0, strtab_ndx = 0;
-  for(int i = 0; i < ehdr.e_shnum; i++)
-  {
-    if(strcmp(shstrtab + shdr[i].sh_name, ".symtab") == 0)
-      symtab_ndx = i;
-    else if(strcmp(shstrtab + shdr[i].sh_name, ".strtab") == 0)
-      strtab_ndx = i;
-    /* printf("%s\n", shstrtab + shdr[i].sh_name); */
-  }
-  /* printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx); */
-
-  strtab = (char *)malloc(shdr[strtab_ndx].sh_size * sizeof(char));
-  fseek(elfp, shdr[strtab_ndx].sh_offset, SEEK_SET);
-  ret = fread(strtab, shdr[strtab_ndx].sh_size, 1, elfp);
-	assert(ret == 1);
-  /* printf("%s\n", strtab+1); */
-
-  Elf32_Sym *symtab_hdr = (Elf32_Sym *)malloc(shdr[symtab_ndx].sh_size);
-  fseek(elfp, shdr[symtab_ndx].sh_offset, SEEK_SET);
-  ret = fread(symtab_hdr, shdr[symtab_ndx].sh_size, 1, elfp);
-	assert(ret == 1);
-
-  word_t symtab_num = shdr[symtab_ndx].sh_size / sizeof(Elf32_Sym);
-  func_num = 0;
-  for(int i = 0; i < symtab_num; i++)
-  {
-    if (ELF32_ST_TYPE(symtab_hdr[i].st_info) == STT_FUNC)
+    FILE *elfp = fopen(elf_node_p->elf_file, "r");
+    if (elfp == NULL)
     {
-      func_num++;
+      return;
     }
-  }
 
-  func_hdr = (Func_Hdr *)malloc(func_num * sizeof(Func_Hdr));
-  word_t fhdr_i = 0;
-  for(int i = 0; i < symtab_num; i++)
-  {
-    if (ELF32_ST_TYPE(symtab_hdr[i].st_info) == STT_FUNC)
+    func_node_p->next = (Elf_Func_Node *)malloc(sizeof(Elf_Node));
+    func_node_p = func_node_p->next;
+    func_node_p->next = NULL;
+
+    Elf32_Ehdr ehdr;
+    int ret = fread(&ehdr, sizeof(ehdr), 1, elfp);
+    assert(ret == 1);
+
+    /* printf("e_shoff = %d\n", ehdr.e_shoff); */
+    /* printf("e_shnum = %d\n", ehdr.e_shnum); */
+    /* printf("e_shstrndx = %d\n", ehdr.e_shstrndx); */
+    fseek(elfp, ehdr.e_shoff, SEEK_SET);
+
+    Elf32_Shdr *shdr = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * ehdr.e_shnum);
+    /* read section header */
+    for(int i = 0; i < ehdr.e_shnum; i++)
     {
-      func_hdr[fhdr_i].st_name = symtab_hdr[i].st_name;
-      func_hdr[fhdr_i].st_value = symtab_hdr[i].st_value;
-      func_hdr[fhdr_i].st_size = symtab_hdr[i].st_size;
-      /* printf("value = 0x%08x, size = %4d, name = %s\n", func_hdr[fhdr_i].st_value, func_hdr[fhdr_i].st_size, strtab + func_hdr[fhdr_i].st_name); */
-      fhdr_i++;
+      ret = fread(&shdr[i], sizeof(Elf32_Shdr), 1, elfp);
+      assert(ret == 1);
     }
+
+    /* read section header string table */
+    Elf32_Shdr shstrtab_hdr = shdr[ehdr.e_shstrndx];
+    char *shstrtab = (char *)malloc(shstrtab_hdr.sh_size*sizeof(char));
+    fseek(elfp, shstrtab_hdr.sh_offset, SEEK_SET);
+    ret = fread(shstrtab, shstrtab_hdr.sh_size, 1, elfp);
+    assert(ret == 1);
+
+    word_t symtab_ndx = 0, strtab_ndx = 0;
+    for(int i = 0; i < ehdr.e_shnum; i++)
+    {
+      if(strcmp(shstrtab + shdr[i].sh_name, ".symtab") == 0)
+        symtab_ndx = i;
+      else if(strcmp(shstrtab + shdr[i].sh_name, ".strtab") == 0)
+        strtab_ndx = i;
+      /* printf("%s\n", shstrtab + shdr[i].sh_name); */
+    }
+    /* printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx); */
+
+    func_node_p->strtab = (char *)malloc(shdr[strtab_ndx].sh_size * sizeof(char));
+    fseek(elfp, shdr[strtab_ndx].sh_offset, SEEK_SET);
+    ret = fread(strtab, shdr[strtab_ndx].sh_size, 1, elfp);
+    assert(ret == 1);
+    /* printf("%s\n", strtab+1); */
+
+    Elf32_Sym *symtab_hdr = (Elf32_Sym *)malloc(shdr[symtab_ndx].sh_size);
+    fseek(elfp, shdr[symtab_ndx].sh_offset, SEEK_SET);
+    ret = fread(symtab_hdr, shdr[symtab_ndx].sh_size, 1, elfp);
+    assert(ret == 1);
+
+    word_t symtab_num = shdr[symtab_ndx].sh_size / sizeof(Elf32_Sym);
+    func_node_p->func_num = 0;
+    for(int i = 0; i < symtab_num; i++)
+    {
+      if (ELF32_ST_TYPE(symtab_hdr[i].st_info) == STT_FUNC)
+      {
+        func_node_p->func_num++;
+      }
+    }
+
+    func_node_p->func_hdr = (Func_Hdr *)malloc(func_node_p->func_num * sizeof(Func_Hdr));
+    word_t fhdr_i = 0;
+    for(int i = 0; i < symtab_num; i++)
+    {
+      if (ELF32_ST_TYPE(symtab_hdr[i].st_info) == STT_FUNC)
+      {
+        func_node_p->func_hdr[fhdr_i].st_name = symtab_hdr[i].st_name;
+        func_node_p->func_hdr[fhdr_i].st_value = symtab_hdr[i].st_value;
+        func_node_p->func_hdr[fhdr_i].st_size = symtab_hdr[i].st_size;
+        /* printf("value = 0x%08x, size = %4d, name = %s\n", func_hdr[fhdr_i].st_value, func_hdr[fhdr_i].st_size, strtab + func_hdr[fhdr_i].st_name); */
+        fhdr_i++;
+      }
+    }
+
+    free(shdr);
+    free(shstrtab);
+    free(symtab_hdr);
+    fclose(elfp);
+
+    elf_node_p = elf_node_p->next;
   }
 
-  free(shdr);
-  free(shstrtab);
-  free(symtab_hdr);
-  fclose(elfp);
 }
 #endif
 
 void free_elf()
 {
-  ELF_NODE *p = elf_header_p->next, *q = elf_header_p->next;
+  Elf_Node *p = elf_header_p->next, *q = elf_header_p->next;
   while (p != NULL)
   {
     q = p->next;
@@ -188,8 +203,15 @@ void free_elf()
   }
 
 #ifdef CONFIG_FTRACE
-  free(strtab);
-  free(func_hdr);
+  Elf_Func_Node *func_p = elf_func_header_p->next, *func_q = elf_func_header_p->next;
+  while (func_p != NULL)
+  {
+    free(func_p->strtab);
+    free(func_p->func_hdr);
+    func_q = func_p->next;
+    free(func_p);
+    p = q;
+  }
 #endif
 }
 /* wuyc */
@@ -211,7 +233,7 @@ static int parse_args(int argc, char *argv[]) {
   int o;
   /* wuyc */
   elf_header_p->next = NULL;
-  ELF_NODE *elf_p = elf_header_p;
+  Elf_Node *elf_p = elf_header_p;
   /* while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) { */
   /* wuyc */
   while ( (o = getopt_long(argc, argv, "-bhl:d:p:e:", table, NULL)) != -1) {
@@ -223,7 +245,7 @@ static int parse_args(int argc, char *argv[]) {
       /* wuyc */
 /* #ifdef CONFIG_FTRACE */
       case 'e': 
-                elf_p->next = (ELF_NODE *)malloc(sizeof(ELF_NODE));
+                elf_p->next = (Elf_Node *)malloc(sizeof(Elf_Node));
                 elf_p = elf_p->next;
                 elf_p->elf_file = optarg;
                 elf_p->next = NULL;

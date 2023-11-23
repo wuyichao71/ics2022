@@ -92,16 +92,21 @@ static inline void write_header(vaddr_t pc)
 
 static inline int find_func(vaddr_t pc)
 {
+  Elf_func_node *func_p = elf_func_header_p->next;
   int name_ndx = 0;
-  for(int i = 0; i < func_num; i++)
+  while (func_p != NULL)
   {
-    int pc_diff = pc - func_hdr[i].st_value;
-    if (pc_diff >= 0 && pc_diff < func_hdr[i].st_size)
+    for(int i = 0; i < func_p->func_num; i++)
     {
-      name_ndx = func_hdr[i].st_name;
+      int pc_diff = pc - func_p->func_hdr[i].st_value;
+      if (pc_diff >= 0 && pc_diff < func_p->func_hdr[i].st_size)
+      {
+        name_ndx = func_p->func_hdr[i].st_name;
+        return name_ndx;
+      }
     }
+    func_p = func_p->next;
   }
-  return name_ndx;
 }
 
 static void write_function(Decode *s)
