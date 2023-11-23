@@ -151,7 +151,9 @@ static void write_function(Decode *s)
   else if (IS_RA(rd) && IS_RA(rs1) && rd == rs1)
   {
     write_header(s->pc);
-    log_write("call [@" FMT_WORD "]\n", s->dnpc);
+    fi = find_func(s->dnpc, &fn);
+    assert(fi != -1);
+    log_write("call [@" FMT_WORD "]\n", fn.strtab+1, fi, fn.strtab + fi, s->dnpc);
     level++;
   }
 }
