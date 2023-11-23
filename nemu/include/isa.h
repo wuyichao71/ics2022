@@ -57,8 +57,7 @@ typedef struct elf_func_node
   struct elf_func_node *next;
 } Elf_Func_Node;
 
-extern Elf_Func_Node elf_func_header;
-
+Elf_Func_Node elf_func_header = {};
 extern Elf_Func_Node *elf_func_header_p;
 #endif
 /* wuyc */
