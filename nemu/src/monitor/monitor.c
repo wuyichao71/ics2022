@@ -147,13 +147,13 @@ static void init_elf() {
         strtab_ndx = i;
       /* printf("%s\n", shstrtab + shdr[i].sh_name); */
     }
-    printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx);
+    /* printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx); */
 
     func_node_p->strtab = (char *)malloc(shdr[strtab_ndx].sh_size * sizeof(char));
     fseek(elfp, shdr[strtab_ndx].sh_offset, SEEK_SET);
     ret = fread(func_node_p->strtab, shdr[strtab_ndx].sh_size, 1, elfp);
     assert(ret == 1);
-    /* printf("%s\n", strtab+1); */
+    printf("%s\n", strtab+1);
 
     Elf32_Sym *symtab_hdr = (Elf32_Sym *)malloc(shdr[symtab_ndx].sh_size);
     fseek(elfp, shdr[symtab_ndx].sh_offset, SEEK_SET);
