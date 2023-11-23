@@ -103,7 +103,7 @@ static void init_elf() {
 
   while (elf_node_p != NULL)
   {
-    printf("%s\n", elf_node_p->elf_file);
+    /* printf("%s\n", elf_node_p->elf_file); */
     FILE *elfp = fopen(elf_node_p->elf_file, "r");
     if (elfp == NULL)
     {
@@ -118,9 +118,9 @@ static void init_elf() {
     int ret = fread(&ehdr, sizeof(ehdr), 1, elfp);
     assert(ret == 1);
 
-    /* printf("e_shoff = %d\n", ehdr.e_shoff); */
-    /* printf("e_shnum = %d\n", ehdr.e_shnum); */
-    /* printf("e_shstrndx = %d\n", ehdr.e_shstrndx); */
+    printf("e_shoff = %d\n", ehdr.e_shoff);
+    printf("e_shnum = %d\n", ehdr.e_shnum);
+    printf("e_shstrndx = %d\n", ehdr.e_shstrndx);
     fseek(elfp, ehdr.e_shoff, SEEK_SET);
 
     Elf32_Shdr *shdr = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * ehdr.e_shnum);
