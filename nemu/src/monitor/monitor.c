@@ -212,7 +212,7 @@ static int parse_args(int argc, char *argv[]) {
       /* wuyc */
 /* #ifdef CONFIG_FTRACE */
       case 'e': 
-                elf_p->next = (ELF_NODE *)malloc(ELF_NODE);
+                elf_p->next = (ELF_NODE *)malloc(sizeof(ELF_NODE));
                 elf_p = elf_p->next;
                 elf_p->elf_file = optarg;
                 elf_p->next = NULL;
