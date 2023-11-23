@@ -210,7 +210,7 @@ void free_elf()
     free(func_p->func_hdr);
     func_q = func_p->next;
     free(func_p);
-    p = q;
+    func_p = func_q;
   }
 #endif
 }
