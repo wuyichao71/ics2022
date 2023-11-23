@@ -113,12 +113,13 @@ static inline int find_func(vaddr_t pc, Elf_Func_Node *out_func_p)
 
 static void write_function(Decode *s)
 {
+  /*
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
   int rd  = BITS(i, 11, 7);
   int fi;
   Elf_Func_Node fn = {};
-  /* printf("rs1 = %d, rd = %d\n", rs1, rd); */
+  printf("rs1 = %d, rd = %d\n", rs1, rd);
 
   if (!IS_RA(rd) && IS_RA(rs1))
   {
@@ -150,6 +151,7 @@ static void write_function(Decode *s)
     log_write("call [@" FMT_WORD "]\n", s->dnpc);
     level++;
   }
+  */
 }
 
 #define JUMP(...) do { \
