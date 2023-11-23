@@ -109,7 +109,7 @@ static void init_elf() {
       return;
     }
 
-    func_node_p->next = (Elf_Func_Node *)malloc(sizeof(Elf_Node));
+    func_node_p->next = (Elf_Func_Node *)malloc(sizeof(Elf_Func_Node));
     func_node_p = func_node_p->next;
     func_node_p->next = NULL;
 
