@@ -103,6 +103,7 @@ static void init_elf() {
 
   while (elf_node_p != NULL)
   {
+    printf("%s\n", elf_node_p->elf_file);
     FILE *elfp = fopen(elf_node_p->elf_file, "r");
     if (elfp == NULL)
     {
