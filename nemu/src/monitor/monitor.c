@@ -153,7 +153,7 @@ static void init_elf() {
     fseek(elfp, shdr[strtab_ndx].sh_offset, SEEK_SET);
     ret = fread(func_node_p->strtab, shdr[strtab_ndx].sh_size, 1, elfp);
     assert(ret == 1);
-    printf("%s\n", func_node_p->strtab+1);
+    /* printf("%s\n", func_node_p->strtab+1); */
 
     Elf32_Sym *symtab_hdr = (Elf32_Sym *)malloc(shdr[symtab_ndx].sh_size);
     fseek(elfp, shdr[symtab_ndx].sh_offset, SEEK_SET);
@@ -169,6 +169,7 @@ static void init_elf() {
         func_node_p->func_num++;
       }
     }
+    printf("func_num = %d\n", func_node_p->func_num);
 
     func_node_p->func_hdr = (Func_Hdr *)malloc(func_node_p->func_num * sizeof(Func_Hdr));
     word_t fhdr_i = 0;
