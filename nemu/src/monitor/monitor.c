@@ -62,7 +62,6 @@ static char *log_file = NULL;
 /* static char *elf_file = NULL; */
 static ELF_NODE elf_header;
 static ELF_NODE *elf_header_p = &elf_header;
-static ELF_NODE *elf_p = &elf_header;
 /* #endif */
 /* wuyc */
 static char *diff_so_file = NULL;
@@ -176,15 +175,23 @@ static void init_elf() {
   free(symtab_hdr);
   fclose(elfp);
 }
+#endif
 
 void free_elf()
 {
+  ELF_NODE *p = elf_header_p->next, *q = elf_header_p->next;
+  while (p != NULL)
+  {
+    q = p->next;
+    free(p);
+    p = q;
+  }
+
 #ifdef CONFIG_FTRACE
   free(strtab);
   free(func_hdr);
 #endif
 }
-#endif
 /* wuyc */
 
 static int parse_args(int argc, char *argv[]) {
@@ -203,6 +210,8 @@ static int parse_args(int argc, char *argv[]) {
   };
   int o;
   /* wuyc */
+  elf_header_p->next = NULL;
+  ELF_NODE *elf_p = elf_header_p;
   /* while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) { */
   /* wuyc */
   while ( (o = getopt_long(argc, argv, "-bhl:d:p:e:", table, NULL)) != -1) {

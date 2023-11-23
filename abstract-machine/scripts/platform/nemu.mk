@@ -19,8 +19,8 @@ ifneq ($(RAMDISK),)
 #   $(error $(RAMDISK))
   NEMUFLAGS += -e $(RAMDISK)
 endif
-$(info $(shell dirname $(IMAGE).elf))
-$(info $(RAMDISK))
+# $(info $(shell dirname $(IMAGE).elf))
+# $(info $(RAMDISK))
 NEMU_BATCH_FLAGS += $(NEMUFLAGS) --batch
 # wuyc
 
