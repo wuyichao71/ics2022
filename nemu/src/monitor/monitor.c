@@ -60,6 +60,9 @@ static char *log_file = NULL;
 /* wuyc */
 /* #ifdef CONFIG_FTRACE */
 static char *elf_file = NULL;
+static ELF_NODE elf_header;
+static ELF_NODE *elf_header_p = &elf_header;
+static ELF_NODE *elf_p = &elf_header;
 /* #endif */
 /* wuyc */
 static char *diff_so_file = NULL;
@@ -207,7 +210,13 @@ static int parse_args(int argc, char *argv[]) {
       case 'd': diff_so_file = optarg; break;
       /* wuyc */
 /* #ifdef CONFIG_FTRACE */
-      case 'e': elf_file = optarg; break;
+      case 'e': 
+                elf_p->next = (ELF_NODE *)malloc(ELF_NODE);
+                elf_p = elf_p->next;
+                elf_p->elf_file = optarg;
+                elf_p->next = NULL;
+                /* elf_file = optarg; */ 
+                break;
 /* #endif */
       /* wuyc */
       case 1: img_file = optarg; return 0;

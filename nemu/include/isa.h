@@ -31,6 +31,12 @@ typedef concat(__GUEST_ISA__, _ISADecodeInfo) ISADecodeInfo;
 extern char isa_logo[];
 void init_isa();
 /* wuyc */
+
+typedef struct elf_node
+{
+  char *elf_file;
+  struct elf_node *next;
+} ELF_NODE;
 #ifdef CONFIG_FTRACE
 extern char *strtab;
 typedef struct
