@@ -118,9 +118,9 @@ static void init_elf() {
     int ret = fread(&ehdr, sizeof(ehdr), 1, elfp);
     assert(ret == 1);
 
-    printf("e_shoff = %d\n", ehdr.e_shoff);
-    printf("e_shnum = %d\n", ehdr.e_shnum);
-    printf("e_shstrndx = %d\n", ehdr.e_shstrndx);
+    /* printf("e_shoff = %d\n", ehdr.e_shoff); */
+    /* printf("e_shnum = %d\n", ehdr.e_shnum); */
+    /* printf("e_shstrndx = %d\n", ehdr.e_shstrndx); */
     fseek(elfp, ehdr.e_shoff, SEEK_SET);
 
     Elf32_Shdr *shdr = (Elf32_Shdr *)malloc(sizeof(Elf32_Shdr) * ehdr.e_shnum);
@@ -145,7 +145,7 @@ static void init_elf() {
         symtab_ndx = i;
       else if(strcmp(shstrtab + shdr[i].sh_name, ".strtab") == 0)
         strtab_ndx = i;
-      /* printf("%s\n", shstrtab + shdr[i].sh_name); */
+      printf("%s\n", shstrtab + shdr[i].sh_name);
     }
     /* printf("symtab = %d, strtab = %d\n", symtab_ndx, strtab_ndx); */
 
@@ -190,6 +190,7 @@ static void init_elf() {
     fclose(elfp);
 
     elf_node_p = elf_node_p->next;
+    printf("--------------------\n");
   }
 
 }
