@@ -29,7 +29,8 @@ Context* __am_irq_handle(Context *c) {
       case 4:
       case 9:
         ev.event = EVENT_SYSCALL; c->mepc += 4; break;
-      case -1: ev.event = EVENT_YIELD; c->mepc += 4; break;
+      case -1: 
+        ev.event = EVENT_YIELD  ; c->mepc += 4; break;
       /* wuyc */
       default: ev.event = EVENT_ERROR; break;
     }
