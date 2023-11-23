@@ -92,7 +92,7 @@ static inline void write_header(vaddr_t pc)
 
 static inline int find_func(vaddr_t pc)
 {
-  Elf_func_node *func_p = elf_func_header_p->next;
+  Elf_Func_Node *func_p = elf_func_header_p->next;
   int name_ndx = 0;
   while (func_p != NULL)
   {
