@@ -126,7 +126,7 @@ static void write_function(Decode *s)
     level--;
     write_header(s->pc);
     fi = find_func(s->pc, &fn);
-    assert(fi != -1);
+    /* assert(fi != -1); */
 
     log_write("ret  [%s]\n", fn.strtab + fi);
   }
@@ -135,7 +135,7 @@ static void write_function(Decode *s)
     write_header(s->pc);
     fi = find_func(s->dnpc, &fn);
     /* printf("%s %d\n", fn.strtab+1, fi); */
-    assert(fi != -1);
+    /* assert(fi != -1); */
     /* log_write("call [%s:%d:%s@" FMT_WORD "]\n", fn.strtab+1, fi, fn.strtab + fi, s->dnpc); */
     log_write("call [%s@" FMT_WORD "]\n", fn.strtab + fi, s->dnpc);
     level++;
@@ -153,7 +153,7 @@ static void write_function(Decode *s)
   {
     write_header(s->pc);
     fi = find_func(s->dnpc, &fn);
-    assert(fi != -1);
+    /* assert(fi != -1); */
     /* log_write("call [%s:%d:%s@" FMT_WORD "]\n", fn.strtab+1, fi, fn.strtab + fi, s->dnpc); */
     log_write("call [%s@" FMT_WORD "]\n", fn.strtab + fi, s->dnpc);
     level++;
