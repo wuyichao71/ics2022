@@ -93,7 +93,7 @@ static inline void write_header(vaddr_t pc)
 static inline int find_func(vaddr_t pc, Elf_Func_Node *out_func_p)
 {
   Elf_Func_Node *func_p = elf_func_header_p->next;
-  int name_ndx = -1;
+  int name_ndx = 0;
   while (func_p != NULL)
   {
     for(int i = 0; i < func_p->func_num; i++)
@@ -106,9 +106,10 @@ static inline int find_func(vaddr_t pc, Elf_Func_Node *out_func_p)
         return name_ndx;
       }
     }
+    *out_func_p = *elf_func_header_p;
     func_p = func_p->next;
   }
-  return -1;
+  return 0;
 }
 
 static void write_function(Decode *s)
