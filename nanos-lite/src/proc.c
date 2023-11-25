@@ -27,7 +27,7 @@ void init_proc() {
 
   Log("Initializing processes...");
   /* wuyc */
-  naive_uload(NULL, "/bin/hello");
+  naive_uload(NULL, "/bin/file-test");
   /* wuyc */
 
   // load program here
