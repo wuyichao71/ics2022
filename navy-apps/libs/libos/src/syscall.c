@@ -5,7 +5,7 @@
 #include <time.h>
 #include "syscall.h"
 /* wuyc */
-#include <stdio.h>
+/* #include <stdio.h> */
 /* wuyc */
 
 // helper macros
@@ -60,7 +60,7 @@ void _exit(int status) {
 }
 
 int _open(const char *path, int flags, mode_t mode) {
-  printf("Current\n");
+  /* printf("Current\n"); */
   _exit(SYS_open);
   return 0;
 }
