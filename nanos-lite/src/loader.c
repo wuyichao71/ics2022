@@ -17,10 +17,10 @@
 static uintptr_t loader(PCB *pcb, const char *filename) {
   /* TODO(); */
   int fd = fs_open(filename, 0, 0);
-  printf("%d\n", fd);
+  /* printf("%d\n", fd); */
   Elf_Ehdr ehdr;
   /* int phsize; */
-  fs_read(fd, &ehdr, sizeof(ehdr));
+  fs_read(fd, &ehdr, sizeof(Elf_Ehdr));
   /* assert(*(uint32_t *)ehdr.e_ident == 0xBadC0de); */
   assert(*(uint32_t *)ehdr.e_ident == *(uint32_t *)"\x7F""ELF");
   assert(ehdr.e_machine == EXCEPT_TYPE);
@@ -29,10 +29,12 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   /* panic("Stop"); */
   Elf_Phdr phdr[ehdr.e_phnum];
   printf("%d\n", ehdr.e_phnum);
-  panic("Stop");
+  /* panic("Stop"); */
   /* Elf_Phdr *phdr = (Elf_Phdr *)(&ramdisk_start + ehdr.e_phoff); */
   size_t phsize = ehdr.e_phnum * sizeof(Elf_Phdr);
   /* phdr = (Elf_Phdr *)malloc(phsize); */
+  printf("%d, %d\n", sizeof(Elf_Ehdr), ehdr.e_phoff);
+  panic("Stop");
   ramdisk_read(phdr, ehdr.e_phoff, phsize);
   for (int i = 0; i < ehdr.e_phnum; i++)
   {
