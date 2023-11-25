@@ -24,12 +24,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   /* assert(*(uint32_t *)ehdr.e_ident == 0xBadC0de); */
   assert(*(uint32_t *)ehdr.e_ident == *(uint32_t *)"\x7F""ELF");
   assert(ehdr.e_machine == EXCEPT_TYPE);
-  /* printf("0x%x\n", *(uint32_t *)ehdr.e_ident); */
-  /* Elf_Phdr phdr[ehdr.e_phnum]; */
-  Elf_Phdr *phdr = (Elf_Phdr *)(&ramdisk_start + ehdr.e_phoff);
-  /* phsize = ehdr.e_phnum * sizeof(Elf_Phdr); */
+  printf("0x%x\n", *(uint32_t *)ehdr.e_ident);
+  panic("Stop");
+  Elf_Phdr phdr[ehdr.e_phnum];
+  /* Elf_Phdr *phdr = (Elf_Phdr *)(&ramdisk_start + ehdr.e_phoff); */
+  size_t phsize = ehdr.e_phnum * sizeof(Elf_Phdr);
   /* phdr = (Elf_Phdr *)malloc(phsize); */
-  /* ramdisk_read(phdr, ehdr.e_phoff, phsize); */
+  ramdisk_read(phdr, ehdr.e_phoff, phsize);
   for (int i = 0; i < ehdr.e_phnum; i++)
   {
     if (phdr[i].p_type == PT_LOAD)

@@ -1,4 +1,7 @@
 #include <fs.h>
+/* wuyc */
+#include <ramdisk.h>
+/* wuyc */
 
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
@@ -39,7 +42,7 @@ int fs_open(const char *pathname, int flags, int mode)
   int i;
   for (i = 0; i < file_n; i++)
   {
-    printf("%d\n", file_table[i].open_offset);
+    /* printf("%d\n", file_table[i].open_offset); */
     if (strcmp(pathname, file_table[i].name) == 0)
     {
       return i;
@@ -52,7 +55,13 @@ int fs_open(const char *pathname, int flags, int mode)
 
 size_t fs_read(int fd, void *buf, size_t len)
 {
-  return 0;
+  Finfo finfo = file_table[fd];
+  int new_offset = finfo.open_offset + len;
+  if (finfo.open_offset >= finfo.size || new_offset > finfo.size)
+    panic("Out of file");
+  ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len);
+  file_table[fd].open_offset += new_offset;
+  return len;
 }
 
 void init_fs() {
