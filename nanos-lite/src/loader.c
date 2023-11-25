@@ -41,7 +41,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   /* panic("Stop"); */
   for (int i = 0; i < ehdr.e_phnum; i++)
   {
-    printf("%d\n", phdr[i].p_offset);
+    printf("0x%08x\n", phdr[i].p_offset);
     /*
     if (phdr[i].p_type == PT_LOAD)
     {
