@@ -61,8 +61,8 @@ void _exit(int status) {
 
 int _open(const char *path, int flags, mode_t mode) {
   /* printf("Current\n"); */
-  /* _exit(SYS_open); */
-  _exit(0);
+  _exit(SYS_open);
+  /* _exit(0); */
   return 0;
 }
 
