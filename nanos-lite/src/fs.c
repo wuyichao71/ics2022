@@ -31,6 +31,16 @@ static Finfo file_table[] __attribute__((used)) = {
 #include "files.h"
 };
 
+int fs_open(const char *pathname, int flags, int mode)
+{
+  int file_n = sizeof(file_table) / sizeof(Finfo);
+  for (int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++)
+  {
+    printf("%d\n", file_n);
+  }
+  return 0;
+}
+
 void init_fs() {
   // TODO: initialize the size of /dev/fb
 }

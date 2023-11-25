@@ -3,6 +3,7 @@
 /* wuyc */
 #include <ramdisk.h>
 #include <loader.h>
+#include <fs.h>
 /* wuyc */
 
 #ifdef __LP64__
