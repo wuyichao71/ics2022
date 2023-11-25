@@ -28,14 +28,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   /* printf("0x%08x\n", ehdr.e_entry); */
   /* panic("Stop"); */
   Elf_Phdr phdr[ehdr.e_phnum];
-  printf("%d\n", ehdr.e_phnum);
+  /* printf("%d\n", ehdr.e_phnum); */
   /* panic("Stop"); */
   /* Elf_Phdr *phdr = (Elf_Phdr *)(&ramdisk_start + ehdr.e_phoff); */
   size_t phsize = ehdr.e_phnum * sizeof(Elf_Phdr);
   /* phdr = (Elf_Phdr *)malloc(phsize); */
   /* printf("%d, %d\n", sizeof(Elf_Ehdr), ehdr.e_phoff); */
   /* panic("Stop"); */
-  fs_read(fd, &ehdr, sizeof(Elf_Ehdr));
+  /* fs_read(fd, &ehdr, sizeof(Elf_Ehdr)); */
   fs_lseek(fd, ehdr.e_phoff, SEEK_SET);
   fs_read(fd, &phdr, phsize);
   /* panic("Stop"); */
