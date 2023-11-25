@@ -61,6 +61,7 @@ void _exit(int status) {
 
 int _open(const char *path, int flags, mode_t mode) {
   /* printf("Current\n"); */
+  write(1, "H\n", 2);
   _exit(SYS_open);
   return 0;
 }
