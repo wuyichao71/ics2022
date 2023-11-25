@@ -57,10 +57,19 @@ size_t fs_read(int fd, void *buf, size_t len)
 {
   Finfo finfo = file_table[fd];
   int new_offset = finfo.open_offset + len;
-  if (finfo.open_offset >= finfo.size || new_offset > finfo.size)
-    panic("Out of file");
+  /* if (finfo.open_offset >= finfo.size || new_offset > finfo.size) */
+    /* panic("Out of file"); */
+  if (new_offset > finfo.size)
+  {
+    new_offset = finfo.size;
+    len = finfo.size - finfo.open_offset;
+  }
+  
+  if (len == 0)
+    return 0;
+
   ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len);
-  file_table[fd].open_offset += new_offset;
+  file_table[fd].open_offset = new_offset;
   return len;
 }
 
