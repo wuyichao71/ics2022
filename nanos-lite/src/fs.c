@@ -9,6 +9,7 @@ typedef struct {
   size_t disk_offset;
   ReadFn read;
   WriteFn write;
+  size_t open_offset;
 } Finfo;
 
 enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
@@ -31,12 +32,14 @@ static Finfo file_table[] __attribute__((used)) = {
 #include "files.h"
 };
 
+/* wuyc */
 int fs_open(const char *pathname, int flags, int mode)
 {
   int file_n = sizeof(file_table) / sizeof(Finfo);
   int i;
   for (i = 0; i < file_n; i++)
   {
+    printf("%d\n", file_table[i].open_offset);
     if (strcmp(pathname, file_table[i].name) == 0)
     {
       return i;
@@ -44,6 +47,12 @@ int fs_open(const char *pathname, int flags, int mode)
   }
   assert(i == file_n);
   return -1;
+}
+/* wuyc */
+
+size_t fs_read(int fd, void *buf, size_t len)
+{
+  return 0;
 }
 
 void init_fs() {

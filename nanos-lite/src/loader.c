@@ -20,7 +20,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("%d\n", fd);
   Elf_Ehdr ehdr;
   /* int phsize; */
-  ramdisk_read(&ehdr, 0, sizeof(ehdr));
+  fs_read(fd, &ehdr, sizeof(ehdr));
   /* assert(*(uint32_t *)ehdr.e_ident == 0xBadC0de); */
   assert(*(uint32_t *)ehdr.e_ident == *(uint32_t *)"\x7F""ELF");
   assert(ehdr.e_machine == EXCEPT_TYPE);
