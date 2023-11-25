@@ -34,11 +34,16 @@ static Finfo file_table[] __attribute__((used)) = {
 int fs_open(const char *pathname, int flags, int mode)
 {
   int file_n = sizeof(file_table) / sizeof(Finfo);
-  for (int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++)
+  int i;
+  for (i = 0; i < file_n; i++)
   {
-    printf("%d\n", file_n);
+    if (strcmp(pathname, file_table[i].name) == 0)
+    {
+      return i;
+    }
   }
-  return 0;
+  assert(i == file_n);
+  return -1;
 }
 
 void init_fs() {
