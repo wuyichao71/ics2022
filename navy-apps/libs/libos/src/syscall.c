@@ -4,6 +4,9 @@
 #include <assert.h>
 #include <time.h>
 #include "syscall.h"
+/* wuyc */
+#include <stdio.h>
+/* wuyc */
 
 // helper macros
 #define _concat(x, y) x ## y
