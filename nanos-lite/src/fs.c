@@ -51,7 +51,6 @@ int fs_open(const char *pathname, int flags, int mode)
   assert(i == file_n);
   return -1;
 }
-/* wuyc */
 
 size_t fs_read(int fd, void *buf, size_t len)
 {
@@ -72,6 +71,33 @@ size_t fs_read(int fd, void *buf, size_t len)
   file_table[fd].open_offset = new_offset;
   return len;
 }
+
+size_t fs_lseek(int fd, size_t offset, int whence)
+{
+  size_t new_offset;
+  switch (whence)
+  {
+    case SEEK_SET:
+      new_offset = offset;
+      break;
+    case SEEK_CUR:
+      new_offset = file_table[fd].open_offset + offset;
+      break;
+    case SEEK_END:
+      new_offset = file_table[fd].size + offset;
+      break;
+    default:
+      panic("should not reach here");
+  }
+
+  if (new_offset <= file_table[fd].size)
+  {
+    file_table[fd].open_offset = new_offset;
+    return new_offset;
+  }
+  return -1;
+}
+/* wuyc */
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
