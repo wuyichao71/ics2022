@@ -25,8 +25,8 @@ Context* __am_irq_handle(Context *c) {
     switch (c->mcause) {
       /* wuyc */
       case 0: 
-      case 2: 
       case 1: 
+      case 2: 
       case 4:
       case 9:
         ev.event = EVENT_SYSCALL; c->mepc += 4; break;

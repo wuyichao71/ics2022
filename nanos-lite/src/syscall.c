@@ -2,6 +2,7 @@
 #include "syscall.h"
 
 /* wuyc */
+#include <fs.h>
 /* #define __STRACE__ */
 #ifdef __STRACE__
 # define SYS_format(format) format "         = %d"
@@ -12,8 +13,9 @@
 #endif
 
 void sys_exit(int code);
-size_t sys_write(int fd, const void *buf, size_t count);
 uintptr_t sys_yield();
+int sys_open(const char *path, int flags, int mode);
+size_t sys_write(int fd, const void *buf, size_t count);
 int sys_brk(intptr_t addr);
 
 /* wuyc */
@@ -36,6 +38,10 @@ void do_syscall(Context *c) {
     case SYS_yield: 
       c->GPRx = sys_yield(); 
       STRACE(sys_yield, SYS_format("()"), c->GPRx); 
+      break;
+    case SYS_open:
+      c->GPRx = sys_open((const char *)a[1], a[2], a[3]);
+      STRACE(sys_open, SYS_format("(0x%08x, %d, %d)"), a[1], a[2], a[3], c->GPRx);
       break;
     case SYS_write: 
       c->GPRx = sys_write(a[1], (const void *)a[2], a[3]); 
@@ -62,6 +68,11 @@ uintptr_t sys_yield()
 void sys_exit(int code)
 {
   halt(code);
+}
+
+int sys_open(const char *path, int flags, int mode)
+{
+  return fs_open(path, flags, mode);
 }
 
 size_t sys_write(int fd, const void *buf, size_t count)
