@@ -25,6 +25,7 @@ Context* __am_irq_handle(Context *c) {
     switch (c->mcause) {
       /* wuyc */
       case 0: 
+      case 2: 
       case 1: 
       case 4:
       case 9:
