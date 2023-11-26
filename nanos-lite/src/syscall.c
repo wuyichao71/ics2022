@@ -15,6 +15,7 @@
 void sys_exit(int code);
 uintptr_t sys_yield();
 int sys_open(const char *path, int flags, int mode);
+size_t sys_read(int fd, void *buf, size_t len);
 size_t sys_write(int fd, const void *buf, size_t count);
 size_t sys_lseek(int fd, size_t offset, int whence);
 int sys_brk(intptr_t addr);
@@ -44,6 +45,10 @@ void do_syscall(Context *c) {
       c->GPRx = sys_open((const char *)a[1], a[2], a[3]);
       STRACE(sys_open, SYS_format("(\"%s\", %d, %d)"), a[1], a[2], a[3], c->GPRx);
       break;
+    case SYS_read:
+      c->GPRx = sys_read(a[1], (char *)a[2], a[3]);
+      STRACE(sys_read, SYS_format("(%d, 0x%08x, %d)"), a[1], a[2], a[3], c->GPRx);
+      break; 
     case SYS_write: 
       c->GPRx = sys_write(a[1], (const void *)a[2], a[3]); 
       STRACE(sys_write, SYS_format("(%d, 0x%08x, %d)"), a[1], a[2], a[3], c->GPRx); 
@@ -90,6 +95,11 @@ size_t sys_write(int fd, const void *buf, size_t count)
     }
   }
   return count;
+}
+
+size_t sys_read(int fd, void *buf, size_t len)
+{
+  return fs_read(fd, buf, len);
 }
 
 size_t sys_lseek(int fd, size_t offset, int whence)
