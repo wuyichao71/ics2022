@@ -41,7 +41,7 @@ void do_syscall(Context *c) {
       break;
     case SYS_open:
       c->GPRx = sys_open((const char *)a[1], a[2], a[3]);
-      STRACE(sys_open, SYS_format("(%s, %d, %d)"), a[1], a[2], a[3], c->GPRx);
+      STRACE(sys_open, SYS_format("(\"%s\", %d, %d)"), a[1], a[2], a[3], c->GPRx);
       break;
     case SYS_write: 
       c->GPRx = sys_write(a[1], (const void *)a[2], a[3]); 
