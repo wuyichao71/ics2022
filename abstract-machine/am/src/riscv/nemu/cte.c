@@ -29,6 +29,7 @@ Context* __am_irq_handle(Context *c) {
       case 2: 
       case 3:
       case 4:
+      case 7:
       case 8:
       case 9:
         ev.event = EVENT_SYSCALL; c->mepc += 4; break;
