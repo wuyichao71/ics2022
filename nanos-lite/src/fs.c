@@ -52,24 +52,30 @@ int fs_open(const char *pathname, int flags, int mode)
   return -1;
 }
 
+#define FS_CMD(cmd) { \
+  Finfo finfo = file_table[fd]; \
+  int new_offset = finfo.open_offset + len; \
+  if (new_offset > finfo.size) \
+  { \
+    new_offset = finfo.size; \
+    len = finfo.size - finfo.open_offset; \
+  } \
+  if (len == 0) \
+    return 0; \
+  cmd; \
+  file_table[fd].open_offset = new_offset; \
+  return len; \
+} while(0)
+
+size_t fs_write(int fd, const void *buf, size_t len)
+{
+  FS_CMD(ramdisk_write(buf, finfo.disk_offset + finfo.open_offset, len));
+}
 size_t fs_read(int fd, void *buf, size_t len)
 {
-  Finfo finfo = file_table[fd];
-  int new_offset = finfo.open_offset + len;
   /* if (finfo.open_offset >= finfo.size || new_offset > finfo.size) */
     /* panic("Out of file"); */
-  if (new_offset > finfo.size)
-  {
-    new_offset = finfo.size;
-    len = finfo.size - finfo.open_offset;
-  }
-  
-  if (len == 0)
-    return 0;
-
-  ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len);
-  file_table[fd].open_offset = new_offset;
-  return len;
+  FS_CMD(ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len));
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence)

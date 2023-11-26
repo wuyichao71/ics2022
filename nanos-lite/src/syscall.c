@@ -55,7 +55,7 @@ void do_syscall(Context *c) {
       break;
     case SYS_lseek:
       c->GPRx = sys_lseek(a[1], a[2], a[3]);
-      STRACE(sys_lseek, SYS_format("(%d, %d, %d)"), a[1], a[2], a[3], c->GPRx); 
+      STRACE(sys_lseek, SYS_format("(\"%s\", %d, %d)"), a[1], a[2], a[3], c->GPRx); 
       break;
     case SYS_brk: 
       c->GPRx = sys_brk(a[1]); 
@@ -93,6 +93,10 @@ size_t sys_write(int fd, const void *buf, size_t count)
     {
       putch(((char *)buf)[i]);
     }
+  }
+  else
+  {
+    return fs_write(fd, buf, count);
   }
   return count;
 }
