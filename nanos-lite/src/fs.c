@@ -97,6 +97,11 @@ size_t fs_lseek(int fd, size_t offset, int whence)
   }
   return -1;
 }
+
+int fs_close(int fd)
+{
+  return 0;
+}
 /* wuyc */
 
 void init_fs() {

@@ -55,6 +55,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   /* printf("Elf_Ehdr = %p\n", ehdr.e_entry); */
 
   /* panic("Stop"); */
+  fs_close(fd);
   return ehdr.e_entry;
 }
 
