@@ -3,19 +3,18 @@
 
 int main()
 {
-  float sec = 0.5;
-  float us;
+  int sec = 1;
+  int us;
   struct timeval tv;
   
   while (1)
   {
     do
     {
-      struct timeval tv;
       gettimeofday(&tv, NULL);
-      us = tv.tv_sec + tv.tv_usec / 1000000.;
-    } while (us < sec);
+      us = tv.tv_sec * 1000000 + tv.tv_usec;
+    } while (us / 500000 < sec);
     printf("Hello World at %d second %d microsecond\n", tv.tv_sec, tv.tv_usec);
-    sec += 0.5;
+    sec += 1;
   }
 }
