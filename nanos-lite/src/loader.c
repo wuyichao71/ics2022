@@ -22,9 +22,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   /* int phsize; */
   fs_read(fd, &ehdr, sizeof(Elf_Ehdr));
   /* assert(*(uint32_t *)ehdr.e_ident == 0xBadC0de); */
+  printf("0x%x\n", *(uint32_t *)ehdr.e_ident);
   assert(*(uint32_t *)ehdr.e_ident == *(uint32_t *)"\x7F""ELF");
   assert(ehdr.e_machine == EXCEPT_TYPE);
-  /* printf("0x%x\n", *(uint32_t *)ehdr.e_ident); */
   /* printf("0x%08x\n", ehdr.e_entry); */
   /* panic("Stop"); */
   Elf_Phdr phdr[ehdr.e_phnum];
