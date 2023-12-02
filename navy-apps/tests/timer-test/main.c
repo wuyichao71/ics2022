@@ -13,7 +13,7 @@ int main()
     {
       struct timeval tv;
       gettimeofday(&tv, NULL);
-      us = tv.tv_sec + tv.tv_usec / 1000000;
+      us = tv.tv_sec + tv.tv_usec / 1000000.;
     } while (us < sec);
     printf("Hello World at %d second %d microsecond\n", tv.tv_sec, tv.tv_usec);
     sec += 0.5;
