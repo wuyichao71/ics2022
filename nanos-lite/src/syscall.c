@@ -3,6 +3,7 @@
 
 /* wuyc */
 #include <fs.h>
+#include <sys/time.h>
 /* #define __STRACE__ */
 #ifdef __STRACE__
 # define SYS_format(format) format "         = %d"
@@ -20,6 +21,7 @@ size_t sys_write(int fd, const void *buf, size_t count);
 size_t sys_lseek(int fd, size_t offset, int whence);
 int sys_close(int fd);
 int sys_brk(intptr_t addr);
+int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
 
 /* wuyc */
 void do_syscall(Context *c) {
@@ -65,6 +67,10 @@ void do_syscall(Context *c) {
     case SYS_brk: 
       c->GPRx = sys_brk(a[1]); 
       STRACE(sys_brk, SYS_format("(0x%08x)"), a[1], c->GPRx);
+      break;
+    case SYS_gettimeofday:
+      c->GPRx = sys_gettimeofday((struct timeval *)a[1], (struct timezone *)a[2]);
+      STRACE(sys_gettimeofday, SYS_format("(0x%08x, 0x%08x)"), a[1], a[2]);
       break;
     /* wuyc */
     default: 
@@ -114,6 +120,14 @@ int sys_brk(intptr_t addr)
 {
   static intptr_t program_break;
   *(&program_break) = addr;
+  return 0;
+}
+
+int sys_gettimeofday(struct timeval *tv, struct timezone *tz)
+{
+  uint64_t us = io_read(AM_TIMER_UPTIME).us;
+  tv->tv_sec = us / 1000000;
+  tv->tv_usec = us % 1000000;
   return 0;
 }
 /* wuyc */
