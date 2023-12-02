@@ -48,23 +48,23 @@ void do_syscall(Context *c) {
       break;
     case SYS_read:
       c->GPRx = sys_read(a[1], (char *)a[2], a[3]);
-      STRACE(sys_read, SYS_format("(\"%s\", 0x%08x, %d)"), get_filename(a[1]), a[2], a[3], c->GPRx);
+      STRACE(sys_read, SYS_format("(\"%s\", 0x%08x, %d)"), get_filename(a[1]).name, a[2], a[3], c->GPRx);
       break; 
     case SYS_write: 
       c->GPRx = sys_write(a[1], (const void *)a[2], a[3]); 
-      STRACE(sys_write, SYS_format("(\"%s\", 0x%08x, %d)"), get_filename(a[1]), a[2], a[3], c->GPRx); 
+      STRACE(sys_write, SYS_format("(\"%s\", 0x%08x, %d)"), get_filename(a[1]).name, a[2], a[3], c->GPRx); 
       break;
     case SYS_lseek:
       c->GPRx = sys_lseek(a[1], a[2], a[3]);
-      STRACE(sys_lseek, SYS_format("(\"%s\", %d, %d)"), get_filename(a[1]), a[2], a[3], c->GPRx); 
+      STRACE(sys_lseek, SYS_format("(\"%s\", %d, %d)"), get_filename(a[1]).name, a[2], a[3], c->GPRx); 
       break;
     case SYS_close:
       c->GPRx = sys_close(a[1]);
-      STRACE(sys_close, SYS_format("(\"%s\")"), get_filename(a[1]), c->GPRx);
+      STRACE(sys_close, SYS_format("(\"%s\")"), get_filename(a[1]).name, c->GPRx);
       break;
     case SYS_brk: 
       c->GPRx = sys_brk(a[1]); 
-      STRACE(sys_brk, SYS_format("(0x%08x)"), a[1], c->GPRx); 
+      STRACE(sys_brk, SYS_format("(0x%08x)"), a[1], c->GPRx);
       break;
     /* wuyc */
     default: 
@@ -92,18 +92,7 @@ int sys_open(const char *path, int flags, int mode)
 
 size_t sys_write(int fd, const void *buf, size_t count)
 {
-  if (fd == 1 || fd == 2)
-  {
-    for (int i = 0; i < count; i++)
-    {
-      putch(((char *)buf)[i]);
-    }
-  }
-  else
-  {
-    return fs_write(fd, buf, count);
-  }
-  return count;
+  return fs_write(fd, buf, count);
 }
 
 size_t sys_read(int fd, void *buf, size_t len)
