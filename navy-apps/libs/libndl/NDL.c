@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 /* wuyc */
-/* #include <sys/time.h> */
+#include <sys/time.h>
 /* wuyc */
 static int evtdev = -1;
 static int fbdev = -1;
