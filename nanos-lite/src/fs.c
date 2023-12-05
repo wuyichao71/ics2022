@@ -36,7 +36,7 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
   /* wuyc */
 #include "files.h"
-  {"/dev/events", 0, 0, event_read, invalid_write},
+  {"/dev/events", 0, 0, events_read, invalid_write},
 };
 
 /* wuyc */
