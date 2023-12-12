@@ -101,7 +101,6 @@ size_t fs_read(int fd, void *buf, size_t len)
   }
   else
   {
-    printf("%d\n", len);
     return file_table[fd].read(buf, 0, len);
   }
 }
