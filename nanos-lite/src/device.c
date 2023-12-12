@@ -28,7 +28,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   if (ev.keycode != AM_KEY_NONE)
   {
     size_t len = sprintf(buf, "k%c %s\n", ev.keydown ? 'd' : 'u', keyname[ev.keycode]);
-    /* printf("%d\n", AM_INPUT_KEYBRD); */
+    printf("%d\n", AM_INPUT_KEYBRD);
     return len;
   }
   return 0;
