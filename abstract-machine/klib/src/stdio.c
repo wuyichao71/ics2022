@@ -110,7 +110,8 @@ static inline int fmt_length_modifier(const char **fmt)
   return -1;
 }
 
-static inline int fmt_output_string(char *s, int slen, int field_width, int precision, Flags flags)
+/* static inline int fmt_output_string(char *s, int slen, int field_width, int precision, Flags flags) */
+static int fmt_output_string(char *s, int slen, int field_width, int precision, Flags flags)
 {
   int len = strlen(s);
   if (precision >= 0)
