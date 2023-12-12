@@ -273,10 +273,10 @@ int _vsprintf(const char *fmt, va_list ap) {
       switch(*fmt)
       {
         // %c(char)
-        case 'c':
-          s = va_arg(ap, char *);
-          slen = fmt_output_char(s, slen, field_width, precision, flags);
-          continue;
+        /* case 'c': */
+        /*   s = va_arg(ap, char *); */
+        /*   slen = fmt_output_char(s, slen, field_width, precision, flags); */
+        /*   continue; */
         // %s(string)
         case 's':
           s = va_arg(ap, char *);
