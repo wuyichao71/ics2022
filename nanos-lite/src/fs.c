@@ -100,7 +100,10 @@ size_t fs_read(int fd, void *buf, size_t len)
     FS_CMD(ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len));
   }
   else
+  {
+    printf("%d\n", len);
     return file_table[fd].read(buf, 0, len);
+  }
 }
 
 char *get_filename(int fd)
