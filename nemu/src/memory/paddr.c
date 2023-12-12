@@ -85,7 +85,6 @@ word_t paddr_read(paddr_t addr, int len) {
   }
   /* wuyc */
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
-  assert(0);
   out_of_bound(addr);
   return 0;
 }
