@@ -49,7 +49,6 @@ int fs_open(const char *pathname, int flags, int mode)
     /* printf("%d\n", file_table[i].open_offset); */
     if (strcmp(pathname, file_table[i].name) == 0)
     {
-      printf("%s\n", file_table[i].name);
       return i;
     }
   }
@@ -72,8 +71,18 @@ int fs_open(const char *pathname, int flags, int mode)
   return len; \
 } while(0)
 
+/* #define DO(events) { \ */
+/*   if (file_table[fd].##events == NULL) \ */
+/*   { \ */
+/*     FS_CMD(ramdisk_##events(buf, finfo.disk_offset + finfo.open_offset, len)); \ */
+/*   } \ */
+/*   else \ */
+/*     return file_table[fd].##events(buf, 0, len); \ */
+/* } while(0) */
+
 size_t fs_write(int fd, const void *buf, size_t len)
 {
+  /* DO(write); */
   if (file_table[fd].write == NULL)
   {
     FS_CMD(ramdisk_write(buf, finfo.disk_offset + finfo.open_offset, len));
@@ -83,9 +92,15 @@ size_t fs_write(int fd, const void *buf, size_t len)
 }
 size_t fs_read(int fd, void *buf, size_t len)
 {
+  /* DO(write); */
   /* if (finfo.open_offset >= finfo.size || new_offset > finfo.size) */
     /* panic("Out of file"); */
-  FS_CMD(ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len));
+  if (file_table[fd].read == NULL)
+  {
+    FS_CMD(ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len));
+  }
+  else
+    return file_table[fd].read(buf, 0, len);
 }
 
 char *get_filename(int fd)
