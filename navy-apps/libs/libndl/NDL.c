@@ -29,12 +29,12 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  FILE *f_events = fopen("/dev/events", "r");
-  int outlen = fread(buf, len, 1, f_events);
-  fclose(f_events);
-  /* int fd = open("/dev/events", 0); */
-  /* int outlen = read(fd, buf, len); */
-  /* close(fd); */
+  /* FILE *f_events = fopen("/dev/events", "r"); */
+  /* int outlen = fread(buf, len, 1, f_events); */
+  /* fclose(f_events); */
+  int fd = open("/dev/events", 0);
+  int outlen = read(fd, buf, len);
+  close(fd);
   return outlen ? 1 : 0;
 }
 /* wuyc */
