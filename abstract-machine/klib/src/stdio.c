@@ -110,12 +110,21 @@ static inline int fmt_length_modifier(const char **fmt)
   return -1;
 }
 
+#define fmt_output_char(c, slen, field_width, precision, flags) _fmt_output_string(&c, slen, field_width, precision, flags, true)
+#define fmt_output_string(s, slen, field_width, precision, flags) _fmt_output_string(s, slen, field_width, precision, flags, false);
 /* int fmt_output_string(char *s, int slen, int field_width, int precision, Flags flags) */
-static inline int fmt_output_string(char *s, int slen, int field_width, int precision, Flags flags)
+static inline int _fmt_output_string(char *s, int slen, int field_width, int precision, Flags flags, bool is_char)
 {
-  int len = strlen(s);
-  if (precision >= 0)
-    len = precision > len? len : precision;
+  int len;
+  if (!is_char)
+  {
+    len = strlen(s);
+    if (precision >= 0)
+      len = precision > len? len : precision;
+  }
+  else
+    len = 1;
+
   if (!flags.left)
   {
     while (field_width > len)
@@ -143,8 +152,8 @@ static inline int fmt_output_string(char *s, int slen, int field_width, int prec
   return slen;
 }
 
-static inline int fmt_output_number(uint64_t num, int slen, int base, int field_width, int precision, Flags flags)
 /* static inline int fmt_output_number(int num, char *out, int slen, int base, int field_width, int precision, Flags flags) */
+static inline int fmt_output_number(int num, int slen, int base, int field_width, int precision, Flags flags)
 {
   char sign = 0;
   char tmp_str[100];
@@ -252,6 +261,9 @@ int _vsprintf(const char *fmt, va_list ap) {
       // For %s
       char *s;
 
+      // For %c
+      char c;
+
       // For %d
       int is_integer = 0;
       uint64_t num;
@@ -263,6 +275,11 @@ int _vsprintf(const char *fmt, va_list ap) {
 
       switch(*fmt)
       {
+        // %c(char)
+        case 'c':
+          c = va_arg(ap, int);
+          slen = fmt_output_char(c, slen, field_width, precision, flags);
+          continue;
         // %s(string)
         case 's':
           s = va_arg(ap, char *);
