@@ -28,7 +28,8 @@ void init_proc() {
   Log("Initializing processes...");
   /* wuyc */
   /* naive_uload(NULL, "/bin/file-test"); */
-  naive_uload(NULL, "/bin/timer-test");
+  /* naive_uload(NULL, "/bin/timer-test"); */
+  naive_uload(NULL, "/bin/event-test");
   /* naive_uload(NULL, "/bin/hello"); */
   /* wuyc */
 
