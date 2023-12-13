@@ -68,10 +68,12 @@ void NDL_OpenCanvas(int *w, int *h) {
     /* printf("%s\n", buf); */
     char *tok = strtok(buf, ":");
     tok = strtok(NULL, "\n");
-    printf("%s\n", tok);
+    /* printf("%s\n", tok); */
+    *w = atoi(tok);
     tok = strtok(NULL, ":");
     tok = strtok(NULL, ":");
-    printf("%s\n", tok);
+    /* printf("%s\n", tok); */
+    *h = atoi(tok);
   }
 }
 

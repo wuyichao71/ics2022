@@ -12,6 +12,7 @@ int main() {
   w = 0;
   h = 0;
   NDL_OpenCanvas(&w, &h);
+  printf("%d %d\n", w, h);
   NDL_DrawRect(bmp, 0, 0, w, h);
   free(bmp);
   NDL_Quit();
