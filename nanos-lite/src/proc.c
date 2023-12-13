@@ -29,7 +29,8 @@ void init_proc() {
   /* wuyc */
   /* naive_uload(NULL, "/bin/file-test"); */
   /* naive_uload(NULL, "/bin/timer-test"); */
-  naive_uload(NULL, "/bin/event-test");
+  /* naive_uload(NULL, "/bin/event-test"); */
+  naive_uload(NULL, "/bin/bmp-test");
   /* naive_uload(NULL, "/bin/hello"); */
   /* wuyc */
 
