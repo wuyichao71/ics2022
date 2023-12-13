@@ -5,7 +5,7 @@
 #include <unistd.h>
 /* wuyc */
 #include <sys/time.h>
-/* #include <fcntl.h> */
+#include <fcntl.h>
 /* wuyc */
 static int evtdev = -1;
 static int fbdev = -1;
@@ -29,12 +29,12 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  FILE *f_events = fopen("/dev/events", "r");
-  len = fread(buf, len, 1, f_events);
-  fclose(f_events);
-  /* int fd = open("/dev/events", 0); */
-  /* int outlen = read(fd, buf, len); */
-  /* close(fd); */
+  /* FILE *f_events = fopen("/dev/events", "r"); */
+  /* len = fread(buf, len, 1, f_events); */
+  /* fclose(f_events); */
+  int fd = open("/dev/events", 0);
+  len = read(fd, buf, len);
+  close(fd);
   return len ? 1 : 0;
 }
 /* wuyc */
