@@ -66,7 +66,11 @@ void NDL_OpenCanvas(int *w, int *h) {
     read(fd, buf, 128);
     close(fd);
     /* printf("%s\n", buf); */
-    char *tok = strtok(buf, ":\n");
+    char *tok = strtok(buf, ":");
+    tok = strtok(NULL, "\n");
+    printf("%s\n", tok);
+    tok = strtok(NULL, ":");
+    tok = strtok(NULL, ":");
     printf("%s\n", tok);
   }
 }
