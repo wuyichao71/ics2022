@@ -60,9 +60,10 @@ void NDL_OpenCanvas(int *w, int *h) {
   char buf[128];
   if (*w == 0 && *h == 0)
   {
-    FILE *fp = fopen("/proc/dispinfo", "r");
-    fread(buf, 128, 1, fp);
-    fclose(fp);
+    int fd = open("/proc/dispinfo", 0);
+    read(fd, buf, 128);
+    close(fd);
+    printf("%s\n", buf);
   }
 }
 
