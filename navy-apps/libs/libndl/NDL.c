@@ -58,7 +58,7 @@ void NDL_OpenCanvas(int *w, int *h) {
     close(fbctl);
   }
   char buf[128];
-  printf("%d %d", *w, *h);
+  /* printf("%d %d", *w, *h); */
   if (*w == 0 && *h == 0)
   {
     /* printf("hello\n"); */
