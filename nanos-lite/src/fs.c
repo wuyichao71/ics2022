@@ -37,7 +37,7 @@ static Finfo file_table[] __attribute__((used)) = {
   /* wuyc */
 #include "files.h"
   {"/dev/events", 0, 0, events_read, invalid_write},
-  {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
+  {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write}
 };
 
 /* wuyc */
@@ -145,4 +145,7 @@ int fs_close(int fd)
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+  AM_GPU_CONFIG_T cfg = io_read(AM_GPU_CONFIG);
+  int fd = fs_open("/proc/dispinfo", 0, 0);
+  file_table[fd].size = cfg.width * cfg.height;
 }
