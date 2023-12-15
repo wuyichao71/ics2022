@@ -20,7 +20,7 @@ int main() {
 #define len 5000
   uint32_t buf[len];
   for (int i = 0; i < len; i++)
-    buf[i] = 0x00ff00;
+    buf[i] = 0x000000FF;
   fwrite(buf, len, 1, fp);
   fclose(fp);
   /* wuyc */
