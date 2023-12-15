@@ -56,6 +56,7 @@ static inline void read_dispinfo(int *w, int *h)
   *h = atoi(tok);
 }
 
+static int canvas_w, canvas_h;
 void NDL_OpenCanvas(int *w, int *h) {
   if (getenv("NWM_APP")) {
     int fbctl = 4;
@@ -77,21 +78,29 @@ void NDL_OpenCanvas(int *w, int *h) {
   /* printf("%d %d", *w, *h); */
   if (*w == 0 && *h == 0)
   {
-    read_dispinfo(w, h);
+    read_dispinfo(&canvas_w, &canvas_h);
+    *w = canvas_w;
+    *h = canvas_h;
+  }
+  else
+  {
+    canvas_w = *w, canvas_h = *h;
   }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  int dispx, dispy;
-  read_dispinfo(&dispx, &dispy);
+  int disp_w, disp_h;
+  read_dispinfo(&disp_w, &disp_h);
   /* printf("%d %d\n", dispx, dispy); */
   int fd = open("/dev/fb", 0);
-  int offset = dispx * y + x;
+  int real_x = (disp_w - canvas_w) / 2 + x;
+  int real_y = (disp_h - canvas_h) / 2 + y;
+  int offset = disp_w * real_y + real_x;
   for (int i = 0; i < h; i++)
   {
     lseek(fd, offset, SEEK_SET);
     write(fd, pixels, w);
-    offset += dispx;
+    offset += disp_w;
     pixels += w;
   }
   close(fd);
