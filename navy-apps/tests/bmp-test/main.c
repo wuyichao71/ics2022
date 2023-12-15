@@ -21,7 +21,6 @@ int main() {
   int fd = open("/dev/fb", 0, 0);
   /* lseek(fd, , SEEK_SET); */
 #define len 40000
-
   uint32_t buf[len];
   for (int i = 0; i < len; i++)
     buf[i] = 0x000000FF;
