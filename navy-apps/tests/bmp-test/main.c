@@ -9,10 +9,17 @@ int main() {
   int w, h;
   void *bmp = BMP_Load("/share/pictures/projectn.bmp", &w, &h);
   assert(bmp);
+  /* wuyc */
   /* w = 0; */
   /* h = 0; */
+  /* wuyc */
   NDL_OpenCanvas(&w, &h);
-  /* printf("WIDTH: %d\nHEIGHT: %d\n", w, h); */
+  /* wuyc */
+  printf("WIDTH: %d\nHEIGHT: %d\n", w, h);
+  FILE *fp = fopen("/dev/fb", "w");
+  fwrite("w", 2, 1, fp);
+  fclose(fp);
+  /* wuyc */
   NDL_DrawRect(bmp, 0, 0, w, h);
   free(bmp);
   NDL_Quit();
