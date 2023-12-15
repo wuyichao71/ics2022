@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <NDL.h>
 #include <BMP.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 int main() {
   NDL_Init(0);
@@ -16,13 +18,13 @@ int main() {
   NDL_OpenCanvas(&w, &h);
   /* wuyc */
   printf("WIDTH: %d\nHEIGHT: %d\n", w, h);
-  FILE *fp = fopen("/dev/fb", "w");
+  int fd = open("/dev/fb", 0, 0);
 #define len 400
   uint32_t buf[len];
   for (int i = 0; i < len; i++)
     buf[i] = 0x000000FF;
-  fwrite(buf, len, 1, fp);
-  fclose(fp);
+  write(fd, buf, len);
+  close(fd);
   /* wuyc */
   NDL_DrawRect(bmp, 0, 0, w, h);
   free(bmp);
