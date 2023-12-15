@@ -50,34 +50,37 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   int size = fs_lseek(fd, 0, SEEK_END);
   AM_GPU_CONFIG_T cfg = io_read(AM_GPU_CONFIG);
   int y = offset / cfg.width, x = offset % cfg.width;
+  int newoffset = offset + len;
   /* printf("%d\n", size); */
-  if (offset + len > size)
-    len = size - offset;
-  if (x + len > cfg.width)
+  if (newoffset > size)
   {
-    int rest = cfg.width - x;
-    io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, rest, 1, true);
-    buf += rest;
-    len -= rest;
-    y += 1;
-    x = 0;
-    int h = len / cfg.width;
-    int rem = len % cfg.width;
-    if (h > 0)
-    {
-      io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, cfg.width, h, true);
-      y += h;
-    }
-    buf += (cfg.width * h);
-    io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, rem, 1, true);
+    len = size - offset;
+    newoffset = size;
   }
-  else
+  if (x + len <= cfg.width)
   {
     io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, len, 1, true);
   }
+  else
+  {
+    if (x != 0)
+    {
+      int rest = cfg.width - x;
+      io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, rest, 1, true);
+      buf += rest;
+      len -= rest;
+      y += 1;
+      x = 0;
+    }
+    int h = len / cfg.width, rem = len % cfg.width;
+    io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, cfg.width, h, true);
+    buf += cfg.width * h;
+    y += h;
+    io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, rem, 1, true);
+  }
   /* set_variable(new_offset); */
   /* printf("%d\n%d\n", len, offset); */
-  /* fs_lseek(fd, 0, SEEK_SET); */
+  fs_lseek(fd, newoffset, SEEK_SET);
   fs_close(fd);
   return len;
 }
