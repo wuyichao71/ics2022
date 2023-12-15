@@ -90,7 +90,7 @@ size_t fs_write(int fd, const void *buf, size_t len)
     FS_CMD(ramdisk_write(buf, finfo.disk_offset + finfo.open_offset, len));
   }
   else
-    return file_table[fd].write(buf, 0, len);
+    return file_table[fd].write(buf, file_table[fd].open_offset, len);
 }
 size_t fs_read(int fd, void *buf, size_t len)
 {
