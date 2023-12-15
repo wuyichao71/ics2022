@@ -38,6 +38,23 @@ int NDL_PollEvent(char *buf, int len) {
   return len ? 1 : 0;
 }
 /* wuyc */
+static inline void read_dispinfo(int *w, int *h)
+{
+  /* printf("hello\n"); */
+  char buf[128];
+  int fd = open("/proc/dispinfo", 0);
+  read(fd, buf, 128);
+  close(fd);
+  /* printf("%s\n", buf); */
+  char *tok = strtok(buf, ":");
+  tok = strtok(NULL, "\n");
+  /* printf("%s\n", tok); */
+  *w = atoi(tok);
+  tok = strtok(NULL, ":");
+  tok = strtok(NULL, ":");
+  /* printf("%s\n", tok); */
+  *h = atoi(tok);
+}
 
 void NDL_OpenCanvas(int *w, int *h) {
   if (getenv("NWM_APP")) {
@@ -57,27 +74,26 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
-  char buf[128];
   /* printf("%d %d", *w, *h); */
   if (*w == 0 && *h == 0)
   {
-    /* printf("hello\n"); */
-    int fd = open("/proc/dispinfo", 0);
-    read(fd, buf, 128);
-    close(fd);
-    /* printf("%s\n", buf); */
-    char *tok = strtok(buf, ":");
-    tok = strtok(NULL, "\n");
-    /* printf("%s\n", tok); */
-    *w = atoi(tok);
-    tok = strtok(NULL, ":");
-    tok = strtok(NULL, ":");
-    /* printf("%s\n", tok); */
-    *h = atoi(tok);
+    read_dispinfo(w, h);
   }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  int dispx, dispy;
+  read_dispinfo(&dispx, &dispy);
+  int fd = open("/dev/fb", 0);
+  int offset = dispx * y + x;
+  for (int i = 0; i < y; i++)
+  {
+    lseek(fd, offset, SEEK_SET);
+    write(fd, pixels, w);
+    offset += dispx;
+    pixels += w;
+  }
+  close(fd);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
