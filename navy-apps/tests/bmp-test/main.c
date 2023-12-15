@@ -17,8 +17,8 @@ int main() {
   /* wuyc */
   printf("WIDTH: %d\nHEIGHT: %d\n", w, h);
   FILE *fp = fopen("/dev/fb", "w");
-  uint32_t buf[5000] = {0x00FF0000};
-  fwrite(buf, 5000, 1, fp);
+  uint32_t buf[50000] = {0x00FF0000};
+  fwrite(buf, 50000, 1, fp);
   fclose(fp);
   /* wuyc */
   NDL_DrawRect(bmp, 0, 0, w, h);
