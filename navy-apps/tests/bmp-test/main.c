@@ -17,7 +17,7 @@ int main() {
   /* wuyc */
   printf("WIDTH: %d\nHEIGHT: %d\n", w, h);
   FILE *fp = fopen("/dev/fb", "w");
-#define len 5000
+#define len 400
   uint32_t buf[len];
   for (int i = 0; i < len; i++)
     buf[i] = 0x000000FF;
