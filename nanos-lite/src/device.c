@@ -51,7 +51,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   AM_GPU_CONFIG_T cfg = io_read(AM_GPU_CONFIG);
   int y = offset / cfg.width, x = offset % cfg.width;
   int newoffset = offset + len;
-  printf("%d\n", len);
+  /* printf("%d\n", len); */
   if (newoffset > size)
   {
     len = size - offset;
