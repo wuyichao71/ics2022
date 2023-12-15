@@ -45,26 +45,19 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
   /* return 0; */
 }
 
-#define set_variable(variable) { \
-  variable = finfo.open_offset + len; \
-  if (variable > finfo.size) \
-  { \
-    variable = finfo.size; \
-    len = finfo.size - finfo.open_offset; \
-  } \
-} while(0)
-
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-  /* AM_GPU_CONFIG_T cfg = io_read(AM_GPU_CONFIG); */
   int fd = fs_open("/dev/fb", 0, 0);
   int size = fs_lseek(fd, 0, SEEK_END);
-  printf("%d\n", size);
+  /* AM_GPU_CONFIG_T cfg = io_read(AM_GPU_CONFIG); */
   /* int x = offset / cfg.width, y = offset % cfg.width; */
-  /* int new_offset; */
+  /* printf("%d\n", size); */
+  if (offset + len > size)
+    len = size - offset;
   /* set_variable(new_offset); */
   /* printf("%d\n%d\n", len, offset); */
+  fs_lseek(fd, 0, SEEK_SET);
   fs_close(fd);
-  return 0;
+  return len;
 }
 
 void init_device() {
