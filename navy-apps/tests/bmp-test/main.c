@@ -17,7 +17,7 @@ int main() {
   /* wuyc */
   NDL_OpenCanvas(&w, &h);
   /* wuyc */
-  /* printf("WIDTH: %d\nHEIGHT: %d\n", w, h); */
+  printf("WIDTH: %d\nHEIGHT: %d\n", w, h);
   /* int fd = open("/dev/fb", 0, 0); */
   /* lseek(fd, 400, SEEK_SET); */
 /* #define len 40000 */
