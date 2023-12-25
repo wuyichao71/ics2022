@@ -17,7 +17,7 @@ int main() {
   /* wuyc */
   NDL_OpenCanvas(&w, &h);
   /* wuyc */
-  printf("WIDTH: %d\nHEIGHT: %d\n", w, h);
+  /* printf("WIDTH: %d\nHEIGHT: %d\n", w, h); */
   /* int fd = open("/dev/fb", 0, 0); */
   /* lseek(fd, 400, SEEK_SET); */
 /* #define len 40000 */
@@ -29,6 +29,10 @@ int main() {
   /* wuyc */
   NDL_DrawRect(bmp, 0, 0, w, h);
   free(bmp);
+  /* bmp = BMP_Load("/share/slides/slides-0.bmp", &w, &h); */
+  /* assert(bmp); */
+  /* NDL_OpenCanvas(&w, &h); */
+  /* NDL_DrawRect(bmp, 0, 0, w, h); */
   NDL_Quit();
   printf("Test ends! Spinning...\n");
   while (1);
