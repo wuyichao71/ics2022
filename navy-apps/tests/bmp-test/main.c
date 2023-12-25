@@ -27,16 +27,21 @@ int main() {
   /*   buf[i] = 0x000000FF; */
   /* write(fd, buf, len); */
   /* close(fd); */
+  free(bmp);
+  /* wuyc */
+
   /* wuyc */
   NDL_DrawRect(bmp, 0, 0, w, h);
-  w = 0;
-  h = 0;
+  /* w = 0; */
+  /* h = 0; */
   bmp = BMP_Load("/share/slides/slides-0.bmp", &w, &h);
-  printf("I am here2\n");
-  free(bmp);
+  /* printf("I am here2\n"); */
   assert(bmp);
-  NDL_OpenCanvas(&w, &h);
+  /* NDL_OpenCanvas(&w, &h); */
   NDL_DrawRect(bmp, 0, 0, w, h);
+  free(bmp);
+  /* wuyc */
+
   NDL_Quit();
   printf("Test ends! Spinning...\n");
   while (1);
