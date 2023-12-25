@@ -90,6 +90,7 @@ void NDL_OpenCanvas(int *w, int *h) {
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int disp_w, disp_h;
+  printf("I am here\n");
   read_dispinfo(&disp_w, &disp_h);
   printf("%d %d\n", disp_w, disp_h);
   int fd = open("/dev/fb", 0);
