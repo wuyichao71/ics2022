@@ -47,14 +47,14 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
   int fd = fs_open("/dev/fb", 0, 0);
-  int size = fs_lseek(fd, 0, SEEK_END);
+  int size = fs_lseek(fd, 0, SEEK_END) / sizeof(uint32_t);
   AM_GPU_CONFIG_T cfg = io_read(AM_GPU_CONFIG);
   offset = offset / sizeof(uint32_t);
   len = len / sizeof(uint32_t);
   int y = offset / cfg.width, x = offset % cfg.width;
   int newoffset = offset + len;
   /* printf("%d\n", len); */
-  if (newoffset > size / sizeof(uint32_t))
+  if (newoffset > size)
   {
     len = size - offset;
     newoffset = size;
