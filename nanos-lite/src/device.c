@@ -88,7 +88,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   }
   /* set_variable(new_offset); */
   /* printf("%d\n%d\n", len, offset); */
-  fs_lseek(fd, newoffset, SEEK_SET);
+  fs_lseek(fd, newoffset * sizeof(uint32_t), SEEK_SET);
   fs_close(fd);
   return len;
 }
