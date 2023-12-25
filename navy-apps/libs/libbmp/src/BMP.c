@@ -46,7 +46,7 @@ void* BMP_Load(const char *filename, int *width, int *height) {
       uint8_t r = *(((uint8_t*)&pixels[w * i]) + 3 * j + 2);
       pixels[w * i + j] = (r << 16) | (g << 8) | b;
     }
-    printf("IN %s, line %d: %d %d\n", __func__, __LINE__, i, nread);
+    /* printf("IN %s, line %d: %d %d\n", __func__, __LINE__, i, nread); */
   }
 
   fclose(fp);

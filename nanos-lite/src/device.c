@@ -58,10 +58,12 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   {
     len = size - offset;
     newoffset = size;
+    printf("len = %d, newoffset = %d\n", len, newoffset);
   }
   if (x + len <= cfg.width)
   {
     io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, len, 1, true);
+    printf("In part 1\n");
   }
   else
   {
@@ -73,12 +75,14 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
       len -= rest;
       y += 1;
       x = 0;
+      printf("In part 2\n");
     }
     int h = len / cfg.width, rem = len % cfg.width;
     io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, cfg.width, h, true);
     buf += cfg.width * h;
     y += h;
     io_write(AM_GPU_FBDRAW, x, y, (uint32_t *)buf, rem, 1, true);
+    printf("In part 3\n");
   }
   /* set_variable(new_offset); */
   /* printf("%d\n%d\n", len, offset); */
