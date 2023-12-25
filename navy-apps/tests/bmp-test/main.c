@@ -30,6 +30,7 @@ int main() {
   NDL_DrawRect(bmp, 0, 0, w, h);
   free(bmp);
   bmp = BMP_Load("/share/slides/slides-0.bmp", &w, &h);
+  printf("I am here2\n");
   assert(bmp);
   NDL_OpenCanvas(&w, &h);
   NDL_DrawRect(bmp, 0, 0, w, h);
