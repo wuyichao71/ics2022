@@ -21,7 +21,7 @@ struct BitmapHeader {
 
 void* BMP_Load(const char *filename, int *width, int *height) {
   FILE *fp = fopen(filename, "r");
-  printf("In %s: %x\n", __func__, fp);
+  printf("In %s: %x, %d\n", __func__, fp, fp->_file);
   if (!fp) return NULL;
 
   struct BitmapHeader hdr;
