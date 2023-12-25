@@ -29,10 +29,10 @@ int main() {
   /* wuyc */
   NDL_DrawRect(bmp, 0, 0, w, h);
   free(bmp);
-  /* bmp = BMP_Load("/share/slides/slides-0.bmp", &w, &h); */
-  /* assert(bmp); */
-  /* NDL_OpenCanvas(&w, &h); */
-  /* NDL_DrawRect(bmp, 0, 0, w, h); */
+  bmp = BMP_Load("/share/slides/slides-0.bmp", &w, &h);
+  assert(bmp);
+  NDL_OpenCanvas(&w, &h);
+  NDL_DrawRect(bmp, 0, 0, w, h);
   NDL_Quit();
   printf("Test ends! Spinning...\n");
   while (1);
