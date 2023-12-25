@@ -90,10 +90,11 @@ void NDL_OpenCanvas(int *w, int *h) {
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int disp_w, disp_h;
-  printf("I am here\n");
+  /* printf("I am here\n"); */
   read_dispinfo(&disp_w, &disp_h);
-  printf("%d %d\n", disp_w, disp_h);
+  /* printf("%d %d\n", disp_w, disp_h); */
   int fd = open("/dev/fb", 0);
+  /* printf("%d\n", fd); */
   int real_x = (disp_w - canvas_w) / 2 + x; 
   int real_y = (disp_h - canvas_h) / 2 + y;
   /* int real_x = 0, real_y = 0; */
@@ -106,7 +107,8 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
     offset += disp_w * sizeof(int);
     pixels += w;
   }
-  close(fd);
+  /* lseek(fd, 0, SEEK_SET); */
+  /* close(fd); */
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
