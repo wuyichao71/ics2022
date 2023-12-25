@@ -34,12 +34,12 @@ int main() {
   NDL_DrawRect(bmp, 0, 0, w, h);
   /* w = 0; */
   /* h = 0; */
-  bmp = BMP_Load("/share/slides/slides-0.bmp", &w, &h);
+  /* bmp = BMP_Load("/share/slides/slides-0.bmp", &w, &h); */
   /* printf("%d, %d\n", w, h); */
   /* printf("I am here2\n"); */
-  assert(bmp);
+  /* assert(bmp); */
   /* NDL_OpenCanvas(&w, &h); */
-  NDL_DrawRect(bmp, 0, 0, w, h);
+  /* NDL_DrawRect(bmp, 0, 0, w, h); */
   free(bmp);
   /* wuyc */
 
