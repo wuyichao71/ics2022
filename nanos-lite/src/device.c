@@ -54,7 +54,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   int y = offset / cfg.width, x = offset % cfg.width;
   int newoffset = offset + len;
   /* printf("%d\n", len); */
-  if (newoffset > size)
+  if (newoffset > size / sizeof(uint32_t))
   {
     len = size - offset;
     newoffset = size;
