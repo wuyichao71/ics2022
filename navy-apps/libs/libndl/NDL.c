@@ -6,6 +6,7 @@
 /* wuyc */
 #include <sys/time.h>
 #include <fcntl.h>
+static int initial_ms = 0;
 /* wuyc */
 static int evtdev = -1;
 static int fbdev = -1;
@@ -15,16 +16,16 @@ static int screen_w = 0, screen_h = 0;
 uint32_t NDL_GetTicks() {
   struct timeval tv;
   int ret = gettimeofday(&tv, NULL);
-  int us;
+  int ms;
   if (ret == 0)
   {
-    us = tv.tv_sec * 1000000 + tv.tv_usec;
+    ms = (tv.tv_sec * 1000000 + tv.tv_usec) / 1000;
   }
   else
   {
     return 0;
   }
-  return us;
+  return ms - initial_ms;
   /* return 0; */
 }
 
@@ -38,22 +39,24 @@ int NDL_PollEvent(char *buf, int len) {
   return len ? 1 : 0;
 }
 /* wuyc */
-static inline void read_dispinfo(int *w, int *h)
+void read_dispinfo(int *w, int *h)
 {
   /* printf("hello\n"); */
   char buf[128];
-  int fd = open("/proc/dispinfo", 0);
+  /* int fd = open("/proc/dispinfo", 0, 0); */
+  int fd = open("/proc/dispinfo", 0, 0);
   read(fd, buf, 128);
   close(fd);
   /* printf("%s\n", buf); */
-  char *tok = strtok(buf, ":");
-  tok = strtok(NULL, "\n");
-  /* printf("%s\n", tok); */
-  *w = atoi(tok);
-  tok = strtok(NULL, ":");
-  tok = strtok(NULL, ":");
-  /* printf("%s\n", tok); */
-  *h = atoi(tok);
+  /* char *tok = strtok(buf, ":"); */
+  /* tok = strtok(NULL, "\n"); */
+  /* /1* printf("%s\n", tok); *1/ */
+  /* *w = atoi(tok); */
+  /* tok = strtok(NULL, ":"); */
+  /* tok = strtok(NULL, ":"); */
+  /* /1* printf("%s\n", tok); *1/ */
+  /* *h = atoi(tok); */
+  sscanf(buf, "WIDTH: %d\nHEIGHT:%d", w, h);
 }
 
 static int canvas_w, canvas_h;
@@ -78,35 +81,40 @@ void NDL_OpenCanvas(int *w, int *h) {
   /* printf("%d %d", *w, *h); */
   if (*w == 0 && *h == 0)
   {
-    read_dispinfo(&canvas_w, &canvas_h);
+    /* read_dispinfo(&canvas_w, &canvas_h); */
+    canvas_w = screen_w;
+    canvas_h = screen_h;
     *w = canvas_w;
     *h = canvas_h;
   }
   else
   {
     canvas_w = *w, canvas_h = *h;
+    /* canvas_w = screen_w, canvas_h = screen_h; */
   }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  int disp_w, disp_h;
+  /* int disp_w = screen_w, disp_h = screen_h; */
   /* printf("I am here\n"); */
-  read_dispinfo(&disp_w, &disp_h);
-  /* printf("%d %d\n", disp_w, disp_h); */
-  int fd = open("/dev/fb", 0);
+  /* read_dispinfo(&disp_w, &disp_h); */
+  /* printf("disp_w = %d, disp_h = %d\n", disp_w, disp_h); */
+  int fd = open("/dev/fb", 0, 0);
   /* printf("%d\n", fd); */
-  int real_x = (disp_w - canvas_w) / 2 + x; 
-  int real_y = (disp_h - canvas_h) / 2 + y;
+  int real_x = (screen_w - canvas_w) / 2 + x; 
+  int real_y = (screen_h - canvas_h) / 2 + y;
   /* int real_x = 0, real_y = 0; */
   /* printf("%d, %d\n", real_x, real_y); */
-  int offset = (disp_w * real_y + real_x) * sizeof(int);
+  /* wuyc */
+  int offset = (screen_w * real_y + real_x) * sizeof(uint32_t);
   for (int i = 0; i < h; i++)
   {
     lseek(fd, offset, SEEK_SET);
-    write(fd, pixels, w * sizeof(int));
-    offset += disp_w * sizeof(int);
+    write(fd, pixels, w * sizeof(uint32_t));
+    offset += screen_w * sizeof(uint32_t);
     pixels += w;
   }
+  /* wuyc */
   /* lseek(fd, 0, SEEK_SET); */
   /* close(fd); */
 }
@@ -129,8 +137,13 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+  /* wuyc */
+  read_dispinfo(&screen_w, &screen_h);
+  initial_ms = NDL_GetTicks();
+  /* wuyc */
   return 0;
 }
 
 void NDL_Quit() {
+  initial_ms = 0;
 }

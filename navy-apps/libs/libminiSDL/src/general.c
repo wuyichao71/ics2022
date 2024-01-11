@@ -1,6 +1,10 @@
 #include <NDL.h>
+/* wuyc */
+/* #include <stdio.h> */
+/* wuyc */
 
 int SDL_Init(uint32_t flags) {
+  /* printf("In SDL_Init\n"); */
   return NDL_Init(flags);
 }
 

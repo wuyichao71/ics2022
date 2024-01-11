@@ -87,9 +87,9 @@ INCFLAGS += $(addprefix -I, $(INC_PATH))
 
 CFLAGS   += -O2 -MMD $(INCFLAGS) -static -D__NAVY__ \
             -D__ISA__=\"$(ISA)\" -D__ISA_$(shell echo $(ISA) | tr a-z A-Z)__ \
-            -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector
-CXXFLAGS +=  $(CFLAGS) -ffreestanding -fno-rtti -fno-exceptions
-ASFLAGS  +=  $(CFLAGS)
+            -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector -g
+CXXFLAGS +=  $(CFLAGS) -ffreestanding -fno-rtti -fno-exceptions -g
+ASFLAGS  +=  $(CFLAGS) -g
 
 ## 4. ISA-Specific Configurations
 
@@ -170,7 +170,7 @@ $(CLEAN_ALL):
 .PHONY: clean-all $(CLEAN_ALL)
 
 ### Build fsimg and ramdisk for Nanos-lite
-APPS = nslider
+APPS = nslider am-kernels
 TESTS = dummy hello file-test timer-test event-test bmp-test
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))

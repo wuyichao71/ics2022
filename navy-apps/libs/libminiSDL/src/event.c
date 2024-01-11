@@ -11,11 +11,44 @@ static const char *keyname[] = {
   _KEYS(keyname)
 };
 
+/* wuyc */
+#define N_KEY (sizeof(keyname) / sizeof(keyname[0]))
+static uint8_t key_snapshot[N_KEY] = {0};
+
 int SDL_PushEvent(SDL_Event *ev) {
   return 0;
 }
 
 int SDL_PollEvent(SDL_Event *ev) {
+  /* wuyc */
+  char buf[64];
+  int ret = 0;
+  ret = NDL_PollEvent(buf, sizeof(buf));
+  if (ret == 1)
+  {
+    char *type_str = strtok(buf, " ");
+    if (type_str[1] == 'd')
+      ev->type = SDL_KEYDOWN;
+    else if (type_str[1] == 'u')
+      ev->type = SDL_KEYUP;
+    /* printf("%s", buf); */
+    char *kd_str = strtok(NULL, "\n");
+    for (int i = 0; i < sizeof(keyname) / sizeof(keyname[0]); i++)
+    {
+      if (strcmp(kd_str, keyname[i]) == 0)
+      {
+        ev->key.keysym.sym = i;
+        key_snapshot[i] = (ev->type == SDL_KEYDOWN) ? 1 : 0;
+        return 1;
+      }
+        /* printf("keyname = %s\n", keyname[i]); */
+    }
+    /* printf("%d\n", sizeof(keyname)); */
+    /* printf("%d\n", sizeof(keyname[1])); */
+    /* printf("%d\n", sizeof((char *)buf)); */
+    /* printf("%s_\n", kd_str); */
+  }
+  /* printf("ret = %d\n", ret); */
   return 0;
 }
 
@@ -35,11 +68,12 @@ int SDL_WaitEvent(SDL_Event *event) {
         event->type = SDL_KEYUP;
       /* printf("%s", buf); */
       char *kd_str = strtok(NULL, "\n");
-      for (int i = 0; i < sizeof(keyname) / sizeof(keyname[0]); i++)
+      for (int i = 0; i < N_KEY; i++)
       {
         if (strcmp(kd_str, keyname[i]) == 0)
         {
           event->key.keysym.sym = i;
+          key_snapshot[i] = (event->type == SDL_KEYDOWN) ? 1 : 0;
           return 1;
         }
           /* printf("keyname = %s\n", keyname[i]); */
@@ -60,5 +94,11 @@ int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
 }
 
 uint8_t* SDL_GetKeyState(int *numkeys) {
-  return NULL;
+  /* while (1); */
+  /* printf("N_KEY = %d\n", N_KEY); */
+  if (numkeys)
+    *numkeys = N_KEY;
+
+   return key_snapshot;
+  /* return NULL; */
 }

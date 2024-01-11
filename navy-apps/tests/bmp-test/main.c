@@ -32,6 +32,7 @@ int main() {
 
   /* wuyc */
   NDL_DrawRect(bmp, 0, 0, w, h);
+  /* NDL_DrawRect(bmp, 0, 0, 100, 100); */
   /* w = 0; */
   /* h = 0; */
   /* bmp = BMP_Load("/share/slides/slides-0.bmp", &w, &h); */
@@ -40,7 +41,7 @@ int main() {
   /* assert(bmp); */
   /* NDL_OpenCanvas(&w, &h); */
   /* NDL_DrawRect(bmp, 0, 0, w, h); */
-  free(bmp);
+  /* free(bmp); */
   /* wuyc */
 
   NDL_Quit();
