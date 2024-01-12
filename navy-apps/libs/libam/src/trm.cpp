@@ -2,12 +2,14 @@
 /* wuyc */
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 /* #include <stdio.h> */
 /* wuyc */
 Area heap;
 
 void putch(char ch) {
-  write(1, &ch, 1);
+  /* write(1, &ch, 1); */
+  putchar(ch);
 }
 
 void halt(int code) {

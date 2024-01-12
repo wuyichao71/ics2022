@@ -1,17 +1,24 @@
 #include <am.h>
-/* #include <SDL2/SDL.h> */
+/* wuyc */
+#include <NDL.h>
+#include <string.h>
+#include <klib-macros.h>
+/* wuyc */
 
 /* #define KEYDOWN_MASK 0x8000 */
 
-/* #define KEY_QUEUE_LEN 1024 */
-/* static int key_queue[KEY_QUEUE_LEN] = {}; */
-/* static int key_f = 0, key_r = 0; */
-/* static SDL_mutex *key_queue_lock = NULL; */
 
 /* #define XX(k) [SDL_SCANCODE_##k] = AM_KEY_##k, */
 /* static int keymap[256] = { */
   /* AM_KEYS(XX) */
 /* }; */
+#define NAME(key) \
+  [AM_KEY_##key] = #key,
+
+static const char *keyname[256] __attribute__((used)) = {
+  [AM_KEY_NONE] = "NONE",
+  AM_KEYS(NAME)
+};
 
 /* static int event_thread(void *args) { */
 /*   SDL_Event event; */
@@ -49,6 +56,29 @@ void __am_input_config(AM_INPUT_CONFIG_T *cfg) {
 }
 
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
+  char buf[64];
+  int ret = NDL_PollEvent(buf, sizeof(buf));
+  char keydown;
+  int keycode = AM_KEY_NONE;
+  if (ret == 1)
+  {
+    char keytype[16]="hello";
+    sscanf(buf, "k%c %s\n", &keydown, keytype);
+    /* printf("%s\n", keytype); */
+    for (int i = 0; i < LENGTH(keyname); i++)
+    {
+      if (strcmp(keytype, keyname[i]) == 0)
+      {
+        keycode = i;
+        break;
+      }
+    }
+  }
+  if (keydown == 'u')
+    kbd->keydown = false;
+  else if (keydown == 'd')
+    kbd->keydown = true;
+  kbd->keycode = keycode;
   /* int k = AM_KEY_NONE; */
 
   /* SDL_LockMutex(key_queue_lock); */

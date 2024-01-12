@@ -8,6 +8,8 @@ void read_dispinfo(int *w, int *h);
 /* wuyc */
 
 void __am_gpu_init() {
+  int w = 0, h = 0;
+  NDL_OpenCanvas(&w, &h);
   /* SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER); */
   /* window = SDL_CreateWindow("Native Application", */
   /*     SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, */
