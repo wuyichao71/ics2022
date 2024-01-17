@@ -36,13 +36,13 @@ static void audio_play(void *userdata, uint8_t *stream, int len) {
   int i;
   /* for (i = 0; i < len; i++) */
   /*   stream[i] = 0; */
-  /* memset(stream, 0, len); */
+  memset(stream, 0, len);
   /* count = 0; */
   if (len >= count)
   {
     for (i = 0; i < count; i++)
       stream[i] = sbuf[i];
-    memset(stream + count, 0, len - count);
+    /* memset(stream + count, 0, len - count); */
     /* for(; i < len; i++) */
     /*   stream[i] = 0; */
     count = 0;
