@@ -34,8 +34,9 @@ static volatile int count = 0;
 
 static void audio_play(void *userdata, uint8_t *stream, int len) {
   int i;
-  for (i = 0; i < len; i++)
-    stream[i] = 0;
+  /* for (i = 0; i < len; i++) */
+  /*   stream[i] = 0; */
+  memset(stream, 0, len);
   /* count = 0; */
   if (len >= count)
   {
