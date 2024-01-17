@@ -34,14 +34,14 @@ static volatile int count = 0;
 
 static void audio_play(void *userdata, uint8_t *stream, int len) {
   int i;
-  /* for (i = 0; i < len; i++) */
-    /* stream[i] = 255; */
+  for (i = 0; i < len; i++)
+    stream[i] = 0;
   /* count = 0; */
   if (len >= count)
   {
     for (i = 0; i < count; i++)
       stream[i] = sbuf[i];
-    memset(stream + i, 0, len - count);
+    /* memset(stream + i, 0, len - count); */
     /* for(; i < len; i++) */
     /*   stream[i] = 0; */
     count = 0;
@@ -80,7 +80,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       {
         SDL_OpenAudio(&s, NULL);
         SDL_PauseAudio(0);
-        audio_base[reg_init] = 0;
+        /* audio_base[reg_init] = 0; */
       } 
     } 
   }
