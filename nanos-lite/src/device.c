@@ -94,11 +94,23 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
 }
 
 /* size_t sb_write() */
-size_t sbctl_write(void *buf, size_t offset, size_t len)
+size_t sbctl_write(const void *buf, size_t offset, size_t len)
 {
-  assert(len == 3);
+  assert(len == 3 * sizeof(uint32_t));
   io_write(AM_AUDIO_CTRL, ((uint32_t *)buf)[0], ((uint32_t *)buf)[1], ((uint32_t *)buf)[2]);
   return len;
+}
+
+size_t sbctl_read(void *buf, size_t offset, size_t len)
+{
+  assert(len == sizeof(int));
+  ((int *)buf)[0] = io_read(AM_AUDIO_STATUS).count;
+  return len;
+}
+
+size_t sb_write(const void *buf, size_t offset, size_t len)
+{
+  return 0;
 }
 
 void init_device() {

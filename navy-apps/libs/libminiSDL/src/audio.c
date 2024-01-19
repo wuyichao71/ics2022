@@ -2,6 +2,7 @@
 #include <SDL.h>
 
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
+  /* printf("In SDL_OpenAudio\n"); */
   return 0;
 }
 

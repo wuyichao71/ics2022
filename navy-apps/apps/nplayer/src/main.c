@@ -90,6 +90,7 @@ int main(int argc, char *argv[]) {
   int ret = fread(buf, size, 1, fp);
   assert(ret == 1);
   fclose(fp);
+  /* printf("size: %d\n", size); */
 
   int error;
   v = stb_vorbis_open_memory(buf, size, &error, NULL);
