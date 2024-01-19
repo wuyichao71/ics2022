@@ -6,11 +6,11 @@
 #include <klib-macros.h>
 /* #include <stdio.h> */
 /* wuyc */
-/* Area heap; */
+Area heap;
 /* wuyc */
-#define PMEM_SIZE (128 * 1024 * 1024)
-char pmem[PMEM_SIZE] = {};
-Area heap = RANGE(pmem, pmem+PMEM_SIZE);
+/* #define PMEM_SIZE (128 * 1024 * 1024) */
+/* char pmem[PMEM_SIZE] = {}; */
+/* Area heap = RANGE(pmem, pmem+PMEM_SIZE); */
 /* wuyc */
 
 void putch(char ch) {
