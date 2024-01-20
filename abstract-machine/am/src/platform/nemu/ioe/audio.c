@@ -34,9 +34,24 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   int len = ctl->buf.end - ctl->buf.start;
   while (len > bufsize - count)
     count = io_read(AM_AUDIO_STATUS).count;
-  for(char *p = ctl->buf.start; p < (char *)ctl->buf.end; p++)
+  int div = len / sizeof(uint32_t);
+  int rem = len % sizeof(uint32_t);
+  uint8_t *p = ctl->buf.start;
+  for (int i = 0; i < div; i++)
   {
-    *(char *)(AUDIO_SBUF_ADDR + count) = *p;
-    count++;
+    *(uint32_t *)(AUDIO_SBUF_ADDR + count) = *(uint32_t *)p;
+    count += 4;
+    p += 4;
   }
+  for (int i = 0; i < rem; i++)
+  {
+    *(uint8_t *)(AUDIO_SBUF_ADDR + count) = *p;
+    count++;
+    p++;
+  }
+  /* for(char *p = ctl->buf.start; p < (char *)ctl->buf.end; p++) */
+  /* { */
+  /*   *(char *)(AUDIO_SBUF_ADDR + count) = *p; */
+  /*   count++; */
+  /* } */
 }

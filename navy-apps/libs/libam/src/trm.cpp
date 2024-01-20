@@ -6,7 +6,13 @@
 #include <klib-macros.h>
 /* #include <stdio.h> */
 /* wuyc */
+#if defined(__ISA_NATIVE__)
+#define PMEM_SIZE (128 * 1024 * 1024)
+char pmem[PMEM_SIZE] = {};
+Area heap = RANGE(pmem, pmem+PMEM_SIZE);
+#else
 Area heap;
+#endif
 /* wuyc */
 /* #define PMEM_SIZE (128 * 1024 * 1024) */
 /* char pmem[PMEM_SIZE] = {}; */

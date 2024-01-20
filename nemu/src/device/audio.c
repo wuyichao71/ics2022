@@ -89,7 +89,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 
 static void audio_sbuf_handler(uint32_t offset, int len, bool is_write) {
   if (is_write)
-    count++;
+    count += len;
 }
 
 void init_audio() {
