@@ -93,6 +93,8 @@ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
     Log_bg_cyan("%s: write " FMT_WORD " to " FMT_PADDR, map->name, data, addr);
 #endif
   /* wuyc */
+  SDL_LockAudio();
   host_write(map->space + offset, len, data);
   invoke_callback(map->callback, offset, len, true);
+  SDL_UnlockAudio();
 }
