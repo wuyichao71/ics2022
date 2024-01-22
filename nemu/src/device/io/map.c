@@ -97,9 +97,9 @@ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
 #endif
   /* wuyc */
   /* wuyc */
-  /* SDL_LockAudio(); */
+  SDL_LockAudio();
   host_write(map->space + offset, len, data);
   invoke_callback(map->callback, offset, len, true);
-  /* SDL_UnlockAudio(); */
+  SDL_UnlockAudio();
   /* wuyc */
 }
