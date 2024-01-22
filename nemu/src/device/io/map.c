@@ -17,6 +17,9 @@
 #include <memory/host.h>
 #include <memory/vaddr.h>
 #include <device/map.h>
+/* wuyc */
+#include <SDL2/SDL.h>
+/* wuyc */
 
 #define IO_SPACE_MAX (2 * 1024 * 1024)
 
@@ -93,8 +96,10 @@ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
     Log_bg_cyan("%s: write " FMT_WORD " to " FMT_PADDR, map->name, data, addr);
 #endif
   /* wuyc */
+  /* wuyc */
   SDL_LockAudio();
   host_write(map->space + offset, len, data);
   invoke_callback(map->callback, offset, len, true);
   SDL_UnlockAudio();
+  /* wuyc */
 }
