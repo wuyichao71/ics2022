@@ -104,17 +104,19 @@ size_t sbctl_write(const void *buf, size_t offset, size_t len)
 size_t sbctl_read(void *buf, size_t offset, size_t len)
 {
   assert(len == sizeof(int));
-  ((int *)buf)[0] = io_read(AM_AUDIO_STATUS).count;
+  int count = io_read(AM_AUDIO_STATUS).count;
+  int bufsize = io_read(AM_AUDIO_CONFIG).bufsize;
+  ((int *)buf)[0] = bufsize - count;
   return len;
 }
 
-size_t sb_write(const void *buf, size_t offset, size_t len)
+size_t sb_write(void *buf, size_t offset, size_t len)
 {
-  int count;
-  do
-  {
-    count = io_read(AM_AUDIO_STATUS).count;
-  } while (count < len);
+  /* int count; */
+  /* do */
+  /* { */
+    /* count = io_read(AM_AUDIO_STATUS).count; */
+  /* } while (count < len); */
   Area sbuf;
   sbuf.start = buf;
   sbuf.end = sbuf.start + len;

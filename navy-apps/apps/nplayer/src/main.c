@@ -72,6 +72,7 @@ void FillAudio(void *userdata, uint8_t *stream, int len) {
   }
   if (nbyte < len) memset(stream + nbyte, 0, len - nbyte);
   memcpy(stream_save, stream, len);
+  /* printf("test\n"); */
 }
 
 int main(int argc, char *argv[]) {
@@ -102,6 +103,7 @@ int main(int argc, char *argv[]) {
   spec.channels = info.channels;
   spec.samples = SAMPLES;
   spec.format = AUDIO_S16SYS;
+  /* printf("format = %d\n", AUDIO_S16SYS); */
   spec.userdata = NULL;
   spec.callback = FillAudio;
   SDL_OpenAudio(&spec, NULL);

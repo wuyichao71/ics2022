@@ -5,6 +5,7 @@
 #include <stdlib.h>
 /* wuyc */
 #include <stdio.h>
+void CallbackHelper();
 /* wuyc */
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
@@ -118,6 +119,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   uint32_t offset = y * s->w + x;
   int i = 0;
     /* NDL_OpenCanvas(s->w, s->h); */
+  CallbackHelper();
     /* printf("I am here3\n"); */
   for (int row = 0; row < h; row++)
   {

@@ -33,7 +33,8 @@ void init_proc() {
   /* naive_uload(NULL, "/bin/bmp-test"); */
   /* naive_uload(NULL, "/bin/nslider"); */
   /* naive_uload(NULL, "/bin/typing-game"); */
-  naive_uload(NULL, "/bin/dhrystone");
+  /* naive_uload(NULL, "/bin/dhrystone"); */
+  naive_uload(NULL, "/bin/nplayer");
   /* naive_uload(NULL, "/bin/coremark"); */
   /* naive_uload(NULL, "/bin/hello"); */
   /* wuyc */

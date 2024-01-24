@@ -131,20 +131,20 @@ void NDL_CloseAudio() {
 }
 
 int NDL_PlayAudio(void *buf, int len) {
-  int fd = open("dev/sb", 0, 0);
+  int fd = open("/dev/sb", 0, 0);
   int return_len = write(fd, buf, len);
-  close(fd);
+  /* close(fd); */
   return return_len;
   /* return 0; */
 }
 
 int NDL_QueryAudio() {
   int fd = open("/dev/sbctl", 0, 0);
-  uint32_t count;
-  read(fd, &count, sizeof(uint32_t));
+  uint32_t rest;
+  read(fd, &rest, sizeof(uint32_t));
   /* printf("%d\n", count); */
   close(fd);
-  return count;
+  return rest;
 }
 
 int NDL_Init(uint32_t flags) {
