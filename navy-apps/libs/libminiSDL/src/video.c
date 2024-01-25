@@ -5,7 +5,7 @@
 #include <stdlib.h>
 /* wuyc */
 #include <stdio.h>
-void CallbackHelper();
+/* void CallbackHelper(); */
 /* wuyc */
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
@@ -66,6 +66,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   /* if (!(dstrect->x < dst->w && dstrect->y < dst->h && */ 
         /* dstrect->x + dstrect->w < dst->w && dstrect->y + dstrect->h < dst->h)) */
     /* return -1; */
+  /* void CallbackHelper(); */
   int dw = dst->w, dh = dst->h;
   int offset = 0;
   if (dstrect == NULL)
@@ -108,6 +109,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   /* NDL_OpenCanvas(&s->w, &s->h); */
+  /* CallbackHelper(); */
   if (x == 0 && y == 0 && w == 0 && h == 0)
   {
     w = s->w; h = s->h;
@@ -119,7 +121,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   uint32_t offset = y * s->w + x;
   int i = 0;
     /* NDL_OpenCanvas(s->w, s->h); */
-  CallbackHelper();
     /* printf("I am here3\n"); */
   for (int row = 0; row < h; row++)
   {

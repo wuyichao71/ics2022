@@ -13,6 +13,7 @@ static uint8_t *stream = NULL;
 static int length = 0;
 typedef void (*callback_t)(void *userdata, Uint8 *stream, int len);
 static callback_t callback = NULL;
+static bool incall = false;
 /* wuyc */
 
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
@@ -21,9 +22,11 @@ int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
   /* printf("%d, %d, %d\n", desired->freq, desired->channels, desired->samples); */
   NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
   /* printf("In SDL_OpenAudio\n"); */
+  /* time_interval = 1000 * desired->samples / desired->freq / 2; */
   time_interval = 1000 * desired->samples / desired->freq;
   /* samples = desired->samples; */
   length = desired->samples * desired->channels * desired->format / 8;
+  /* printf("%d\n", desired->samples); */
   stream = (uint8_t *)malloc(length);
   callback = desired->callback;
   /* printf("time_interval = %d\n", time_interval); */
@@ -40,9 +43,11 @@ void SDL_PauseAudio(int pause_on) {
   if (pause_on == 0)
   {
     silence = false;
-    previous_time = NDL_GetTicks();
+    previous_time = SDL_GetTicks();
     int rest = NDL_QueryAudio();
+    /* printf("Before: %d, %d\n", rest, length); */
     rest = length <= rest ? length : rest;
+    /* printf("After: %d, %d\n", rest, length); */
     callback(NULL, stream, rest);
     NDL_PlayAudio(stream, rest);
   }
@@ -52,18 +57,32 @@ void SDL_PauseAudio(int pause_on) {
 
 void CallbackHelper()
 {
-  if (silence)
+  if (incall)
     return;
+  else
+  {
+    incall = true;
+    bool not_run = false;
+    if (silence)
+      not_run = true;
 
-  int current_time = NDL_GetTicks();
-  if (current_time < previous_time + time_interval)
+    int current_time = SDL_GetTicks();
+    if (current_time < previous_time + time_interval)
+      not_run = true;
+
+    if (not_run == false)
+    {
+      int rest = NDL_QueryAudio();
+      /* printf("Before: %d, %d\n", rest, length); */
+      rest = length <= rest ? length : rest;
+      /* printf("After: %d, %d\n", rest, length); */
+      callback(NULL, stream, rest);
+      NDL_PlayAudio(stream, rest);
+      previous_time = current_time;
+    }
+    incall = false;
     return;
-
-  int rest = NDL_QueryAudio();
-  rest = length <= rest ? length : rest;
-  callback(NULL, stream, length);
-  NDL_PlayAudio(stream, length);
-  previous_time = current_time;
+  }
 }
 
 void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {

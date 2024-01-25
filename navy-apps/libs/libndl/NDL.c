@@ -143,7 +143,7 @@ int NDL_QueryAudio() {
   uint32_t rest;
   read(fd, &rest, sizeof(uint32_t));
   /* printf("%d\n", count); */
-  close(fd);
+  /* close(fd); */
   return rest;
 }
 
