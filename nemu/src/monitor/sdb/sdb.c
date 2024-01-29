@@ -159,6 +159,7 @@ static int cmd_detach(char *args) {
 }
 
 static int cmd_attach(char *args) {
+  return 0;
   
 }
 /* wuyc */
