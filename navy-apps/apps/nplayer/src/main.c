@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
   spec.channels = info.channels;
   spec.samples = SAMPLES;
   spec.format = AUDIO_S16SYS;
-  /* printf("format = %d\n", AUDIO_S16SYS); */
+  printf("format = %d\n", AUDIO_S16SYS);
   spec.userdata = NULL;
   spec.callback = FillAudio;
   SDL_OpenAudio(&spec, NULL);

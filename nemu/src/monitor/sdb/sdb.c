@@ -153,6 +153,14 @@ static int cmd_p(char *args) {
   }
   return 0;
 }
+
+static int cmd_detach(char *args) {
+  return 0;
+}
+
+static int cmd_attach(char *args) {
+  
+}
 /* wuyc */
 
 static int cmd_c(char *args) {
@@ -182,6 +190,8 @@ static struct {
   { "p", "Evaluate the expression.", cmd_p},
   { "w", "Add expression to watchpoint.", cmd_w},
   { "d", "Delete No.N watchpoint.", cmd_d},
+  {"detach", "detach difftest mode", cmd_detach},
+  {"attach", "attach difftest mode", cmd_attach},
 
   /* TODO: Add more commands */
   /* wuyc */
