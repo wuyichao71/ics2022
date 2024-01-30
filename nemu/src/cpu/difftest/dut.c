@@ -33,10 +33,23 @@ void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
 static bool is_skip_ref = false;
 static int skip_dut_nr_inst = 0;
+/* wuyc */
+static bool is_detach = false;
+
+void difftest_detach() {is_detach = true;}
+void difftest_attach() {
+  is_detach = false;
+}
+/* wuyc */
 
 // this is used to let ref skip instructions which
 // can not produce consistent behavior with NEMU
 void difftest_skip_ref() {
+  /* wuyc */
+  if (is_detach)
+    return;
+  /* wuyc */
+
   is_skip_ref = true;
   // If such an instruction is one of the instruction packing in QEMU
   // (see below), we end the process of catching up with QEMU's pc to
@@ -55,6 +68,11 @@ void difftest_skip_ref() {
 //   Let REF run `nr_ref` instructions first.
 //   We expect that DUT will catch up with REF within `nr_dut` instructions.
 void difftest_skip_dut(int nr_ref, int nr_dut) {
+  /* wuyc */
+  if (is_detach)
+    return;
+  /* wuyc */
+
   skip_dut_nr_inst += nr_dut;
 
   while (nr_ref -- > 0) {
@@ -103,6 +121,8 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
 }
 
 void difftest_step(vaddr_t pc, vaddr_t npc) {
+  if (is_detach)
+    return;
   CPU_state ref_r;
 
   if (skip_dut_nr_inst > 0) {
