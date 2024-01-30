@@ -155,12 +155,12 @@ static int cmd_p(char *args) {
 }
 
 static int cmd_detach(char *args) {
-  difftest_detach();
+  isa_difftest_detach();
   return 0;
 }
 
 static int cmd_attach(char *args) {
-  difftest_detach();
+  isa_difftest_attach();
   return 0;
 }
 /* wuyc */
