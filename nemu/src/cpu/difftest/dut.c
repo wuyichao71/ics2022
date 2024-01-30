@@ -37,9 +37,7 @@ static int skip_dut_nr_inst = 0;
 static bool is_detach = false;
 
 void difftest_detach() {is_detach = true;}
-void difftest_attach() {
-  is_detach = false;
-}
+void difftest_attach() {is_detach = false;}
 /* wuyc */
 
 // this is used to let ref skip instructions which
