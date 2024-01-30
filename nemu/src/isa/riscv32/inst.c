@@ -244,7 +244,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 101 ????? 00000 11", lhu    , I, R(rd) = Mr(src1 + imm, 2));
   INSTPAT("??????? ????? ????? 110 ????? 00100 11", ori    , I, R(rd) = src1 | imm);
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, SET_CSR(src1));
-  /* INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, bool success; s->dnpc = isa_raise_intr(isa_reg_str2val("a7", &success), s->pc);); */
+  // INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, bool success; s->dnpc = isa_raise_intr(isa_reg_str2val("a7", &success), s->pc););
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, bool success; s->dnpc = isa_raise_intr(11, s->pc););
   INSTPAT("0011000 00010 00000 000 00000 11100 11", mret  , I, s->dnpc = cpu.mepc;);
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, SET_CSR(t | src1));
