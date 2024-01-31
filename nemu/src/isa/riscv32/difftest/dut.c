@@ -46,17 +46,17 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 
 void isa_difftest_detach() {difftest_detach();}
 
-static word_t code_to_csr(word_t code)
-{
-  switch (code)
-  {
-    case MSTATUS: return cpu.mstatus;
-    case MTVEC: return cpu.mtvec;
-    case MEPC: return cpu.mepc;
-    case MCAUSE: return cpu.mcause;
-    default: return 0;
-  }
-}
+/* static word_t code_to_csr(word_t code) */
+/* { */
+/*   switch (code) */
+/*   { */
+/*     case MSTATUS: return cpu.mstatus; */
+/*     case MTVEC: return cpu.mtvec; */
+/*     case MEPC: return cpu.mepc; */
+/*     case MCAUSE: return cpu.mcause; */
+/*     default: return 0; */
+/*   } */
+/* } */
 void isa_difftest_attach() {
   difftest_attach();
   CPU_state ref_r;
