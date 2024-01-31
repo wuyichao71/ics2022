@@ -54,6 +54,7 @@ static word_t code_to_csr(word_t code)
     case MTVEC: return cpu.mtvec;
     case MEPC: return cpu.mepc;
     case MCAUSE: return cpu.mcause;
+    default: return 0;
   }
 }
 void isa_difftest_attach() {
