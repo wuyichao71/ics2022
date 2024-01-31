@@ -172,7 +172,7 @@ static int cmd_save(char *args) {
   else
   {
     char *arg = strtok(NULL, " ");
-    printf("%s\n", args);
+    printf("%s\n", arg);
   }
   return 0;
 }
@@ -185,7 +185,7 @@ static int cmd_load(char *args) {
   else
   {
     char *arg = strtok(NULL, " ");
-    printf("%s\n", args);
+    printf("%s\n", arg);
   }
   return 0;
 }
