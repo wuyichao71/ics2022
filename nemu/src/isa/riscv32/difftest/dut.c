@@ -60,7 +60,7 @@ static word_t code_to_csr(word_t code)
 void isa_difftest_attach() {
   difftest_attach();
   CPU_state ref_r;
-  /* bool success; */
+  bool success;
   word_t inst;
   word_t csr_code[4] = {MTVEC, MSTATUS, MEPC, MCAUSE};
   /* printf("here\n"); */
