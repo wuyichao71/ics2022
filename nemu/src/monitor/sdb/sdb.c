@@ -23,7 +23,7 @@
 #include <readline/history.h>
 #include "sdb.h"
 
-static int is_batch_mode = false;
+static bool is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
@@ -172,7 +172,11 @@ static int cmd_save(char *args) {
   else
   {
     char *arg = strtok(NULL, " ");
-    printf("%s\n", arg);
+    FILE *fp = fopen(arg, "w");
+    assert(fp != NULL);
+    fwrite(&cpu, sizeof(cpu), 1, fp);
+    fclose(fp);
+    /* printf("%s\n", arg); */
   }
   return 0;
 }
@@ -185,7 +189,10 @@ static int cmd_load(char *args) {
   else
   {
     char *arg = strtok(NULL, " ");
-    printf("%s\n", arg);
+    FILE *fp = fopen(arg, "r");
+    assert(fp != NULL);
+    fclose(fp);
+    /* printf("%s\n", arg); */
   }
   return 0;
 }
