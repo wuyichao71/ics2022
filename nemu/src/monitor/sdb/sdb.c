@@ -165,12 +165,28 @@ static int cmd_attach(char *args) {
 }
 
 static int cmd_save(char *args) {
-  printf("%s\n", args);
+  if (args == NULL) {
+    printf("Please input filename.\n");
+    return 0;
+  }
+  else
+  {
+    char *arg = strtok(NULL, " ");
+    printf("%s\n", args);
+  }
   return 0;
 }
 
 static int cmd_load(char *args) {
-  printf("%s\n", args);
+  if (args == NULL) {
+    printf("Please input filename.\n");
+    return 0;
+  }
+  else
+  {
+    char *arg = strtok(NULL, " ");
+    printf("%s\n", args);
+  }
   return 0;
 }
 /* wuyc */
