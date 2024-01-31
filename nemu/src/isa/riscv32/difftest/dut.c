@@ -66,7 +66,7 @@ void isa_difftest_attach() {
   /* printf("here\n"); */
   for (int i = 0; i < ARRLEN(csr_code); i++)
   {
-    ref_r = cpu;
+    /* ref_r = cpu; */
     ref_r.pc = RESET_VECTOR;
     printf("here\n");
     printf("0x%08x\n", code_to_csr(csr_code[i]));
