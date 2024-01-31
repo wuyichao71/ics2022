@@ -67,7 +67,7 @@ void isa_difftest_attach() {
     ref_r = cpu;
     ref_r.pc = RESET_VECTOR;
     ref_r.gpr[isa_reg_str2val("a5", &success)] = code_to_csr(csr_code[i]);
-    inst = 0x00079073 | csr_code << 20;
+    inst = 0x00079073 | csr_code[i] << 20;
     ref_difftest_memcpy(RESET_VECTOR, &inst, sizeof(word_t), DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
     ref_difftest_exec(1);
