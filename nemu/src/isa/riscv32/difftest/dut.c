@@ -70,7 +70,7 @@ void isa_difftest_attach() {
     inst = 0x00079073 | csr_code << 20;
     ref_difftest_memcpy(RESET_VECTOR, &inst, sizeof(word_t), DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
-    difftest_exec(1);
+    ref_difftest_exec(1);
   }
 
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF);
