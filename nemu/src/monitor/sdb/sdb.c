@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 /* wuyc */
 #include <memory/vaddr.h>
+#include <memory/paddr.h>
 #include <watchpoint.h>
 /* wuyc */
 #include <readline/readline.h>
