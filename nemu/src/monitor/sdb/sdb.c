@@ -165,11 +165,12 @@ static int cmd_attach(char *args) {
 }
 
 static int cmd_save(char *args) {
-  printf(args);
+  printf("%s\n", args);
   return 0;
 }
 
 static int cmd_load(char *args) {
+  printf("%s\n", args);
   return 0;
 }
 /* wuyc */
