@@ -63,6 +63,7 @@ void isa_difftest_attach() {
   bool success;
   word_t inst;
   word_t csr_code[4] = {MTVEC, MSTATUS, MEPC, MCAUSE};
+  printf("here\n");
   for (int i = 0; i < ARRLEN(csr_code); i++)
   {
     ref_r = cpu;
