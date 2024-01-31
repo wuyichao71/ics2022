@@ -24,6 +24,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   /* wuyc */
   for (int i = 0; i < ARRLEN(cpu.gpr); i++)
   {
+    printf("hello\n");
     if (cpu.gpr[i] != ref_r->gpr[i])
     {
       printf("0x%08x\n", cpu.gpr[i]);
