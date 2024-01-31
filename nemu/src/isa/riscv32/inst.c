@@ -36,6 +36,7 @@ enum {
   TYPE_N, // none
 };
 
+
 #define src1R() do { *src1 = R(rs1); } while (0)
 #define src2R() do { *src2 = R(rs2); } while (0)
 #define immI() do { *imm = SEXT(BITS(i, 31, 20), 12); } while(0)
@@ -184,16 +185,16 @@ static word_t rw_csr(word_t csr, word_t src1, char rw)
 {
   switch (csr)
   {
-    case 0x300:
+    case MSTATUS:
       RW_CSR(cpu.mstatus);
       break;
-    case 0x305:
+    case MTVEC:
       RW_CSR(cpu.mtvec);
       break;
-    case 0x341:
+    case MEPC:
       RW_CSR(cpu.mepc);
       break;
-    case 0x342:
+    case MCAUSE:
       RW_CSR(cpu.mcause);
       break;
     default:

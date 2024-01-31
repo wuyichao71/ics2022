@@ -46,8 +46,33 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 
 void isa_difftest_detach() {difftest_detach();}
 
+static word_t code_to_csr(word_t code)
+{
+  switch (code)
+  {
+    case MSTATUS: return cpu.mstatus;
+    case MTVEC: return cpu.mtvec;
+    case MEPC: return cpu.mepc;
+    case MCAUSE: return cpu.mcause;
+  }
+}
 void isa_difftest_attach() {
   difftest_attach();
+  CPU_state ref_r;
+  bool success;
+  word_t inst;
+  word_t csr_code[4] = {MSTATUS, MTVEC, MEPC, MCAUSE};
+  for (int i = 0; i < ARRLEN(csr_code); i++)
+  {
+    ref_r = cpu;
+    ref_r.pc = RESET_VECTOR;
+    ref_r.gpr[isa_reg_str2val("a5", &success)] = code_to_csr(csr_code[i]);
+    inst = 0x00079073 | csr_code << 20;
+    ref_difftest_memcpy(RESET_VECTOR, &inst, sizeof(word_t), DIFFTEST_TO_REF);
+    ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
+    difftest_exec(1);
+  }
+
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF);
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
 }
