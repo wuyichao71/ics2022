@@ -31,7 +31,7 @@ void init_proc() {
   /* naive_uload(NULL, "/bin/timer-test"); */
   /* naive_uload(NULL, "/bin/event-test"); */
   /* naive_uload(NULL, "/bin/bmp-test"); */
-  naive_uload(NULL, "/bin/nslider");
+  /* naive_uload(NULL, "/bin/nslider"); */
   /* naive_uload(NULL, "/bin/typing-game"); */
   /* naive_uload(NULL, "/bin/dhrystone"); */
   /* naive_uload(NULL, "/bin/nplayer"); */
