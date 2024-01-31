@@ -19,7 +19,7 @@
 #include <memory/vaddr.h>
 #include <memory/paddr.h>
 #include <watchpoint.h>
-#include <cpu/difftest.h>
+/* #include <cpu/difftest.h> */
 /* wuyc */
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -196,8 +196,9 @@ static int cmd_load(char *args) {
     assert(fp != NULL);
     fread(&cpu, sizeof(cpu), 1, fp);
     fread((uint8_t *)guest_to_host(CONFIG_MBASE), CONFIG_MSIZE, 1, fp);
-    ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF);
-    ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+    /* ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF); */
+    /* ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF); */
+    isa_difftest_attach();
     fclose(fp);
     /* printf("%s\n", arg); */
   }
