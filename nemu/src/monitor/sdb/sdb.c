@@ -175,7 +175,7 @@ static int cmd_save(char *args) {
     FILE *fp = fopen(arg, "w");
     assert(fp != NULL);
     fwrite(&cpu, sizeof(cpu), 1, fp);
-    fwrite(guest_to_host(CONFIG_MBASE), CONFIG_MSIZE, 1, fp);
+    fwrite((uint8_t *)guest_to_host(CONFIG_MBASE), CONFIG_MSIZE, 1, fp);
     fclose(fp);
     /* printf("%s\n", arg); */
   }
@@ -193,7 +193,7 @@ static int cmd_load(char *args) {
     FILE *fp = fopen(arg, "r");
     assert(fp != NULL);
     fread(&cpu, sizeof(cpu), 1, fp);
-    fread(guest_to_host(CONFIG_MBASE), CONFIG_MSIZE, 1, fp);
+    fread((uint8_t *)guest_to_host(CONFIG_MBASE), CONFIG_MSIZE, 1, fp);
     fclose(fp);
     /* printf("%s\n", arg); */
   }
