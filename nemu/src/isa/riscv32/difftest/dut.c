@@ -71,6 +71,7 @@ void isa_difftest_attach() {
     inst = 0x00079073 | csr_code[i] << 20;
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
     ref_difftest_memcpy(RESET_VECTOR, &inst, sizeof(word_t), DIFFTEST_TO_REF);
+    printf("0x%08x\n", inst);
     ref_difftest_exec(1);
   }
 
