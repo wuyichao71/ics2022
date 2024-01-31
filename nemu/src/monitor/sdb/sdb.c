@@ -163,6 +163,15 @@ static int cmd_attach(char *args) {
   isa_difftest_attach();
   return 0;
 }
+
+static int cmd_save(char *args) {
+  printf(args);
+  return 0;
+}
+
+static int cmd_load(char *args) {
+  return 0;
+}
 /* wuyc */
 
 static int cmd_c(char *args) {
@@ -194,6 +203,8 @@ static struct {
   { "d", "Delete No.N watchpoint.", cmd_d},
   {"detach", "detach difftest mode", cmd_detach},
   {"attach", "attach difftest mode", cmd_attach},
+  {"save", "save snapshot", cmd_save},
+  {"load", "load snapshot", cmd_load},
 
   /* TODO: Add more commands */
   /* wuyc */
