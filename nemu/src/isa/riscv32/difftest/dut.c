@@ -24,16 +24,21 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   /* wuyc */
   for (int i = 0; i < ARRLEN(cpu.gpr); i++)
   {
-    printf("hello\n");
+    /* printf("hello\n"); */
     if (cpu.gpr[i] != ref_r->gpr[i])
     {
+      printf("i = %d\n", i);
       printf("0x%08x\n", cpu.gpr[i]);
       printf("0x%08x\n", ref_r->gpr[i]);
       return false;
     }
   }
   if (ref_r->pc != cpu.pc)
+  {
+    printf("cpu.pc = 0x%08x\n", cpu.pc);
+    printf("ref_r->pc = 0x%08x\n", ref_r->pc);
     return false;
+  }
   return true;
   /* return false; */
   /* wuyc */
