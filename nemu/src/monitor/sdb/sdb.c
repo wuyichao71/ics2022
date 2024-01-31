@@ -19,6 +19,7 @@
 #include <memory/vaddr.h>
 #include <memory/paddr.h>
 #include <watchpoint.h>
+#include <cpu/difftest.h>
 /* wuyc */
 #include <readline/readline.h>
 #include <readline/history.h>
