@@ -63,16 +63,16 @@ void isa_difftest_attach() {
   bool success;
   word_t inst;
   word_t csr_code[4] = {MTVEC, MSTATUS, MEPC, MCAUSE};
-  printf("here\n");
+  /* printf("here\n"); */
   for (int i = 0; i < ARRLEN(csr_code); i++)
   {
     ref_r = cpu;
     ref_r.pc = RESET_VECTOR;
     ref_r.gpr[isa_reg_str2val("a5", &success)] = code_to_csr(csr_code[i]);
     inst = 0x00079073 | csr_code[i] << 20;
+    printf("0x%08x\n", inst);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
     ref_difftest_memcpy(RESET_VECTOR, &inst, sizeof(word_t), DIFFTEST_TO_REF);
-    printf("0x%08x\n", inst);
     ref_difftest_exec(1);
   }
 
