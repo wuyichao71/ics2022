@@ -79,7 +79,7 @@ void isa_difftest_attach() {
     printf("0x%08x 0x%08x\n", lui, addi);
     inst[inst_i++] = lui | 0x00007b7;
     inst[inst_i++] = addi | 0x00078793;
-    inst[inst_i++] = code[i] << 20 | 0x00079073;
+    inst[inst_i++] = csr_code[i] << 20 | 0x00079073;
   }
   ref_r.pc = RESET_VECTOR;
   ref_difftest_memcpy(RESET_VECTOR, inst, sizeof(inst), DIFFTEST_TO_REF);
