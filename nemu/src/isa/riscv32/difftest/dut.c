@@ -73,12 +73,12 @@ void isa_difftest_attach() {
     ref_difftest_memcpy(RESET_VECTOR, &inst[i], sizeof(uint32_t), DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
     ref_difftest_exec(1);
+    ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+    printf("ref_mcause = 0x%08x\n", ref_r.gpr[5]);
+    printf("ref_mstatus = 0x%08x\n", ref_r.gpr[6]);
+    printf("ref_mepc = 0x%08x\n", ref_r.gpr[7]);
+    printf("ref_mtvec = 0x%08x\n", ref_r.gpr[8]);
   }
-  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-  printf("ref_mcause = 0x%08x\n", ref_r.gpr[5]);
-  printf("ref_mstatus = 0x%08x\n", ref_r.gpr[6]);
-  printf("ref_mepc = 0x%08x\n", ref_r.gpr[7]);
-  printf("ref_mtvec = 0x%08x\n", ref_r.gpr[8]);
   /* word_t csr_code[2] = {MTVEC, MSTATUS};//, MSTATUS, MEPC, MCAUSE}; */
   /* /1* printf("here\n"); *1/ */
   /* for (int i = 0; i < ARRLEN(csr_code); i++) */
