@@ -60,10 +60,10 @@ void isa_difftest_detach() {difftest_detach();}
 void isa_difftest_attach() {
   CPU_state ref_r = cpu;
   /* bool success; */
-  uint64_t inst[10] = {0x80017b7, 0x47878793, 0x30579073, 0x00027b7, 
+  uint32_t inst[10] = {0x80017b7, 0x47878793, 0x30579073, 0x00027b7, 
     0x80078793, 0x30079073, 0x342022f3, 0x30002373, 0x341023f3, 0x30502473};
   ref_r.pc = RESET_VECTOR;
-  ref_difftest_memcpy(RESET_VECTOR, inst, sizeof(uint64_t) * 10, DIFFTEST_TO_REF);
+  ref_difftest_memcpy(RESET_VECTOR, inst, sizeof(uint32_t) * 9, DIFFTEST_TO_REF);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
   ref_difftest_exec(6);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
