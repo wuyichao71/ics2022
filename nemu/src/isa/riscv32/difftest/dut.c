@@ -60,7 +60,7 @@ static word_t code_to_csr(word_t code)
 void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
   /* CPU_state ref_r = {}; */
-  word_t csr_code = {MSTATUS, MTVEC, MEPC, MCAUSE};
+  word_t csr_code[] = {MSTATUS, MTVEC, MEPC, MCAUSE};
   /* bool success; */
   /* uint32_t inst[10] = {0x800017b7, 0x47878793, 0x30579073, 0x00027b7, */ 
     /* 0x80078793, 0x30079073, 0x342022f3, 0x30002373, 0x341023f3, 0x30502473}; */
