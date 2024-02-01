@@ -58,7 +58,7 @@ void isa_difftest_detach() {difftest_detach();}
 /*   } */
 /* } */
 void isa_difftest_attach() {
-  CPU_state ref_r = {};
+  CPU_state ref_r = cpu;
   /* bool success; */
   uint32_t inst[10] = {0x80017b7, 0x47878793, 0x30579073, 0x00027b7, 
     0x80078793, 0x30079073};
