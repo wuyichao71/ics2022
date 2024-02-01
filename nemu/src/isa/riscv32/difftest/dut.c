@@ -62,11 +62,11 @@ void isa_difftest_attach() {
   CPU_state ref_r;
   /* bool success; */
   word_t inst;
-  word_t csr_code[3] = {MSTATUS, MCAUSE, MTVEC};//, MSTATUS, MEPC, MCAUSE};
+  word_t csr_code[2] = {MSTATUS, MTVEC};//, MSTATUS, MEPC, MCAUSE};
   /* /1* printf("here\n"); *1/ */
   for (int i = 0; i < ARRLEN(csr_code); i++)
   {
-    /* ref_r = cpu; */
+    ref_r = cpu;
     ref_r.pc = RESET_VECTOR;
     printf("here\n");
     printf("0x%08x\n", code_to_csr(csr_code[i]));
