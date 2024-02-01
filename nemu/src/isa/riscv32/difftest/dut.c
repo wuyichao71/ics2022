@@ -67,14 +67,14 @@ void isa_difftest_attach() {
   for (int i = 0; i < ARRLEN(csr_code); i++)
   {
     /* ref_r = cpu; */
-    ref_r.pc = RESET_VECTOR + CONFIG_MBASE / 2;
+    ref_r.pc = RESET_VECTOR;
     printf("here\n");
     printf("0x%08x\n", code_to_csr(csr_code[i]));
     /* ref_r.gpr[isa_reg_str2val("a5", &success)] = code_to_csr(csr_code[i]); */
     ref_r.gpr[15] = code_to_csr(csr_code[i]);
     inst = 0x00079073 | (csr_code[i] << 20);
     printf("0x%08x\n", inst);
-    ref_difftest_memcpy(RESET_VECTOR + CONFIG_MBASE / 2, &inst, 4, DIFFTEST_TO_REF);
+    ref_difftest_memcpy(RESET_VECTOR, &inst, 4, DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
     ref_difftest_exec(1);
   }
