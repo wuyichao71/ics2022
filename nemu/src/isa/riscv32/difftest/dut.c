@@ -77,7 +77,7 @@ void isa_difftest_attach() {
     inst[0] = init_inst[i];
     ref_difftest_memcpy(RESET_VECTOR, inst, sizeof(uint32_t) * 5, DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
-    ref_difftest_exec(1);
+    ref_difftest_exec(5);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
     printf("ref_mcause = 0x%08x\n", ref_r.gpr[5]);
     printf("ref_mstatus = 0x%08x\n", ref_r.gpr[6]);
