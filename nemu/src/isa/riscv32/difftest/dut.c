@@ -75,8 +75,8 @@ void isa_difftest_attach() {
     word_t csr_data = code_to_csr(csr_code[i]);
     lui = (csr_data + 0x800) & (~0xfff);
     addi = (csr_data - lui) << 20;
-    printf("$test = 0x%08x\n", csr_data);
-    printf("0x%08x 0x%08x\n", lui, addi);
+    /* printf("$test = 0x%08x\n", csr_data); */
+    /* printf("0x%08x 0x%08x\n", lui, addi); */
     inst[inst_i++] = lui | 0x00007b7;
     inst[inst_i++] = addi | 0x00078793;
     inst[inst_i++] = csr_code[i] << 20 | 0x00079073;
