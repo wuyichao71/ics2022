@@ -85,7 +85,7 @@ void isa_difftest_attach() {
     printf("ref_mcause = %d\n", ref_r.gpr[5]);
     printf("ref_mstatus = %d\n", ref_r.gpr[6]);
     printf("ref_mepc = %d\n", ref_r.gpr[7]);
-    printf("ref_mtvec = %d\n", ref_r.gpr[8])
+    printf("ref_mtvec = %d\n", ref_r.gpr[8]);
   } 
   /* ref_r.pc = RESET_VECTOR + 8; */
   /* printf("here\n"); */
