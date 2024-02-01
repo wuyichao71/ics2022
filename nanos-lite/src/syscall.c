@@ -2,6 +2,8 @@
 #include "syscall.h"
 
 /* wuyc */
+#include <proc.h>
+#include <loader.h>
 #include <fs.h>
 #include <sys/time.h>
 /* #define __STRACE__ */
@@ -21,6 +23,7 @@ size_t sys_write(int fd, const void *buf, size_t count);
 size_t sys_lseek(int fd, size_t offset, int whence);
 int sys_close(int fd);
 int sys_brk(intptr_t addr);
+int sys_execve(const char *fname, char *const argv[], char *const envp[]);
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
 
 /* wuyc */
@@ -68,6 +71,9 @@ void do_syscall(Context *c) {
       c->GPRx = sys_brk(a[1]); 
       STRACE(sys_brk, SYS_format("(0x%08x)"), a[1], c->GPRx);
       break;
+    case SYS_execve:
+      c->GPRx = sys_execve((const char *)a[1], (char *const*)a[2], (char *const*)a[3])
+      STRACE(sys_execve, SYS_format("(\"%s\", 0x%08x, 0x%08x)"), get_filename(a[1]).name, a[2], a[3], c->GPRx);
     case SYS_gettimeofday:
       c->GPRx = sys_gettimeofday((struct timeval *)a[1], (struct timezone *)a[2]);
       STRACE(sys_gettimeofday, SYS_format("(0x%08x, 0x%08x)"), a[1], a[2]);
@@ -130,4 +136,11 @@ int sys_gettimeofday(struct timeval *tv, struct timezone *tz)
   tv->tv_usec = us % 1000000;
   return 0;
 }
+
+int sys_execve(const char *fname, char *const argv[], char *const envp[])
+{
+  naive_uload(NULL, fname);
+  return 0;
+}
+
 /* wuyc */
