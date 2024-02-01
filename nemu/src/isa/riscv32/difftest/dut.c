@@ -61,16 +61,21 @@ void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
   CPU_state ref_r = {};
   /* bool success; */
-  uint32_t inst[10] = {0x800017b7, 0x47878793, 0x30579073, 0x00027b7, 
-    0x80078793, 0x30079073, 0x342022f3, 0x30002373, 0x341023f3, 0x30502473};
+  /* uint32_t inst[10] = {0x800017b7, 0x47878793, 0x30579073, 0x00027b7, */ 
+    /* 0x80078793, 0x30079073, 0x342022f3, 0x30002373, 0x341023f3, 0x30502473}; */
+  uint32_t init_inst[2] = {0x30579073, 0x30079073};
+  unit32_t inst[4] = {0x00000000, 0x342022f3, 0x30002373, 0x341023f3, 0x30502473};
+  uint32_t a5[2] = {0x80001478, 0x00001800};
   /* ref_r.pc = RESET_VECTOR; */
   /* ref_difftest_memcpy(RESET_VECTOR, inst, sizeof(uint32_t) * 10, DIFFTEST_TO_REF); */
   /* ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF); */
   /* ref_difftest_exec(10); */
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 2; i++)
   {
     ref_r.pc = RESET_VECTOR;
-    ref_difftest_memcpy(RESET_VECTOR, &inst[i], sizeof(uint32_t), DIFFTEST_TO_REF);
+    ref_r.gpr[15] = a5[i];
+    inst[0] = init_inst[i];
+    ref_difftest_memcpy(RESET_VECTOR, inst, sizeof(uint32_t) * 4, DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
     ref_difftest_exec(1);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
