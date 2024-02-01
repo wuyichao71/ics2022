@@ -62,7 +62,7 @@ void isa_difftest_attach() {
   CPU_state ref_r;
   /* bool success; */
   word_t inst;
-  word_t csr_code[3] = {MTVEC, MSTATUS};//, MSTATUS, MEPC, MCAUSE};
+  word_t csr_code[2] = {MTVEC, MSTATUS};//, MSTATUS, MEPC, MCAUSE};
   /* printf("here\n"); */
   for (int i = 0; i < ARRLEN(csr_code); i++)
   {
@@ -77,7 +77,17 @@ void isa_difftest_attach() {
     ref_difftest_memcpy(RESET_VECTOR + 8, &inst, 4, DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
     ref_difftest_exec(1);
-  }
+  } 
+  ref_r.pc = RESET_VECTOR + 8;
+  /* printf("here\n"); */
+  /* printf("0x%08x\n", code_to_csr(csr_code[i])); */
+  /* ref_r.gpr[isa_reg_str2val("a5", &success)] = code_to_csr(csr_code[i]); */
+  /* ref_r.gpr[15] = code_to_csr(csr_code[i]); */
+  inst = 0x00000073
+  printf("0x%08x\n", inst);
+  ref_difftest_memcpy(RESET_VECTOR + 8, &inst, 4, DIFFTEST_TO_REF);
+  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
+  ref_difftest_exec(1);
 
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF);
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
