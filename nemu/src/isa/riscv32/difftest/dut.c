@@ -77,7 +77,7 @@ void isa_difftest_attach() {
     inst[2] = 0x30002373;
     inst[3] = 0x341023f3;
     inst[4] = 0x30502473;
-    printf("0x%08x\n", inst);
+    printf("0x%08x\n", inst[0]);
     ref_difftest_memcpy(RESET_VECTOR, &inst, sizeof(word_t) * 5, DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
     ref_difftest_exec(5);
