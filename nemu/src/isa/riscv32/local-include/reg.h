@@ -32,9 +32,9 @@ static inline const char* reg_name(int idx, int width) {
 
 /* wuyc */
 enum {
+  MSTATUS = 0x300,
   MTVEC = 0x305,
   MEPC = 0x341,
-  MSTATUS = 0x300,
   MCAUSE = 0x342,
 };
 /* wuyc */
