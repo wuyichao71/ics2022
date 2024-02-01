@@ -58,7 +58,6 @@ void isa_difftest_detach() {difftest_detach();}
 /*   } */
 /* } */
 void isa_difftest_attach() {
-  difftest_attach();
   CPU_state ref_r = {};
   /* bool success; */
   word_t inst[10] = {0x80017b7, 0x47878793, 0x30579073, 0x00027b7, 
@@ -108,6 +107,7 @@ void isa_difftest_attach() {
   /* ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF); */
   /* ref_difftest_exec(1); */
 
+  difftest_attach();
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF);
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
 }
