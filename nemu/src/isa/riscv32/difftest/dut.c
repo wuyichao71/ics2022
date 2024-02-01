@@ -74,7 +74,7 @@ void isa_difftest_attach() {
     lui = (csr_data + 0x800) & (~0xfff);
     addi = (csr_data - lui);
     printf("$test = %d\n", csr_data);
-    printf("0x%08x 0x%08x\n", lui, addi)
+    printf("0x%08x 0x%08x\n", lui, addi);
   }
   /* ref_r.pc = RESET_VECTOR; */
   /* ref_difftest_memcpy(RESET_VECTOR, inst, sizeof(uint32_t) * 10, DIFFTEST_TO_REF); */
