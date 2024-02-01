@@ -83,7 +83,7 @@ void isa_difftest_attach() {
   /* printf("0x%08x\n", code_to_csr(csr_code[i])); */
   /* ref_r.gpr[isa_reg_str2val("a5", &success)] = code_to_csr(csr_code[i]); */
   /* ref_r.gpr[15] = code_to_csr(csr_code[i]); */
-  inst = 0x00000073
+  inst = 0x00000073;
   printf("0x%08x\n", inst);
   ref_difftest_memcpy(RESET_VECTOR + 8, &inst, 4, DIFFTEST_TO_REF);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
