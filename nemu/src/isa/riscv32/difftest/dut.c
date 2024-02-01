@@ -59,7 +59,7 @@ static word_t code_to_csr(word_t code)
 }
 void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
-  CPU_state ref_r = {};
+  /* CPU_state ref_r = {}; */
   word_t csr_code = {MSTATUS, MTVEC, MEPC, MCAUSE};
   /* bool success; */
   /* uint32_t inst[10] = {0x800017b7, 0x47878793, 0x30579073, 0x00027b7, */ 
@@ -75,9 +75,8 @@ void isa_difftest_attach() {
     addi = (csr_data - lui);
     printf("$test = %d\n", csr_data);
     printf("0x%08x 0x%08x\n", lui, addi)
-
   }
-  ref_r.pc = RESET_VECTOR;
+  /* ref_r.pc = RESET_VECTOR; */
   /* ref_difftest_memcpy(RESET_VECTOR, inst, sizeof(uint32_t) * 10, DIFFTEST_TO_REF); */
   /* ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF); */
   /* ref_difftest_exec(10); */
