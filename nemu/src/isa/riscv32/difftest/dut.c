@@ -62,19 +62,19 @@ void isa_difftest_attach() {
   CPU_state ref_r;
   /* bool success; */
   word_t inst;
-  word_t csr_code[2] = {MTVEC, MSTATUS};//, MSTATUS, MEPC, MCAUSE};
+  word_t csr_code[3] = {MTVEC, MSTATUS, MTVEC};//, MSTATUS, MEPC, MCAUSE};
   /* /1* printf("here\n"); *1/ */
-  for (int i = 0; i < 2; i++)
+  for (int i = 0; i < ARRLEN(csr_code); i++)
   {
     /* ref_r = cpu; */
-    ref_r.pc = RESET_VECTOR + 8;
+    ref_r.pc = RESET_VECTOR;
     printf("here\n");
     printf("0x%08x\n", code_to_csr(csr_code[i]));
     /* ref_r.gpr[isa_reg_str2val("a5", &success)] = code_to_csr(csr_code[i]); */
     ref_r.gpr[15] = code_to_csr(csr_code[i]);
     inst = 0x00079073 | (csr_code[i] << 20);
     printf("0x%08x\n", inst);
-    ref_difftest_memcpy(RESET_VECTOR + 8, &inst, 4, DIFFTEST_TO_REF);
+    ref_difftest_memcpy(RESET_VECTOR, &inst, sizeof(word_t), DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
     ref_difftest_exec(1);
   } 
