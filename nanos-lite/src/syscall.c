@@ -94,6 +94,7 @@ uintptr_t sys_yield()
 /* wuyc */
 void sys_exit(int code)
 {
+  naive_uload(NULL, "/bin/nterm");
   halt(code);
 }
 

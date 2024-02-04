@@ -25,11 +25,27 @@ static void sh_prompt() {
 static void sh_handle_cmd(const char *cmd) {
   char cmd_tmp[256];
   strcpy(cmd_tmp, cmd);
-  char *cmd_0 = strtok(cmd_tmp, " ");
+  char *cmd_0 = strtok(cmd_tmp, " \n");
+  /* printf("%d\n", cmd_0); */
+  /* printf("%d\n", cmd_0[0]); */
+  if (cmd_0 == NULL)
+    return;
   if (strcmp(cmd_0, "echo") == 0)
   {
-    char *cmd_1 = strtok(NULL, " ");
-    sh_printf("%s", cmd_1);
+    char *cmd_1 = strtok(NULL, "\n");
+    if (cmd_1 == NULL)
+      sh_printf("\n");
+    else
+      sh_printf("%s\n", cmd_1);
+  }
+  else
+  {
+    const char *exec_argv[3];
+    exec_argv[0] = cmd_0;
+    exec_argv[1] = NULL;
+    exec_argv[2] = NULL;
+    /* execve(cmd_0, (char **)exec_argv, NULL); */
+    execvp(cmd_0, (char **)exec_argv);
   }
 }
 

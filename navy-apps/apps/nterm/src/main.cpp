@@ -1,6 +1,9 @@
 #include <nterm.h>
 #include <SDL.h>
 #include <SDL_bdf.h>
+/* wuyc */
+#include <stdlib.h>
+/* wuyc */
 
 static const char *font_fname = "/share/fonts/Courier-7.bdf";
 static BDF_Font *font = NULL;
@@ -21,7 +24,9 @@ int main(int argc, char *argv[]) {
 
   term = new Terminal(W, H);
 
-  if (argc < 2) { builtin_sh_run(); }
+  /* wuyc */
+  if (argc < 2) { setenv("PATH", "/bin", 0); builtin_sh_run(); }
+  /* wuyc */
   else { extern_app_run(argv[1]); }
 
   // should not reach here

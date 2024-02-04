@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
   spec.channels = info.channels;
   spec.samples = SAMPLES;
   spec.format = AUDIO_S16SYS;
-  printf("format = %d\n", AUDIO_S16SYS);
+  /* printf("format = %d\n", AUDIO_S16SYS); */
   spec.userdata = NULL;
   spec.callback = FillAudio;
   SDL_OpenAudio(&spec, NULL);
@@ -127,6 +127,7 @@ int main(int argc, char *argv[]) {
     visualize(stream_save, SAMPLES * info.channels);
   }
 
+  /* printf("hhh\n"); */
   SDL_CloseAudio();
   stb_vorbis_close(v);
   SDL_Quit();
