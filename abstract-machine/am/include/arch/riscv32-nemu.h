@@ -8,6 +8,7 @@ struct Context {
 };
 
 /* wuyc */
+#define GPRSP gpr[2]
 #define GPR1 gpr[17] // a7
 #define GPR2 gpr[10]
 #define GPR3 gpr[11]
