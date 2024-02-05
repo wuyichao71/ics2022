@@ -33,9 +33,9 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   {
     for (x = 0; x < ctl->w; x++)
     {
-      /* ifn(fb[fb_offset + x] != ((uint32))) */
+      if (fb[fb_offset + x] != pixels[pixels_offset + x])
       /* *(fb + fb_offset + x) = *(pixels + pixels_offset + x); */
-      fb[fb_offset + x] = pixels[pixels_offset + x];
+        fb[fb_offset + x] = pixels[pixels_offset + x];
 
     }
     fb_offset += cfg.width;
