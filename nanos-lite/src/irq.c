@@ -9,7 +9,7 @@ static Context* do_event(Event e, Context* c) {
   switch (e.event) {
     /* wuyc */
     case EVENT_SYSCALL: do_syscall(c); break;
-    case EVENT_YIELD: printf("hello\n"); schedule(c); break;
+    case EVENT_YIELD: schedule(c); break;
     /* wuyc */
 
     default: panic("Unhandled event ID = %d", e.event);
