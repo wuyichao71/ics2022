@@ -28,10 +28,15 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   int x, y;
   int fb_offset = ctl->y * cfg.width + ctl->x;
   int pixels_offset = 0;
+  uint32_t *pixels = (uint32_t *)ctl->pixels;
   for (y = 0; y < ctl->h; y++)
   {
     for (x = 0; x < ctl->w; x++)
-      fb[fb_offset + x] = ((uint32_t *)ctl->pixels)[pixels_offset + x];
+    {
+      /* ifn(fb[fb_offset + x] != ((uint32))) */
+      *(fb + fb_offset + x) = *(pixels + pixels_offset + x);
+
+    }
     fb_offset += cfg.width;
     pixels_offset += ctl->w;
   }
