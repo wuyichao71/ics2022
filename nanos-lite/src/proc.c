@@ -23,6 +23,7 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
+  context_kload(&pcb[0], hello_fun, NULL);
   switch_boot_pcb();
 
   Log("Initializing processes...");
@@ -33,7 +34,7 @@ void init_proc() {
   /* naive_uload(NULL, "/bin/bmp-test"); */
   /* naive_uload(NULL, "/bin/nslider"); */
   /* naive_uload(NULL, "/bin/menu"); */
-  naive_uload(NULL, "/bin/nterm");
+  /* naive_uload(NULL, "/bin/nterm"); */
   /* naive_uload(NULL, "/bin/typing-game"); */
   /* naive_uload(NULL, "/bin/dhrystone"); */
   /* naive_uload(NULL, "/bin/nplayer"); */
@@ -48,5 +49,8 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  return NULL;
+  current->cp = prev;
+  current = &pcb[0];
+  return current->cp;
+  /* return NULL; */
 }

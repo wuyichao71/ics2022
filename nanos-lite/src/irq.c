@@ -1,6 +1,7 @@
 #include <common.h>
 /* wuyc */
 void do_syscall(Context *c);
+Context* schedule(Context *prev);
 /* wuyc */
 
 static Context* do_event(Event e, Context* c) {
@@ -8,7 +9,7 @@ static Context* do_event(Event e, Context* c) {
   switch (e.event) {
     /* wuyc */
     case EVENT_SYSCALL: do_syscall(c); break;
-    case EVENT_YIELD: printf("event is %d\n", e.event); halt(0); break;
+    case EVENT_YIELD: schedule(c); break;
     /* wuyc */
 
     default: panic("Unhandled event ID = %d", e.event);
