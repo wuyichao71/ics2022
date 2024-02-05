@@ -1,6 +1,7 @@
 #include <proc.h>
 #include <elf.h>
 /* wuyc */
+#include <am.h>
 #include <ramdisk.h>
 #include <loader.h>
 #include <fs.h>
@@ -65,3 +66,9 @@ void naive_uload(PCB *pcb, const char *filename) {
   ((void(*)())entry) ();
 }
 
+void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
+  Area kstack = {0};
+  kstack.start = pcb->stack;
+  kstack.end = kstack.start + STACK_SIZE;
+  pcb->cp = kcontext(kstack, entry, arg);
+}
