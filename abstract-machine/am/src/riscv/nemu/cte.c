@@ -48,6 +48,7 @@ Context* __am_irq_handle(Context *c) {
     }
 
     c = user_handler(ev, c);
+    printf("In %s: c->mepc = 0x%08x\n", c->mepc);
     assert(c != NULL);
   }
 
