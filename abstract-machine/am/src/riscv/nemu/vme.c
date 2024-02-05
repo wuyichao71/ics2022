@@ -70,5 +70,12 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
-  return NULL;
+  Context *c = (Context *)kstack.end - 1;
+  *c = (Context){0};
+  c->mepc = (uintptr_t)entry;
+  c->mstatus = 0x1800;
+  c->GPRSP = (uintptr_t)kstack.end;
+  /* c->GPR2 = (uintptr_t)arg; */
+  return c;
+  /* return NULL; */
 }
