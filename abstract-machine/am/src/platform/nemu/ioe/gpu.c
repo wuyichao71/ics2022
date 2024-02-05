@@ -34,8 +34,8 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     for (x = 0; x < ctl->w; x++)
     {
       uint32_t in_pixels = pixels[pixels_offset + x];
-      uint32_t out_pixels = fb[fb_offset + x];
-      if (out_pixels != in_pixels)
+      /* uint32_t out_pixels = fb[fb_offset + x]; */
+      /* if (out_pixels != in_pixels) */
       /* *(fb + fb_offset + x) = *(pixels + pixels_offset + x); */
       fb[fb_offset + x] = in_pixels;
 
