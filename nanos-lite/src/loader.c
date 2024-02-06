@@ -74,12 +74,71 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
   pcb->cp = kcontext(kstack, entry, arg);
 }
 
-void context_uload(PCB *pcb, char *filename) {
+inline static int arg_number(char *argv[])
+{
+  int i = 0;
+  for (; argv[i] != NULL; i++);
+  return i;
+}
+
+void context_uload(PCB *pcb, char *filename, char *argv[], char *envp[]) {
   Area kstack = RANGE(pcb->stack, pcb->stack + STACK_SIZE);
+  char *ustack = heap.end;
+  int argc = argv == NULL ? 0 : arg_number(argv);
+  int envc = envp == NULL ? 0 : arg_number(envp);
+  for (int i = envc - 1; i >= 0; i--)
+  {
+    int length = strlen(envp[i]) + 1;
+    ustack -= length;
+    strcpy(ustack, envp[i]);
+    envp[i] = ustack;
+    /* printf("%s\n", envp[i]); */
+  }
+  for (int i = argc - 1; i >= 0; i--)
+  {
+    int length = strlen(argv[i]) + 1;
+    ustack -= length;
+    strcpy(ustack, argv[i]);
+    argv[i] = ustack;
+  }
+
+  char **ustack2 = (char **)((uintptr_t)ustack & ~(sizeof(char **) - 1));
+  ustack2--;
+  *(ustack2--) = NULL;
+  for (int i = envc - 1; i >= 0; i--)
+  {
+    *(ustack2--) = envp[i];
+  }
+
+  *ustack2 = NULL;
+  for (int i = argc - 1; i >= 0; i--)
+  {
+    ustack2--;
+    *ustack2 = argv[i];
+  }
+
+  int *ustack3 = (int *)ustack2;
+  ustack3--;
+  *ustack3 = argc;
+
+  /* printf("%d\n", argc); */
+  /* printf("%d\n", envc); */
+  /* int p_argc = *ustack3; */
+  /* printf("argc = %d\n", p_argc); */
+  /* ustack3++; */
+  /* char **ustack4 = (char **)ustack3; */
+  /* for (; *ustack4 != NULL; ustack4++) */
+  /*   printf("%s\n", *ustack4); */
+  /* ustack4++; */
+  /* printf("----------------------\n"); */
+  /* for (; *ustack4 != NULL; ustack4++) */
+  /*   printf("%s\n", *ustack4); */
+
+  /* panic("JUST end!"); */
   /* kstack.start = pcb->stack; */
   /* kstack.end = kstack.start + STACK_SIZE; */
   uintptr_t entry = loader(pcb, filename);
   /* AddrSpace as = {}; */
   pcb->cp = ucontext(&pcb->as, kstack, (void *)entry);
-  pcb->cp->GPRx = (uintptr_t)heap.end;
+  pcb->cp->GPRx = (uintptr_t)ustack3;
 }
