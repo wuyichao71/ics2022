@@ -2,7 +2,7 @@
 _start:
   movq $0, %rbp
   //wuyc
-  // movq $0xc0000000, %rsp
+  movq %rax, %rsp
   //wuyc
   // (rsp + 8) should be multiple of 16 when
   // control is transfered to the function entry point.

@@ -78,6 +78,7 @@ void context_uload(PCB *pcb, char *filename) {
   kstack.start = pcb->stack;
   kstack.end = kstack.start + STACK_SIZE;
   uintptr_t entry = loader(pcb, filename);
-  pcb->cp = ucontext(NULL, kstack, (void *)entry);
+  /* AddrSpace as = {}; */
+  pcb->cp = ucontext(&pcb->as, kstack, (void *)entry);
   pcb->cp->GPRx = (uintptr_t)heap.end;
 }
