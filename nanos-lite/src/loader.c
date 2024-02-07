@@ -74,24 +74,30 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
   pcb->cp = kcontext(kstack, entry, arg);
 }
 
-inline static int arg_number(char *argv[])
+inline static int arg_number(char *const argv[])
 {
   int i = 0;
   for (; argv[i] != NULL; i++);
   return i;
 }
 
-void context_uload(PCB *pcb, char *filename, char *argv[], char *envp[]) {
+void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
   Area kstack = RANGE(pcb->stack, pcb->stack + STACK_SIZE);
-  char *ustack = heap.end;
+  char *ustack = new_page(STACK_NR_PAGE) + STACK_SIZE;
+  char **argv_p = NULL;
+  char **envp_p = NULL;
   int argc = argv == NULL ? 0 : arg_number(argv);
   int envc = envp == NULL ? 0 : arg_number(envp);
+  if (argc != 0)
+    argv_p = (char **)malloc(argc * sizeof(char *));
+  if (envc != 0)
+    envp_p = (char **)malloc(envc * sizeof(char *));
   for (int i = envc - 1; i >= 0; i--)
   {
     int length = strlen(envp[i]) + 1;
     ustack -= length;
     strcpy(ustack, envp[i]);
-    envp[i] = ustack;
+    envp_p[i] = ustack;
     /* printf("%s\n", envp[i]); */
   }
   for (int i = argc - 1; i >= 0; i--)
@@ -99,7 +105,7 @@ void context_uload(PCB *pcb, char *filename, char *argv[], char *envp[]) {
     int length = strlen(argv[i]) + 1;
     ustack -= length;
     strcpy(ustack, argv[i]);
-    argv[i] = ustack;
+    argv_p[i] = ustack;
   }
 
   char **ustack2 = (char **)((uintptr_t)ustack & ~(sizeof(char **) - 1));
@@ -107,15 +113,17 @@ void context_uload(PCB *pcb, char *filename, char *argv[], char *envp[]) {
   *(ustack2--) = NULL;
   for (int i = envc - 1; i >= 0; i--)
   {
-    *(ustack2--) = envp[i];
+    *(ustack2--) = envp_p[i];
   }
+  free(envp_p);
 
   *ustack2 = NULL;
   for (int i = argc - 1; i >= 0; i--)
   {
     ustack2--;
-    *ustack2 = argv[i];
+    *ustack2 = argv_p[i];
   }
+  free(argv_p);
 
   int *ustack3 = (int *)ustack2;
   ustack3--;

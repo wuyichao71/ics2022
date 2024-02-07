@@ -6,6 +6,7 @@
 #include <loader.h>
 #include <fs.h>
 #include <sys/time.h>
+void switch_boot_pcb();
 /* #define __STRACE__ */
 #ifdef __STRACE__
 # define SYS_format(format) format "         = %d"
@@ -140,7 +141,16 @@ int sys_gettimeofday(struct timeval *tv, struct timezone *tz)
 
 int sys_execve(const char *fname, char *const argv[], char *const envp[])
 {
-  naive_uload(NULL, fname);
+  int fd = sys_open(fname, 0, 0);
+  if (fd == -1)
+    return -1;
+  else
+    sys_close(fd);
+  context_uload(current, fname, argv, envp);
+  switch_boot_pcb();
+  yield();
+
+  /* naive_uload(NULL, fname); */
   return 0;
 }
 
