@@ -16,7 +16,8 @@ void switch_boot_pcb() {
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", (uintptr_t)arg, j);
+    if (j % 1000 == 0)
+      Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", (uintptr_t)arg, j);
     j ++;
     yield();
   }
@@ -28,7 +29,7 @@ void init_proc() {
   /* context_uload(&pcb[0], "/bin/hello"); */
   char *argv[2] = {NULL};
   char *envp[2] = {NULL};
-  argv[0] = "/bin/exec-test";
+  argv[0] = "/bin/nterm";
   /* argv[0] = "/bin/pal"; */
   /* argv[1] = "--skip"; */
   envp[0] = "PATH=/bin";

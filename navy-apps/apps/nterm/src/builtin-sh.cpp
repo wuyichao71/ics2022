@@ -40,10 +40,10 @@ static void sh_handle_cmd(const char *cmd) {
   }
   else
   {
-    const char *exec_argv[3];
+    const char *exec_argv[16];
     exec_argv[0] = cmd_0;
-    exec_argv[1] = NULL;
-    exec_argv[2] = NULL;
+    int argc =1;
+    for (; (exec_argv[argc] = strtok(NULL, " \n")) != NULL; argc++);
     /* execve(cmd_0, (char **)exec_argv, NULL); */
     execvp(cmd_0, (char **)exec_argv);
   }

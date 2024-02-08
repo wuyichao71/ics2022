@@ -12,6 +12,7 @@ include $(NAVY_HOME)/Makefile
 
 ifeq ($(ISA), native)
 CFLAGS += -I$(WORK_DIR)/include/native/
+# $(error $(WORK_DIR))
 else
 CFLAGS += -I$(WORK_DIR)/include/navy/ -D__GLIBC__ -fdata-sections -ffunction-sections -nostdlib
 comma = ,

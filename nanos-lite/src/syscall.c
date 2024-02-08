@@ -96,6 +96,13 @@ uintptr_t sys_yield()
 void sys_exit(int code)
 {
   /* naive_uload(NULL, "/bin/nterm"); */
+  char *argv[2] = {NULL};
+  char *envp[2] = {NULL};
+  argv[0] = "/bin/nterm";
+  envp[0] = "PATH=/bin";
+  context_uload(current, "/bin/nterm", argv, envp);
+  switch_boot_pcb();
+  yield();
   halt(code);
 }
 
