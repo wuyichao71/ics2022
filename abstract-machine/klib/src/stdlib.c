@@ -47,7 +47,7 @@ void *malloc(size_t size) {
   {
     *p = 0;
   }
-  printf("malloc = 0x08x\n", old);
+  printf("malloc = 0x%08x\n", old);
   return old;
 #endif
   /* return NULL; */
