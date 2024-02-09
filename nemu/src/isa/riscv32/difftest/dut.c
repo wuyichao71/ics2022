@@ -46,21 +46,11 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 
 void isa_difftest_detach() {difftest_detach();}
 
-static word_t code_to_csr(word_t code)
-{
-  switch (code)
-  {
-    case MSTATUS: return cpu.mstatus;
-    case MTVEC: return cpu.mtvec;
-    case MEPC: return cpu.mepc;
-    case MCAUSE: return cpu.mcause;
-    default: return 0;
-  }
-}
+#define CSR_CODE_LIST(name, index, code) name##_CODE,
 void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
   CPU_state ref_r = {};
-  word_t csr_code[] = {MSTATUS, MTVEC, MEPC, MCAUSE};
+  word_t csr_code[] = {CSR_REG(CSR_CODE_LIST)};
   word_t inst[16] = {[12] = 0x342022f3, [13] = 0x30002373, [14] = 0x341023f3, [15] = 0x30502473};
   /* bool success; */
   /* uint32_t inst[10] = {0x800017b7, 0x47878793, 0x30579073, 0x00027b7, */ 
@@ -72,7 +62,7 @@ void isa_difftest_attach() {
   for (int i = 0; i < ARRLEN(csr_code); i++)
   {
     word_t lui, addi;
-    word_t csr_data = code_to_csr(csr_code[i]);
+    word_t csr_data = cpu.csr[code_to_csr(csr_code[i])];
     lui = (csr_data + 0x800) & (~0xfff);
     addi = (csr_data - lui) << 20;
     /* printf("$test = 0x%08x\n", csr_data); */

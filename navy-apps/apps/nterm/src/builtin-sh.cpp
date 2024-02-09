@@ -30,23 +30,23 @@ static void sh_handle_cmd(const char *cmd) {
   /* printf("%d\n", cmd_0[0]); */
   if (cmd_0 == NULL)
     return;
-  if (strcmp(cmd_0, "echo") == 0)
-  {
-    char *cmd_1 = strtok(NULL, "\n");
-    if (cmd_1 == NULL)
-      sh_printf("\n");
-    else
-      sh_printf("%s\n", cmd_1);
-  }
-  else
-  {
-    const char *exec_argv[16];
-    exec_argv[0] = cmd_0;
-    int argc =1;
-    for (; (exec_argv[argc] = strtok(NULL, " \n")) != NULL; argc++);
-    /* execve(cmd_0, (char **)exec_argv, NULL); */
-    execvp(cmd_0, (char **)exec_argv);
-  }
+  /* if (strcmp(cmd_0, "echo") == 0) */
+  /* { */
+  /*   char *cmd_1 = strtok(NULL, "\n"); */
+  /*   if (cmd_1 == NULL) */
+  /*     sh_printf("\n"); */
+  /*   else */
+  /*     sh_printf("%s\n", cmd_1); */
+  /* } */
+  /* else */
+  /* { */
+  const char *exec_argv[16];
+  exec_argv[0] = cmd_0;
+  int argc = 1;
+  for (; (exec_argv[argc] = strtok(NULL, " \n")) != NULL; argc++);
+  /* execve(cmd_0, (char **)exec_argv, NULL); */
+  execvp(cmd_0, (char **)exec_argv);
+  /* } */
 }
 
 void builtin_sh_run() {

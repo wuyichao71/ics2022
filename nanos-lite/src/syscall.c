@@ -99,7 +99,7 @@ void sys_exit(int code)
   char *argv[2] = {NULL};
   char *envp[2] = {NULL};
   argv[0] = "/bin/nterm";
-  envp[0] = "PATH=/bin";
+  /* envp[0] = "PATH=/bin"; */
   context_uload(current, "/bin/nterm", argv, envp);
   switch_boot_pcb();
   yield();
@@ -148,11 +148,11 @@ int sys_gettimeofday(struct timeval *tv, struct timezone *tz)
 
 int sys_execve(const char *fname, char *const argv[], char *const envp[])
 {
-  int fd = sys_open(fname, 0, 0);
+  int fd = fs_open(fname, 0, 0);
   if (fd == -1)
-    return -1;
+    return -2;
   else
-    sys_close(fd);
+    fs_close(fd);
   context_uload(current, fname, argv, envp);
   switch_boot_pcb();
   yield();

@@ -31,11 +31,24 @@ static inline const char* reg_name(int idx, int width) {
 }
 
 /* wuyc */
+#define CSR_REG(f) f(MSTATUS, 0, 0x300) f(MTVEC, 1, 0x305) f(MEPC, 2, 0x341) f(MCAUSE, 3, 0x342)
+#define CSR_INDEX(name, index, code) name = index,
+#define CSR_CODE(name, index, code) name##_CODE = code,
+#define CSR_CASE(name, index, code) case name##_CODE: return name;
 enum {
-  MSTATUS = 0x300,
-  MTVEC = 0x305,
-  MEPC = 0x341,
-  MCAUSE = 0x342,
+  CSR_REG(CSR_INDEX)
+  NCSR
 };
+enum {
+  CSR_REG(CSR_CODE)
+};
+static inline word_t code_to_csr(word_t code)
+{
+  switch (code)
+  {
+    CSR_REG(CSR_CASE)
+    default: return -1;
+  }
+}
 /* wuyc */
 #endif

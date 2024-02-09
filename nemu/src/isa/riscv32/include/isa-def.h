@@ -17,15 +17,19 @@
 #define __ISA_RISCV32_H__
 
 #include <common.h>
+/* wuyc */
+#include "../local-include/reg.h"
+/* wuyc */
 
 typedef struct {
   word_t gpr[32];
   vaddr_t pc;
   /* wuyc */
-  word_t mtvec;
-  vaddr_t mepc;
-  word_t mstatus;
-  word_t mcause;
+  word_t csr[NCSR];
+  /* word_t mtvec; */
+  /* vaddr_t mepc; */
+  /* word_t mstatus; */
+  /* word_t mcause; */
   /* wuyc */
 } riscv32_CPU_state;
 

@@ -32,7 +32,7 @@ void init_proc() {
   argv[0] = "/bin/nterm";
   /* argv[0] = "/bin/pal"; */
   /* argv[1] = "--skip"; */
-  envp[0] = "PATH=/bin";
+  /* envp[0] = "PATH=/bin"; */
   context_uload(&pcb[1], argv[0], argv, envp);
   /* context_kload(&pcb[1], hello_fun, "pbc 1"); */
   switch_boot_pcb();

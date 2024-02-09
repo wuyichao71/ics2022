@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
   term = new Terminal(W, H);
 
   /* wuyc */
-  if (argc < 2) { setenv("PATH", "/bin", 0); builtin_sh_run(); }
+  if (argc < 2) { setenv("PATH", "/bin:/usr/bin", 0); builtin_sh_run(); }
   /* wuyc */
   else { extern_app_run(argv[1]); }
 
