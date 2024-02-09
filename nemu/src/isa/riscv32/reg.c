@@ -34,9 +34,9 @@ void isa_reg_display() {
       printf("\n");
   }
   printf("%4s: " FMT_WORD "\n", "pc", cpu.pc);
-  printf("%4s: " FMT_WORD "\n", "mcause", cpu.mcause);
-  printf("%4s: " FMT_WORD "\n", "mstatus", cpu.mstatus);
-  printf("%4s: " FMT_WORD "\n", "mepc", cpu.mepc);
+  printf("%4s: " FMT_WORD "\n", "mcause", cpu.csr[MCAUSE]);
+  printf("%4s: " FMT_WORD "\n", "mstatus", cpu.csr[MSTATUS]);
+  printf("%4s: " FMT_WORD "\n", "mepc", cpu.csr[MEPC]);
 
   /* wuyc */
 }
