@@ -84,14 +84,16 @@ inline static int arg_number(char *const argv[])
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
   Area kstack = RANGE(pcb->stack, pcb->stack + STACK_SIZE);
   char *ustack = new_page(STACK_NR_PAGE) + STACK_SIZE;
-  char **argv_p = NULL;
-  char **envp_p = NULL;
+  /* char **argv_p = NULL; */
+  /* char **envp_p = NULL; */
   int argc = argv == NULL ? 0 : arg_number(argv);
   int envc = envp == NULL ? 0 : arg_number(envp);
-  if (argc != 0)
-    argv_p = (char **)malloc(argc * sizeof(char *));
-  if (envc != 0)
-    envp_p = (char **)malloc(envc * sizeof(char *));
+  /* if (argc != 0) */
+  /*   argv_p = (char **)malloc(argc * sizeof(char *)); */
+  /* if (envc != 0) */
+  /*   envp_p = (char **)malloc(envc * sizeof(char *)); */
+  char *envp_p[envc];
+  char *argv_p[argc];
   for (int i = envc - 1; i >= 0; i--)
   {
     int length = strlen(envp[i]) + 1;
