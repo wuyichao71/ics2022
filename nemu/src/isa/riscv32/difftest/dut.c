@@ -46,7 +46,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 
 void isa_difftest_detach() {difftest_detach();}
 
-#define CSR_CODE_LIST(name, index, code) name##_CODE,
+#define CSR_CODE_LIST(name, code, ...) name##_CODE,
 void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
   CPU_state ref_r = {};
