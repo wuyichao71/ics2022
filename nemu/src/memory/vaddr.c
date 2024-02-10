@@ -16,7 +16,7 @@
 #include <isa.h>
 #include <memory/paddr.h>
 
-#define TRANSLATE_ADDR(p_addr, vaddr, type) { \
+#define TRANSLATE_ADDR(p_addr, v_addr, type) { \
   switch (isa_mmu_check(v_addr, len, MEM_TYPE_##type)) \
   { \
     case MMU_DIRECT: p_addr = v_addr; break; \
