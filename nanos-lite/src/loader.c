@@ -86,14 +86,14 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   char *ustack = new_page(STACK_NR_PAGE) + STACK_SIZE;
   int argc = argv == NULL ? 0 : arg_number(argv);
   int envc = envp == NULL ? 0 : arg_number(envp);
-  char **argv_p = NULL;
-  char **envp_p = NULL;
-  if (argc != 0)
-    argv_p = (char **)malloc(argc * sizeof(char *));
-  if (envc != 0)
-    envp_p = (char **)malloc(envc * sizeof(char *));
-  /* char *envp_p[envc]; */
-  /* char *argv_p[argc]; */
+  /* char **argv_p = NULL; */
+  /* char **envp_p = NULL; */
+  /* if (argc != 0) */
+  /*   argv_p = (char **)malloc(argc * sizeof(char *)); */
+  /* if (envc != 0) */
+  /*   envp_p = (char **)malloc(envc * sizeof(char *)); */
+  char *envp_p[envc];
+  char *argv_p[argc];
   for (int i = envc - 1; i >= 0; i--)
   {
     int length = strlen(envp[i]) + 1;
