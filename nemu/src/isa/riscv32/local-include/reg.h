@@ -47,7 +47,7 @@ static inline word_t code_to_csr(word_t code)
   switch (code)
   {
     CSR_REG(CSR_CASE)
-    default: return -1;
+    default: panic("Some CSR is missing!");
   }
 }
 /* wuyc */
