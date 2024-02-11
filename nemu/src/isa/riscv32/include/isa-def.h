@@ -41,6 +41,7 @@ typedef struct {
 } riscv32_ISADecodeInfo;
 
 /* #define isa_mmu_check(vaddr, len, type) (MMU_DIRECT) */
-#define isa_mmu_check(vaddr, len, type) (cpu.csr[SATP] >> 31)
+#define isa_mmu_check(vaddr, len, type) ((vaddr >> 12 == (vaddr + len - 1) >> 12) ? \
+    cpu.csr[SATP] >> 31 : MMU_FAIL)
 
 #endif
