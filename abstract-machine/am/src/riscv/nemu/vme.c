@@ -70,9 +70,16 @@ void __am_switch(Context *c) {
 /* wuyc */
 #define LEVELS 2
 #define SHIFT_VPN(vaddr, shift) ((vaddr) >> (shift))
+#define VPN_WIDTH 10
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  PTE *pte_base = as->ptr;
-  printf("0x%08x\n", pte_base);
+  /* PTE *pte_base = as->ptr; */
+  int shift = __riscv_xlen - VPN_WIDTH;
+  for (int i = LEVELS - 1; i >= 0; i--)
+  {
+    printf("%d\n", shift);
+    shift -= VPN_WIDTH;
+  }
+  /* printf("0x%08x\n", pte_base); */
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
