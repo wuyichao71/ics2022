@@ -40,8 +40,9 @@ typedef struct {
   } inst;
 } riscv32_ISADecodeInfo;
 
+#define PGSHIFT 12
 /* #define isa_mmu_check(vaddr, len, type) (MMU_DIRECT) */
-#define isa_mmu_check(vaddr, len, type) ((vaddr >> 12 == (vaddr + len - 1) >> 12) ? \
+#define isa_mmu_check(vaddr, len, type) ((vaddr >> PGSHIFT == (vaddr + len - 1) >> PGSHIFT) ? \
     cpu.csr[SATP] >> 31 : MMU_FAIL)
 
 #endif
