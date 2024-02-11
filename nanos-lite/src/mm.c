@@ -39,9 +39,9 @@ void init_mm() {
   vme_init(pg_alloc, free_page);
 #endif
   /* wuyc */
-  printf("_data = 0x%08x\n", &_data);
-  printf("_bss_start = 0x%08x\n", &_bss_start);
-  printf("_stack_top = 0x%08x\n", &_stack_top);
-  printf("_end = 0x%08x\n", &_end);
+  /* printf("_data = 0x%08x\n", &_data); */
+  /* printf("_bss_start = 0x%08x\n", &_bss_start); */
+  /* printf("_stack_top = 0x%08x\n", &_stack_top); */
+  /* printf("_end = 0x%08x\n", &_end); */
   /* wuyc */
 }
