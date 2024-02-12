@@ -18,6 +18,7 @@
 #include <memory/vaddr.h>
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
+  print("satp = 0x%08x\n", cpu.csr[SATP]);
   return vaddr;
   return MEM_RET_FAIL;
 }

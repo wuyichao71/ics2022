@@ -38,7 +38,7 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
       map(&kas, va, va, PTE_R | PTE_W | PTE_X | PTE_V);
     }
     /* wuyc */
-    printf("-------------------\n");
+    /* printf("-------------------\n"); */
     /* wuyc */
   }
 
@@ -87,7 +87,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     {
       uint32_t pg_ptr = (uint32_t)pgalloc_usr(PGSIZE) & ~0xfff;
       pte_base[index] = pg_ptr >> 2 | PTE_V;
-      printf("pg_pte = 0x%08x\n", pte_base[index]);
+      /* printf("pg_pte = 0x%08x\n", pte_base[index]); */
       pte_base = (PTE *)pg_ptr;
     }
     else
@@ -106,7 +106,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   else
   {
     pte_base[index] = ((uint32_t)pa & ~0xfff) >> 2 | prot;
-    printf("pte = 0x%08x\n", pte_base[index]);
+    /* printf("pte = 0x%08x\n", pte_base[index]); */
   }
   /* printf("shift = %d\n", shift); */
   /* printf("0x%08x\n", pte_base); */
