@@ -94,6 +94,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     /* printf("%d\n", shift); */
     shift -= VPN_WIDTH;
   }
+  printf("shift = %d\n", shift);
   /* printf("0x%08x\n", pte_base); */
 }
 
