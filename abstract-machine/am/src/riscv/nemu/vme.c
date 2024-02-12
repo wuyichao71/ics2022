@@ -72,29 +72,34 @@ void __am_switch(Context *c) {
 
 /* wuyc */
 #define LEVELS 2
-#define SHIFT_VPN(vaddr, shift) (((intptr_t)(vaddr) >> (shift)) & 0x3ff)
+#define SHIFT_VPN(vaddr, shift) (((uint32_t)(vaddr) >> (shift)) & 0x3ff)
 #define VPN_WIDTH 10
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE *pte_base = as->ptr;
   int shift = __riscv_xlen - VPN_WIDTH;
+  int index;
+  PTE pte;
   for (int i = LEVELS - 1; i > 0; i--)
   {
-    int index = SHIFT_VPN(va, shift);
-    PTE pte = pte_base[index];
+    index = SHIFT_VPN(va, shift);
+    pte = pte_base[index];
     if ((pte & PTE_V) == 0)
     {
-      intptr_t pg_ptr = (intptr_t)pgalloc_usr(PGSIZE) & ~0xfff;
-      pte_base[index] = pg_ptr | PTE_V;
+      uint32_t pg_ptr = (uint32_t)pgalloc_usr(PGSIZE) & ~0xfff;
+      pte_base[index] = pg_ptr >> 2 | PTE_V;
+      printf("pte = 0x%08x\n", pte_base[index]);
       pte_base = (PTE *)pg_ptr;
     }
     else
     {
-      pte_base = (PTE *)(pte & ~0xfff);
+      pte_base = (PTE *)((pte & ~0x3ff) << 2);
     }
     /* printf("%d\n", shift); */
     shift -= VPN_WIDTH;
   }
-  printf("shift = %d\n", shift);
+  index = SHIFT_VPN(va, shift);
+  pte = pte_base[index];
+  /* printf("shift = %d\n", shift); */
   /* printf("0x%08x\n", pte_base); */
 }
 
