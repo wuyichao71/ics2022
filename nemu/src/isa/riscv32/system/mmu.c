@@ -19,6 +19,7 @@
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   printf("satp = 0x%08x\n", cpu.csr[SATP]);
+  printf("ptr = 0x%08x\n", cpu.csr[SATP] << PGSHIFT);
   return vaddr;
   return MEM_RET_FAIL;
 }
