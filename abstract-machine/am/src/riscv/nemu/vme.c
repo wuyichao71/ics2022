@@ -35,7 +35,7 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   for (i = 0; i < LENGTH(segments); i ++) {
     void *va = segments[i].start;
     for (; va < segments[i].end; va += PGSIZE) {
-      map(&kas, va, va, 0);
+      map(&kas, va, va, PTE_R | PTE_W | PTE_X | PTE_V);
     }
     /* wuyc */
     printf("-------------------\n");
@@ -78,16 +78,16 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE *pte_base = as->ptr;
   int shift = __riscv_xlen - VPN_WIDTH;
   int index;
-  PTE pte;
+  /* PTE pte; */
   for (int i = LEVELS - 1; i > 0; i--)
   {
     index = SHIFT_VPN(va, shift);
-    pte = pte_base[index];
-    if ((pte & PTE_V) == 0)
+     PTE pte = pte_base[index];
+    if ((pte & PTE_V) != PTE_V)
     {
       uint32_t pg_ptr = (uint32_t)pgalloc_usr(PGSIZE) & ~0xfff;
       pte_base[index] = pg_ptr >> 2 | PTE_V;
-      printf("pte = 0x%08x\n", pte_base[index]);
+      printf("pg_pte = 0x%08x\n", pte_base[index]);
       pte_base = (PTE *)pg_ptr;
     }
     else
@@ -98,7 +98,16 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     shift -= VPN_WIDTH;
   }
   index = SHIFT_VPN(va, shift);
-  pte = pte_base[index];
+  /* pte = pte_base[index]; */
+  if ((prot & PTE_V) != PTE_V)
+  {
+    pte_base[index] &= ~PTE_V;
+  }
+  else
+  {
+    pte_base[index] = ((uint32_t)pa & 0xfff) >> 2 | prot;
+    printf("pte = 0x%08x\n", pte_base[index]);
+  }
   /* printf("shift = %d\n", shift); */
   /* printf("0x%08x\n", pte_base); */
 }
