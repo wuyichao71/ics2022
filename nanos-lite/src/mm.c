@@ -13,6 +13,7 @@ void* new_page(size_t nr_page) {
 static void* pg_alloc(int n) {
   void *ptr = new_page(n / PGSIZE);
   memset(ptr, 0, n);
+  printf("0x%08x\n", ptr);
   return ptr;
   /* return NULL; */
 }
