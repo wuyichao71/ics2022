@@ -44,7 +44,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     shift -= VPN_WIDTH;
     /* printf("out pte = 0x%08x\n", pte); */
   }
-  printf("shift 0x%08x\n", shift);
+  printf("shift =%d\n", shift);
   
   return vaddr;
   return MEM_RET_FAIL;
