@@ -82,12 +82,12 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   for (int i = LEVELS - 1; i > 0; i--)
   {
     index = SHIFT_VPN(va, shift);
-     PTE pte = pte_base[index];
+    PTE pte = pte_base[index];
     if ((pte & PTE_V) != PTE_V)
     {
       uint32_t pg_ptr = (uint32_t)pgalloc_usr(PGSIZE) & ~0xfff;
       pte_base[index] = pg_ptr >> 2 | PTE_V;
-      /* printf("pg_pte = 0x%08x\n", pte_base[index]); */
+      printf("pg_pte = 0x%08x\n", pte_base[index]);
       pte_base = (PTE *)pg_ptr;
     }
     else

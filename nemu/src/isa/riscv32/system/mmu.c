@@ -17,9 +17,21 @@
 #include <memory/paddr.h>
 #include <memory/vaddr.h>
 
+#define LEVELS 2
+#define SHIFT_VPN(vaddr, shift) (((uint32_t)(vaddr) >> (shift)) & 0x3ff)
+#define VPN_WIDTH 10
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   /* printf("satp = 0x%08x\n", cpu.csr[SATP]); */
   /* printf("ptr = 0x%08x\n", cpu.csr[SATP] << PGSHIFT); */
+  word_t *pte_base = cpu.csr[SATP] << PGSHIFT;
+  int shift = 32 - VPN_SHIFT;
+  int index;
+  for (int i = LEVELS - 1; i > 0; i--)
+  {
+    index = SHIFT_VPN(vaddr, shift);
+    word_t pte = pte_base[index];
+    printf("out pte = 0xz%08x\n", pte);
+  }
   return vaddr;
   return MEM_RET_FAIL;
 }
