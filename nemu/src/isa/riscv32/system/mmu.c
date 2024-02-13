@@ -24,7 +24,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   /* printf("satp = 0x%08x\n", cpu.csr[SATP]); */
   /* printf("ptr = 0x%08x\n", cpu.csr[SATP] << PGSHIFT); */
   word_t *pte_base = cpu.csr[SATP] << PGSHIFT;
-  int shift = 32 - VPN_SHIFT;
+  int shift = 32 - VPN_WIDTH;
   int index;
   for (int i = LEVELS - 1; i > 0; i--)
   {
