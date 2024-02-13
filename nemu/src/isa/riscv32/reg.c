@@ -23,6 +23,7 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
+#define CSR_REG_PRINT(name, code, ...) printf("%4s: " FMT_WORD "\n", #name, cpu.csr[name]);
 void isa_reg_display() {
   /* wuyc */
   /* int regs_len = sizeof(regs) / sizeof(char *); */
@@ -33,10 +34,12 @@ void isa_reg_display() {
     if ((i + 1) % 4 == 0)
       printf("\n");
   }
-  printf("%4s: " FMT_WORD "\n", "pc", cpu.pc);
-  printf("%4s: " FMT_WORD "\n", "mcause", cpu.csr[MCAUSE]);
-  printf("%4s: " FMT_WORD "\n", "mstatus", cpu.csr[MSTATUS]);
-  printf("%4s: " FMT_WORD "\n", "mepc", cpu.csr[MEPC]);
+  printf("%4s: " FMT_WORD "\n", "PC", cpu.pc);
+  /* printf("%4s: " FMT_WORD "\n", "MCAUSE", cpu.csr[MCAUSE]); */
+  /* printf("%4s: " FMT_WORD "\n", "MSTATUS", cpu.csr[MSTATUS]); */
+  /* printf("%4s: " FMT_WORD "\n", "MEPC", cpu.csr[MEPC]); */
+  /* printf("%4s: " FMT_WORD "\n", "STAP", cpu.csr[SATP]); */
+  CSR_REG(CSR_REG_PRINT);
 
   /* wuyc */
 }
