@@ -20,6 +20,13 @@
 #define LEVELS 2
 #define SHIFT_VPN(vaddr, shift) (((uint32_t)(vaddr) >> (shift)) & 0x3ff)
 #define VPN_WIDTH 10
+#define PTE_V 0x01
+#define PTE_R 0x02
+#define PTE_W 0x04
+#define PTE_X 0x08
+#define PTE_U 0x10
+#define PTE_A 0x40
+#define PTE_D 0x80
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   /* printf("satp = 0x%08x\n", cpu.csr[SATP]); */
   /* printf("ptr = 0x%08x\n", cpu.csr[SATP] << PGSHIFT); */
@@ -30,7 +37,9 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   {
     index = SHIFT_VPN(vaddr, shift);
     word_t pte = paddr_read(pte_base + index * sizeof(word_t), sizeof(word_t));
-    printf("out pte = 0x%08x\n", pte);
+    assert((pte & PTE_V) == PTE_V);
+    assert((pte & (PTE_R | PTE_W | PTE_X)) == 0);
+    /* printf("out pte = 0x%08x\n", pte); */
   }
   return vaddr;
   return MEM_RET_FAIL;
