@@ -51,7 +51,6 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   paddr = (pte << 2) & ~0xfff;
   assert((pte & PTE_V) == PTE_V);
   assert((vaddr & ~0xfff) == paddr);
-  
   return paddr;
   return MEM_RET_FAIL;
 }

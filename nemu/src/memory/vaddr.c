@@ -20,7 +20,7 @@
   switch (isa_mmu_check(v_addr, len, MEM_TYPE_##type)) \
   { \
     case MMU_DIRECT: p_addr = v_addr; break; \
-    case MMU_TRANSLATE: p_addr = isa_mmu_translate(v_addr, len, MEM_TYPE_##type); break; \
+    case MMU_TRANSLATE: p_addr = isa_mmu_translate(v_addr, len, MEM_TYPE_##type) | (v_addr & 0xfff); break; \
     case MMU_FAIL: panic("boundary not aligned!"); break; \
     default: panic("ERROR MMU MODE!"); \
   } \
