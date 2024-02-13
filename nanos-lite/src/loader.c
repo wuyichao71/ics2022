@@ -62,10 +62,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       for(int read_len = 0; read_len < phdr[i].p_memsz;)
       {
         uint32_t va = phdr[i].p_vaddr + read_len;
-        printf("0x%08x\n", va);
+        printf("va = 0x%08x\n", va);
         int offset = va & (PGSIZE - 1);
         void *pa = new_page(1);
         memset(pa, 0, PGSIZE);
+        printf("pa = 0x%08x\n", pa);
         int len = PGSIZE - offset;
         map(&pcb->as, (void *)va, pa, PTE_R | PTE_W | PTE_X | PTE_V);
         if (read_len < phdr[i].p_filesz)
