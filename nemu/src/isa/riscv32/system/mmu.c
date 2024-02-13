@@ -16,6 +16,9 @@
 #include <isa.h>
 #include <memory/paddr.h>
 #include <memory/vaddr.h>
+/* wuyc */
+#include <common.h>
+/* wuyc */
 
 #define LEVELS 2
 #define SHIFT_VPN(vaddr, shift) (((uint32_t)(vaddr) >> (shift)) & 0x3ff)
