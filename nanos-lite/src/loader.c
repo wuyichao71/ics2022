@@ -77,6 +77,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         }
         /* va += len; */
         read_len += len;
+        printf("read_len = 0x%08x\n", read_len);
       }
 #else
       fs_read(fd, (void *)phdr[i].p_vaddr, phdr[i].p_filesz);
