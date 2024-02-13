@@ -74,6 +74,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
           int rlen = len;
           if (read_len + rlen > phdr[i].p_filesz) rlen = phdr[i].p_filesz - read_len;
           fs_read(fd, pa + offset, rlen);
+          printf("rlen = 0x%08x\n", rlen);
         }
         /* va += len; */
         read_len += len;
