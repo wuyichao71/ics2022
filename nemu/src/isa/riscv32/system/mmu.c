@@ -33,6 +33,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   paddr_t pte_base = cpu.csr[SATP] << PGSHIFT;
   int shift = 32 - VPN_WIDTH;
   int index;
+  paddr_t paddr;
   word_t pte;
   for (int i = LEVELS - 1; i > 0; i--)
   {
@@ -44,8 +45,13 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     shift -= VPN_WIDTH;
     /* printf("out pte = 0x%08x\n", pte); */
   }
-  printf("shift =%d\n", shift);
+  /* printf("shift = %d\n", shift); */
+  index = SHIFT_VPN(vaddr, shift);
+  pte = paddr_read(pte_base + index * sizeof(word_t), sizeof(word_t));
+  paddr = (pte << 2) & ~0xfff;
+  assert((pte & PTE_V) == PTE_V);
+  assert((vaddr & ~0xfff) == paddr);
   
-  return vaddr;
+  return paddr;
   return MEM_RET_FAIL;
 }
