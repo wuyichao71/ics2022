@@ -62,6 +62,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       for(int read_len = 0; read_len < phdr[i].p_memsz;)
       {
         uint32_t va = phdr[i].p_vaddr + read_len;
+        printf("0x%08x\n", va);
         int offset = va & (PGSIZE - 1);
         void *pa = new_page(1);
         memset(pa, 0, PGSIZE);
