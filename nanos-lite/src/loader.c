@@ -5,6 +5,7 @@
 #include <ramdisk.h>
 #include <loader.h>
 #include <fs.h>
+
 /* wuyc */
 
 #ifdef __LP64__
@@ -15,6 +16,15 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 
+/* wuyc */
+#define PTE_V 0x01
+#define PTE_R 0x02
+#define PTE_W 0x04
+#define PTE_X 0x08
+#define PTE_U 0x10
+#define PTE_A 0x40
+#define PTE_D 0x80
+/* wuyc */
 static uintptr_t loader(PCB *pcb, const char *filename) {
   /* TODO(); */
   int fd = fs_open(filename, 0, 0);
@@ -46,8 +56,29 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     if (phdr[i].p_type == PT_LOAD)
     {
       fs_lseek(fd, phdr[i].p_offset, SEEK_SET);
+#ifdef HAS_VME
+      /* int va = phdr[i].p_vaddr; */
+      /* int ini = va & (PGSIZE - 1); */
+      for(int read_len = 0; read_len < phdr[i].p_memsz;)
+      {
+        uint32_t va = phdr[i].p_vaddr + read_len;
+        int offset = va & (PGSIZE - 1);
+        void *pa = new_page(1);
+        memset(pa, 0, PGSIZE);
+        int len = PGSIZE - offset;
+        map(&pcb->as, (void *)va, pa, PTE_R | PTE_W | PTE_X | PTE_V);
+        if (read_len < phdr[i].p_filesz)
+        {
+          if (read_len + len > phdr[i].p_filesz) len = phdr[i].p_filesz - read_len;
+          fs_read(fd, pa + offset, len);
+        }
+        /* va += len; */
+        read_len += len;
+      }
+#else
       fs_read(fd, (void *)phdr[i].p_vaddr, phdr[i].p_filesz);
       memset((void *)(phdr[i].p_vaddr + phdr[i].p_filesz), 0, phdr[i].p_memsz - phdr[i].p_filesz);
+#endif
       /* printf("0x%08x\n", phdr[i].p_filesz); */
     }
   }
@@ -83,6 +114,9 @@ inline static int arg_number(char *const argv[])
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
   Area kstack = RANGE(pcb->stack, pcb->stack + STACK_SIZE);
+#ifdef HAS_VME
+  protect(&pcb->as);
+#endif
   char *ustack = new_page(STACK_NR_PAGE) + STACK_SIZE;
   int argc = argv == NULL ? 0 : arg_number(argv);
   int envc = envp == NULL ? 0 : arg_number(envp);

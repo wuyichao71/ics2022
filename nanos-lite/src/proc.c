@@ -29,7 +29,8 @@ void init_proc() {
   /* context_uload(&pcb[0], "/bin/hello"); */
   char *argv[3] = {NULL};
   char *envp[2] = {NULL};
-  argv[0] = "/bin/nterm";
+  /* argv[0] = "/bin/nterm"; */
+  argv[0] = "/bin/dummy";
   /* argv[0] = "/bin/pal"; */
   /* argv[1] = "--skip"; */
   /* envp[0] = "PATH=/bin"; */
