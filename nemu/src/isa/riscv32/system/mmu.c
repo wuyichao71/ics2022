@@ -50,7 +50,12 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   pte = paddr_read(pte_base + index * sizeof(word_t), sizeof(word_t));
   paddr = (pte << 2) & ~0xfff;
   assert((pte & PTE_V) == PTE_V);
-  assert((vaddr & ~0xfff) == paddr);
+  switch (type)
+  {
+    case MEM_TYPE_IFETCH: assert((pte & PTE_X) == PTE_X); break;
+    case MEM_TYPE_READ: assert((pte & PTE_R) == PTE_R); break;
+    case MEM_TYPE_WRITE: assert((pte & PTE_W) == PTE_W); break;
+  }
   return paddr;
-  return MEM_RET_FAIL;
+  /* return MEM_RET_FAIL; */
 }
