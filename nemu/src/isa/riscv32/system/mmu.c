@@ -33,14 +33,19 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   paddr_t pte_base = cpu.csr[SATP] << PGSHIFT;
   int shift = 32 - VPN_WIDTH;
   int index;
+  word_t pte;
   for (int i = LEVELS - 1; i > 0; i--)
   {
     index = SHIFT_VPN(vaddr, shift);
-    word_t pte = paddr_read(pte_base + index * sizeof(word_t), sizeof(word_t));
+    pte = paddr_read(pte_base + index * sizeof(word_t), sizeof(word_t));
     assert((pte & PTE_V) == PTE_V);
     assert((pte & (PTE_R | PTE_W | PTE_X)) == 0);
+    pte_base = (pte << 2) & ~0xfff;
+    shift -= VPN_WIDTH;
     /* printf("out pte = 0x%08x\n", pte); */
   }
+  printf("shift 0x%08x\n", shift);
+  
   return vaddr;
   return MEM_RET_FAIL;
 }
