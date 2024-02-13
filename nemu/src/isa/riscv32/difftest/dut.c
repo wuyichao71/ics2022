@@ -73,7 +73,7 @@ void isa_difftest_attach() {
     inst[inst_i++] = addi | 0x00078793;
     inst[inst_i++] = csr_code[i] << 20 | 0x00079073;
   }
-  for (int i = 0; i < ARRLEN(scr_code); i++)
+  for (int i = 0; i < ARRLEN(csr_code); i++)
   {
     inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
   }
