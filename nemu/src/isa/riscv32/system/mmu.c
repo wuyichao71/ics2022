@@ -49,6 +49,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   index = SHIFT_VPN(vaddr, shift);
   pte = paddr_read(pte_base + index * sizeof(word_t), sizeof(word_t));
   paddr = (pte << 2) & ~0xfff;
+  printf("vaddr = 0x%08x\n", vaddr);
   assert((pte & PTE_V) == PTE_V);
   switch (type)
   {
