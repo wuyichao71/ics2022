@@ -53,12 +53,7 @@ void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
   CPU_state ref_r = {};
   word_t csr_code[] = {CSR_REG(CSR_CODE_LIST)};
-  word_t inst[INST_LEN] = {
-    /* [(INST_LEN - 4)] = 0x342022f3, */ 
-    /* [(INST_LEN - 3)] = 0x30002373, */ 
-    /* [(INST_LEN - 2)] = 0x341023f3, */ 
-    /* [(INST_LEN - 1)] = 0x30502473 */
-  };
+  word_t inst[INST_LEN] = {};
   /* bool success; */
   /* uint32_t inst[10] = {0x800017b7, 0x47878793, 0x30579073, 0x00027b7, */ 
     /* 0x80078793, 0x30079073, 0x342022f3, 0x30002373, 0x341023f3, 0x30502473}; */
@@ -78,7 +73,7 @@ void isa_difftest_attach() {
     inst[inst_i++] = addi | 0x00078793;
     inst[inst_i++] = csr_code[i] << 20 | 0x00079073;
   }
-  for (int i = 0; i < ARRLEN(src_code); i++)
+  for (int i = 0; i < ARRLEN(scr_code); i++)
   {
     inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
   }
