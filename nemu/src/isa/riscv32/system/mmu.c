@@ -42,7 +42,8 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   {
     index = SHIFT_VPN(vaddr, shift);
     pte = paddr_read(pte_base + index * sizeof(word_t), sizeof(word_t));
-    assert((pte & PTE_V) == PTE_V);
+    Assert((pte & PTE_V) == PTE_V, "vaddr = 0x%08x\npte = 0x%08x\n", vaddr, pte);
+    /* assert((pte & PTE_V) == PTE_V); */
     assert((pte & (PTE_R | PTE_W | PTE_X)) == 0);
     pte_base = (pte << 2) & ~0xfff;
     shift -= VPN_WIDTH;
@@ -53,9 +54,9 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   pte = paddr_read(pte_base + index * sizeof(word_t), sizeof(word_t));
   paddr = (pte << 2) & ~0xfff;
   /* printf("vaddr = 0x%08x\n", vaddr); */
-  if ((pte & PTE_V) != PTE_V) printf("vaddr = 0x%08x\npte = 0x%08x\n", vaddr, pte);
-  if ((pte & PTE_V) != PTE_V) printf("hello\n");
-  /* Assert((pte & PTE_V) == PTE_V, "vaddr = 0x%08x\npte = 0x%08x\n", vaddr, pte); */
+  /* if ((pte & PTE_V) != PTE_V) printf("vaddr = 0x%08x\npte = 0x%08x\n", vaddr, pte); */
+  /* if ((pte & PTE_V) != PTE_V) printf("hello\n"); */
+  Assert((pte & PTE_V) == PTE_V, "vaddr = 0x%08x\npte = 0x%08x\n", vaddr, pte);
   switch (type)
   {
     case MEM_TYPE_IFETCH: assert((pte & PTE_X) == PTE_X); break;
