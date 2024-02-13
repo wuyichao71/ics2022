@@ -47,7 +47,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 void isa_difftest_detach() {difftest_detach();}
 
 #define CSR_CODE_LIST(name, code, ...) name##_CODE,
-#define INST_LEN 21
+#define INST_LEN 100
 #define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(5 + index)]);
 void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
@@ -79,9 +79,9 @@ void isa_difftest_attach() {
   }
 
   ref_r.pc = RESET_VECTOR;
-  ref_difftest_memcpy(RESET_VECTOR, inst, sizeof(inst), DIFFTEST_TO_REF);
+  ref_difftest_memcpy(RESET_VECTOR, inst, inst_i, DIFFTEST_TO_REF);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
-  ref_difftest_exec(ARRLEN(inst));
+  ref_difftest_exec(inst_i);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
   CSR_REG(CSR_DUT_PRINT);
   /* printf("ref_r.mcause = 0x%08x\n", ref_r.gpr[5]); */
