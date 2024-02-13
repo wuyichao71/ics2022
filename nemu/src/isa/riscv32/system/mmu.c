@@ -29,8 +29,8 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   for (int i = LEVELS - 1; i > 0; i--)
   {
     index = SHIFT_VPN(vaddr, shift);
-    word_t pte = pmem_read(pte_base + index * sizeof(word_t), sizeof(word_t));
-    printf("out pte = 0xz%08x\n", pte);
+    word_t pte = paddr_read(pte_base + index * sizeof(word_t), sizeof(word_t));
+    printf("out pte = 0x%08x\n", pte);
   }
   return vaddr;
   return MEM_RET_FAIL;
