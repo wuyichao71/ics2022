@@ -70,8 +70,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         map(&pcb->as, (void *)va, pa, PTE_R | PTE_W | PTE_X | PTE_V);
         if (read_len < phdr[i].p_filesz)
         {
-          if (read_len + len > phdr[i].p_filesz) len = phdr[i].p_filesz - read_len;
-          fs_read(fd, pa + offset, len);
+          int rlen = len;
+          if (read_len + rlen > phdr[i].p_filesz) rlen = phdr[i].p_filesz - read_len;
+          fs_read(fd, pa + offset, rlen);
         }
         /* va += len; */
         read_len += len;
