@@ -54,7 +54,7 @@ Context* __am_irq_handle(Context *c) {
       default: ev.event = EVENT_ERROR; break;
     }
 
-    printf("type = %d\n", (int)c->GPR1);
+    /* printf("type = %d\n", (int)c->GPR1); */
     c = user_handler(ev, c);
     /* printf("In %s: c->mepc = 0x%08x\n", __func__, c->mepc); */
     assert(c != NULL);
