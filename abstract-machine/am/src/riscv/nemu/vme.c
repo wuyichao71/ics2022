@@ -79,6 +79,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   int shift = __riscv_xlen - VPN_WIDTH;
   int index;
   /* PTE pte; */
+  if ((uint32_t)va == 0x7ffff000)
+    printf("map_pa = 0x%08x\n", pa);
   for (int i = LEVELS - 1; i > 0; i--)
   {
     index = SHIFT_VPN(va, shift);

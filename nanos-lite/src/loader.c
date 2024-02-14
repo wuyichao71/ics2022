@@ -63,11 +63,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       for(int read_len = 0; read_len < phdr[i].p_memsz;)
       {
         intptr_t va = phdr[i].p_vaddr + read_len;
-        printf("va = 0x%08x\n", va);
+        /* printf("va = 0x%08x\n", va); */
         int offset = va & (PGSIZE - 1);
         void *pa = new_page(1);
         memset(pa, 0, PGSIZE);
-        printf("pa = 0x%08x\n", pa);
+        /* printf("pa = 0x%08x\n", pa); */
         int len = PGSIZE - offset;
         map(&pcb->as, (void *)(va & ~(PGSIZE - 1)), pa, PTE_R | PTE_W | PTE_X | PTE_V);
         if (read_len < phdr[i].p_filesz)
@@ -75,11 +75,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
           int rlen = len;
           if (read_len + rlen > phdr[i].p_filesz) rlen = phdr[i].p_filesz - read_len;
           fs_read(fd, pa + offset, rlen);
-          printf("rlen = 0x%08x\n", rlen);
+          /* printf("rlen = 0x%08x\n", rlen); */
         }
         /* va += len; */
         read_len += len;
-        printf("read_len = 0x%08x\n", read_len);
+        /* printf("read_len = 0x%08x\n", read_len); */
       }
 #else
       fs_read(fd, (void *)phdr[i].p_vaddr, phdr[i].p_filesz);
@@ -132,9 +132,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   {
     va -= PGSIZE;
     pa -= PGSIZE;
-    printf("va = 0x%08x\n", va);
-    printf("pa = 0x%08x\n", pa);
-    map(&pcb->as, va, pa, PTE_R | PTE_W | PTE_X | PTE_V);
+    /* printf("va = 0x%08x\n", va); */
+    /* printf("pa = 0x%08x\n", pa); */
+    map(&pcb->as, va, pa, PTE_R | PTE_W | PTE_V);
   }
 #endif
   int argc = argv == NULL ? 0 : arg_number(argv);
