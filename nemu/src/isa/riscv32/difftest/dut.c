@@ -50,7 +50,7 @@ void isa_difftest_detach() {difftest_detach();}
 #define INST_LEN 32
 #define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(5 + index)]);
 
-void read_difftest_csr(word_t inst, int inst_i, int length)
+void read_difftest_csr(word_t inst[], int inst_i, int length)
 {
   for (int i = 0; i < length; i++)
   {
@@ -59,7 +59,7 @@ void read_difftest_csr(word_t inst, int inst_i, int length)
   }
 }
 
-void output_difftest_csr(word_t inst, int inst_i)
+void output_difftest_csr(word_t inst[], int inst_i)
 {
   CPU_state ref_r = {};
   ref_r.pc = RESET_VECTOR;
