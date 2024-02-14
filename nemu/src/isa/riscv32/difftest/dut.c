@@ -47,8 +47,8 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 void isa_difftest_detach() {difftest_detach();}
 
 #define CSR_CODE_LIST(name, code, ...) name##_CODE,
-#define INST_LEN 20
-#define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(10 + index)]);
+#define INST_LEN 30
+#define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(5 + index)]);
 void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
   CPU_state ref_r = {};
@@ -61,7 +61,7 @@ void isa_difftest_attach() {
   /* uint32_t inst[5] = {0x00000000, 0x342022f3, 0x30002373, 0x341023f3, 0x30502473}; */
   /* uint32_t a5[2] = {0x80001478, 0x00001800}; */
   int inst_i = 0;
-  for (int i = 0; i < ARRLEN(csr_code); i++)
+  for (int i = 0; i < ARRLEN(csr_code) - 4; i++)
   {
     word_t lui, addi;
     word_t csr_data = cpu.csr[code_to_csr(csr_code[i])];
@@ -76,12 +76,12 @@ void isa_difftest_attach() {
     inst[inst_i++] = csr_code[i] << 20 | 0x00079073;
     /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
   }
-  for (int i = 0; i < ARRLEN(csr_code); i++)
+  for (int i = 0; i < ARRLEN(csr_code) - 4; i++)
   {
     inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
     /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
   }
-  printf("%d\n", inst_i);
+  /* printf("%d\n", inst_i); */
 
   ref_r.pc = RESET_VECTOR;
   ref_difftest_memcpy(RESET_VECTOR, inst, inst_i * sizeof(word_t), DIFFTEST_TO_REF);
