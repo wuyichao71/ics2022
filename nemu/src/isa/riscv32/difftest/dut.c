@@ -61,7 +61,7 @@ void isa_difftest_attach() {
   /* uint32_t inst[5] = {0x00000000, 0x342022f3, 0x30002373, 0x341023f3, 0x30502473}; */
   /* uint32_t a5[2] = {0x80001478, 0x00001800}; */
   int inst_i = 0;
-  for (int i = 0; i < ARRLEN(csr_code); i++)
+  for (int i = 0; i < ARRLEN(csr_code) - 1; i++)
   {
     word_t lui, addi;
     word_t csr_data = cpu.csr[code_to_csr(csr_code[i])];
@@ -73,7 +73,7 @@ void isa_difftest_attach() {
     inst[inst_i++] = addi | 0x00078793;
     inst[inst_i++] = csr_code[i] << 20 | 0x00079073;
   }
-  for (int i = 0; i < ARRLEN(csr_code); i++)
+  for (int i = 0; i < ARRLEN(csr_code) - 1; i++)
   {
     inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
     printf("inst = 0x%08x\n", inst[inst_i-1]);
@@ -85,11 +85,11 @@ void isa_difftest_attach() {
   ref_difftest_exec(inst_i);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
   CSR_REG(CSR_DUT_PRINT);
-  printf("ref_r.mcause = 0x%08x\n", ref_r.gpr[5]);
-  printf("ref_r.mstatus = 0x%08x\n", ref_r.gpr[6]);
-  printf("ref_r.mepc = 0x%08x\n", ref_r.gpr[7]);
-  printf("ref_r.mtvec = 0x%08x\n", ref_r.gpr[8]);
-  printf("ref_r.satp = 0x%08x\n", ref_r.gpr[9]);
+  /* printf("ref_r.mcause = 0x%08x\n", ref_r.gpr[5]); */
+  /* printf("ref_r.mstatus = 0x%08x\n", ref_r.gpr[6]); */
+  /* printf("ref_r.mepc = 0x%08x\n", ref_r.gpr[7]); */
+  /* printf("ref_r.mtvec = 0x%08x\n", ref_r.gpr[8]); */
+  /* printf("ref_r.satp = 0x%08x\n", ref_r.gpr[9]); */
   /* for (int i = 0; i < 2; i++) */
   /* { */
   /*   ref_r.pc = RESET_VECTOR; */
