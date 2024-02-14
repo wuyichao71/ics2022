@@ -99,7 +99,14 @@ void isa_difftest_attach() {
   read_difftest_csr(inst, inst_i, csr_code, ARRLEN(csr_code));
   /* printf("%d\n", inst_i); */
 
-  output_difftest_csr(inst, inst_i);
+  /* output_difftest_csr(inst, inst_i); */
+  CPU_state ref_r = {};
+  ref_r.pc = RESET_VECTOR;
+  ref_difftest_memcpy(RESET_VECTOR, inst, inst_i * sizeof(word_t), DIFFTEST_TO_REF);
+  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
+  ref_difftest_exec(inst_i);
+  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+  CSR_REG(CSR_DUT_PRINT);
   difftest_attach();
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF);
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
