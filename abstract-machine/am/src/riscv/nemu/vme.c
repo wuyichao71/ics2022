@@ -29,7 +29,7 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   pgfree_usr = pgfree_f;
 
   kas.ptr = pgalloc_f(PGSIZE);
-  printf("kas.ptr = 0x%08x\n", kas.ptr);
+  /* printf("kas.ptr = 0x%08x\n", kas.ptr); */
 
   int i;
   for (i = 0; i < LENGTH(segments); i ++) {
@@ -83,8 +83,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   int shift = __riscv_xlen - VPN_WIDTH;
   int index;
   /* PTE pte; */
-  if ((uint32_t)va == 0x7ffff000)
-    printf("map_pa = 0x%08x\n", pa);
+  /* if ((uint32_t)va == 0x7ffff000) */
+    /* printf("map_pa = 0x%08x\n", pa); */
   for (int i = LEVELS - 1; i > 0; i--)
   {
     index = SHIFT_VPN(va, shift);

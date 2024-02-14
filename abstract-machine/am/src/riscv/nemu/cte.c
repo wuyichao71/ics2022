@@ -24,7 +24,7 @@ Context* __am_irq_handle(Context *c) {
   /* printf("0x%08x\n", c); */
   /* printf("0x%08x\n", &(c->gpr[1])); */
   /* wuyc */
-  /* if (c->pdir != NULL) */
+  if (c->pdir != NULL)
     __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
