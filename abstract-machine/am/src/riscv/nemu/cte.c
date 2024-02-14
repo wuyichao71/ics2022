@@ -24,8 +24,8 @@ Context* __am_irq_handle(Context *c) {
   /* printf("0x%08x\n", c); */
   /* printf("0x%08x\n", &(c->gpr[1])); */
   /* wuyc */
-  /* if (c->pdir != NULL) */
-    /* __am_get_cur_as(c); */
+  if (c->pdir != NULL)
+    __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -86,8 +86,8 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->mepc = (uintptr_t)entry;
   c->mstatus = 0x1800;
   c->GPRSP = (uintptr_t)kstack.end;
-  c->pdir = NULL;
   c->GPR2 = (uintptr_t)arg;
+  c->pdir = NULL;
   return c;
   /* return NULL; */
 }
