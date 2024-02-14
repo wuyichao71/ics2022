@@ -83,7 +83,7 @@ void isa_difftest_attach() {
   }
 
   ref_r.pc = RESET_VECTOR;
-  ref_difftest_memcpy(RESET_VECTOR, inst, inst_i, DIFFTEST_TO_REF);
+  ref_difftest_memcpy(RESET_VECTOR, inst, inst_i * sizeof(word_t), DIFFTEST_TO_REF);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
   ref_difftest_exec(inst_i);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
