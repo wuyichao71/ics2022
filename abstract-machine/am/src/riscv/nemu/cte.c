@@ -43,7 +43,9 @@ Context* __am_irq_handle(Context *c) {
         /* ev.event = EVENT_YIELD  ; c->mepc += 4; break; */
       case 11:
         if (c->GPR1 == -1)
+        {
           ev.event = EVENT_YIELD;
+        }
         else
           ev.event = EVENT_SYSCALL;
         c->mepc += 4;
@@ -53,11 +55,10 @@ Context* __am_irq_handle(Context *c) {
     }
 
     c = user_handler(ev, c);
+    __am_switch(c);
     /* printf("In %s: c->mepc = 0x%08x\n", __func__, c->mepc); */
     assert(c != NULL);
   }
-  __am_switch(c);
-
   /* printf("DDD\n"); */
   return c;
 }
