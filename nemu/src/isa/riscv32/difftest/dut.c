@@ -96,7 +96,13 @@ void isa_difftest_attach() {
     /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
   }
 
-  read_difftest_csr(inst, inst_i, csr_code, ARRLEN(csr_code));
+  /* read_difftest_csr(inst, inst_i, csr_code, ARRLEN(csr_code)); */
+  int length = ARRLEN(csr_code);
+  for (int i = 0; i < length; i++)
+  {
+    inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
+    /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
+  }
   /* printf("%d\n", inst_i); */
 
   /* output_difftest_csr(inst, inst_i); */
