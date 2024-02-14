@@ -47,11 +47,30 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 void isa_difftest_detach() {difftest_detach();}
 
 #define CSR_CODE_LIST(name, code, ...) name##_CODE,
-#define INST_LEN 30
+#define INST_LEN 32
 #define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(5 + index)]);
+
+void read_difftest_csr(word_t inst, int inst_i, int length)
+{
+  for (int i = 0; i < length; i++)
+  {
+    inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
+    /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
+  }
+}
+
+void output_difftest_csr(word_t inst, int inst_i)
+{
+  CPU_state ref_r = {};
+  ref_r.pc = RESET_VECTOR;
+  ref_difftest_memcpy(RESET_VECTOR, inst, inst_i * sizeof(word_t), DIFFTEST_TO_REF);
+  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
+  ref_difftest_exec(inst_i);
+  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+  CSR_REG(CSR_DUT_PRINT);
+}
 void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
-  CPU_state ref_r = {};
   word_t csr_code[] = {CSR_REG(CSR_CODE_LIST)};
   word_t inst[INST_LEN] = {};
   /* bool success; */
@@ -76,19 +95,14 @@ void isa_difftest_attach() {
     inst[inst_i++] = csr_code[i] << 20 | 0x00079073;
     /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
   }
-  for (int i = 0; i < ARRLEN(csr_code); i++)
-  {
-    inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
-    /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
-  }
+
+  read_difftest_csr(inst, inst_i, ARRLEN(csr_code));
   /* printf("%d\n", inst_i); */
 
-  ref_r.pc = RESET_VECTOR;
-  ref_difftest_memcpy(RESET_VECTOR, inst, inst_i * sizeof(word_t), DIFFTEST_TO_REF);
-  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
-  ref_difftest_exec(inst_i);
-  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-  CSR_REG(CSR_DUT_PRINT);
+  output_difftest_csr(inst, inst_i);
+  difftest_attach();
+  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF);
+  ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
   /* printf("ref_r.mcause = 0x%08x\n", ref_r.gpr[5]); */
   /* printf("ref_r.mstatus = 0x%08x\n", ref_r.gpr[6]); */
   /* printf("ref_r.mepc = 0x%08x\n", ref_r.gpr[7]); */
@@ -139,7 +153,4 @@ void isa_difftest_attach() {
   /* ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF); */
   /* ref_difftest_exec(1); */
 
-  difftest_attach();
-  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF);
-  ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
 }
