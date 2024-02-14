@@ -5,7 +5,7 @@
 static AddrSpace kas = {};
 static void* (*pgalloc_usr)(int) = NULL;
 static void (*pgfree_usr)(void*) = NULL;
-static int vme_enable = 1;
+static int vme_enable = 0;
 
 static Area segments[] = {      // Kernel memory mappings
   NEMU_PADDR_SPACE
