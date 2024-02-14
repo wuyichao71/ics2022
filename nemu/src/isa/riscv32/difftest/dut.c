@@ -48,7 +48,7 @@ void isa_difftest_detach() {difftest_detach();}
 
 #define CSR_CODE_LIST(name, code, ...) name##_CODE,
 #define INST_LEN 20
-#define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(5 + index)]);
+#define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(10 + index)]);
 void isa_difftest_attach() {
   /* CPU_state ref_r = cpu; */
   CPU_state ref_r = {};
