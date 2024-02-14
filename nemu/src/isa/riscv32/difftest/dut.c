@@ -70,17 +70,18 @@ void isa_difftest_attach() {
     /* printf("$test = 0x%08x\n", csr_data); */
     /* printf("0x%08x 0x%08x\n", lui, addi); */
     inst[inst_i++] = lui | 0x00007b7;
-    printf("inst = 0x%08x\n", inst[inst_i-1]);
+    /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
     inst[inst_i++] = addi | 0x00078793;
-    printf("inst = 0x%08x\n", inst[inst_i-1]);
+    /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
     inst[inst_i++] = csr_code[i] << 20 | 0x00079073;
-    printf("inst = 0x%08x\n", inst[inst_i-1]);
+    /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
   }
   for (int i = 0; i < ARRLEN(csr_code); i++)
   {
     inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
-    printf("inst = 0x%08x\n", inst[inst_i-1]);
+    /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
   }
+  printf("%d\n", inst_i)
 
   ref_r.pc = RESET_VECTOR;
   ref_difftest_memcpy(RESET_VECTOR, inst, inst_i * sizeof(word_t), DIFFTEST_TO_REF);
