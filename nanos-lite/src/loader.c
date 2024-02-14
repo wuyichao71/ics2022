@@ -134,7 +134,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     pa -= PGSIZE;
     printf("va = 0x%08x\n", va);
     printf("pa = 0x%08x\n", pa);
-    map(&pcb->as, va, pa, PTE_R | PTE_W | PTE_V);
+    map(&pcb->as, va, pa, PTE_R | PTE_W | PTE_X | PTE_V);
   }
 #endif
   int argc = argv == NULL ? 0 : arg_number(argv);
