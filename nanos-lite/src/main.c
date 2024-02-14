@@ -31,6 +31,7 @@ int main() {
   Log("Finish initialization");
 
 #ifdef HAS_CTE
+  printf("Hello\n");
   yield();
 #endif
 
