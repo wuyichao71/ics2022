@@ -3,6 +3,10 @@
 #include <klib.h>
 
 static Context* (*user_handler)(Event, Context*) = NULL;
+/* wuyc */
+void __am_get_cur_as(Context *c);
+void __am_switch(Context *c);
+/* wuyc */
 
 Context* __am_irq_handle(Context *c) {
   /* wuyc */
@@ -20,6 +24,7 @@ Context* __am_irq_handle(Context *c) {
   /* printf("0x%08x\n", c); */
   /* printf("0x%08x\n", &(c->gpr[1])); */
   /* wuyc */
+  __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -48,6 +53,7 @@ Context* __am_irq_handle(Context *c) {
     }
 
     c = user_handler(ev, c);
+    __am_switch(c);
     /* printf("In %s: c->mepc = 0x%08x\n", __func__, c->mepc); */
     assert(c != NULL);
   }
