@@ -37,9 +37,9 @@ void init_proc() {
   context_uload(&pcb[1], argv[0], argv, envp);
   /* context_kload(&pcb[1], hello_fun, "pbc 1"); */
   switch_boot_pcb();
-  printf("pcb_boot.as.ptr = 0x%08x\n", pcb_boot.as.ptr);
-  printf("pcb[0].as.ptr = 0x%08x\n", pcb[0].as.ptr);
-  printf("pcb[1].as.ptr = 0x%08x\n", pcb[1].as.ptr);
+  /* printf("pcb_boot.as.ptr = 0x%08x\n", pcb_boot.as.ptr); */
+  /* printf("pcb[0].as.ptr = 0x%08x\n", pcb[0].as.ptr); */
+  /* printf("pcb[1].as.ptr = 0x%08x\n", pcb[1].as.ptr); */
 
   Log("Initializing processes...");
   /* wuyc */
