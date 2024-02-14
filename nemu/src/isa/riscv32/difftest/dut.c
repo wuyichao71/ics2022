@@ -81,7 +81,7 @@ void isa_difftest_attach() {
     inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
     /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
   }
-  printf("%d\n", inst_i)
+  printf("%d\n", inst_i);
 
   ref_r.pc = RESET_VECTOR;
   ref_difftest_memcpy(RESET_VECTOR, inst, inst_i * sizeof(word_t), DIFFTEST_TO_REF);
