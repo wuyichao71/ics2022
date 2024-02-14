@@ -85,11 +85,11 @@ void isa_difftest_attach() {
   ref_difftest_exec(inst_i);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
   CSR_REG(CSR_DUT_PRINT);
-  /* printf("ref_r.mcause = 0x%08x\n", ref_r.gpr[5]); */
-  /* printf("ref_r.mstatus = 0x%08x\n", ref_r.gpr[6]); */
-  /* printf("ref_r.mepc = 0x%08x\n", ref_r.gpr[7]); */
-  /* printf("ref_r.mtvec = 0x%08x\n", ref_r.gpr[8]); */
-  /* printf("ref_r.satp = 0x%08x\n", ref_r.gpr[9]); */
+  printf("ref_r.mcause = 0x%08x\n", ref_r.gpr[5]);
+  printf("ref_r.mstatus = 0x%08x\n", ref_r.gpr[6]);
+  printf("ref_r.mepc = 0x%08x\n", ref_r.gpr[7]);
+  printf("ref_r.mtvec = 0x%08x\n", ref_r.gpr[8]);
+  printf("ref_r.satp = 0x%08x\n", ref_r.gpr[9]);
   /* for (int i = 0; i < 2; i++) */
   /* { */
   /*   ref_r.pc = RESET_VECTOR; */
