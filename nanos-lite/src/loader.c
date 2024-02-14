@@ -119,19 +119,19 @@ inline static int arg_number(char *const argv[])
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
   Area kstack = RANGE(pcb->stack, pcb->stack + STACK_SIZE);
+  char *ustack = new_page(STACK_NR_PAGE) + STACK_SIZE;
 #ifdef HAS_VME
   protect(&pcb->as);
-  char *ustack = pcb->as.area.end;
-  void *pa = new_page(STACK_NR_PAGE);
-  void *va = ustack - STACK_SIZE;
+  /* char *ustack = pcb->as.area.end; */
+  char *ustack_top = ustack;
+  void *pa = ustack;
+  void *va = pcb->as.area.end;
   for (int i = 0; i < STACK_NR_PAGE; i++)
   {
+    va -= PGSIZE;
+    pa -= PGSIZE;
     map(&pcb->as, va, pa, PTE_R | PTE_W | PTE_V);
-    va += PGSIZE;
-    pa += PGSIZE;
   }
-#else
-  char *ustack = new_page(STACK_NR_PAGE) + STACK_SIZE;
 #endif
   int argc = argv == NULL ? 0 : arg_number(argv);
   int envc = envp == NULL ? 0 : arg_number(envp);
@@ -199,5 +199,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t entry = loader(pcb, filename);
   /* AddrSpace as = {}; */
   pcb->cp = ucontext(&pcb->as, kstack, (void *)entry);
+#ifdef HAS_VME
+  pcb->cp->GPRx = (intptr_t)pcb->as.area.end - ((intptr_t)ustack_top - (intptr_t)ustack3);
+#else
   pcb->cp->GPRx = (uintptr_t)ustack3;
+#endif
 }
