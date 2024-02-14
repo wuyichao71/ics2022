@@ -24,7 +24,7 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
-  context_kload(&pcb[0], hello_fun, "pcb 0");
+  /* context_kload(&pcb[0], hello_fun, "pcb 0"); */
   /* context_kload(&pcb[1], hello_fun, "pbc 1"); */
   /* context_uload(&pcb[0], "/bin/hello"); */
   char *argv[3] = {NULL};
@@ -34,7 +34,7 @@ void init_proc() {
   /* argv[0] = "/bin/pal"; */
   /* argv[1] = "--skip"; */
   /* envp[0] = "PATH=/bin"; */
-  context_uload(&pcb[1], argv[0], argv, envp);
+  context_uload(&pcb[0], argv[0], argv, envp);
   /* context_kload(&pcb[1], hello_fun, "pbc 1"); */
   switch_boot_pcb();
 
@@ -62,8 +62,8 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   current->cp = prev;
-  /* current = &pcb[0]; */
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  current = &pcb[0];
+  /* current = (current == &pcb[0] ? &pcb[1] : &pcb[0]); */
   /* printf("mepc = 0x%08x\n", current->cp->mepc); */
   /* printf("mcause = 0x%08x\n", current->cp->mcause); */
   return current->cp;
