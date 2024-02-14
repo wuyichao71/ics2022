@@ -88,7 +88,7 @@ void do_syscall(Context *c) {
 
 uintptr_t sys_yield()
 {
-  yield();
+  /* yield(); */
   return (uintptr_t)0;
 }
 
