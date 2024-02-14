@@ -76,6 +76,7 @@ void isa_difftest_attach() {
   for (int i = 0; i < ARRLEN(csr_code); i++)
   {
     inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
+    printf("inst = 0x%08x\n", inst[inst_i-1]);
   }
 
   ref_r.pc = RESET_VECTOR;
