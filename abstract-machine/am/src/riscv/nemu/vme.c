@@ -69,8 +69,8 @@ void __am_switch(Context *c) {
   if (vme_enable && c->pdir != NULL) {
     set_satp(c->pdir);
   }
-  intptr_t pdir = get_satp();
-  printf("pdir = 0x%08x\n", pdir);
+  /* intptr_t pdir = get_satp(); */
+  /* printf("pdir = 0x%08x\n", pdir); */
   printf("--------------------------\n");
 }
 
