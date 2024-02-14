@@ -65,13 +65,13 @@ void __am_get_cur_as(Context *c) {
 }
 
 void __am_switch(Context *c) {
-  /* printf("c->pdir = 0x%08x\n", c->pdir); */
+  printf("c->pdir = 0x%08x\n", c->pdir);
   if (vme_enable && c->pdir != NULL) {
     set_satp(c->pdir);
   }
-  /* intptr_t pdir = get_satp(); */
-  /* printf("pdir = 0x%08x\n", pdir); */
-  /* printf("--------------------------\n"); */
+  intptr_t pdir = get_satp();
+  printf("pdir = 0x%08x\n", pdir);
+  printf("--------------------------\n");
 }
 
 /* wuyc */
