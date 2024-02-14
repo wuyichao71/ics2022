@@ -54,6 +54,7 @@ Context* __am_irq_handle(Context *c) {
       default: ev.event = EVENT_ERROR; break;
     }
 
+    printf("type = %d\n", c->GPR1);
     c = user_handler(ev, c);
     __am_switch(c);
     /* printf("In %s: c->mepc = 0x%08x\n", __func__, c->mepc); */
