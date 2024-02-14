@@ -43,6 +43,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   /* panic("Stop"); */
   /* Elf_Phdr *phdr = (Elf_Phdr *)(&ramdisk_start + ehdr.e_phoff); */
   size_t phsize = ehdr.e_phnum * sizeof(Elf_Phdr);
+  /* printf("here\n"); */
   /* phdr = (Elf_Phdr *)malloc(phsize); */
   /* printf("%d, %d\n", sizeof(Elf_Ehdr), ehdr.e_phoff); */
   /* panic("Stop"); */
@@ -61,14 +62,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       /* int ini = va & (PGSIZE - 1); */
       for(int read_len = 0; read_len < phdr[i].p_memsz;)
       {
-        uint32_t va = phdr[i].p_vaddr + read_len;
+        intptr_t va = phdr[i].p_vaddr + read_len;
         printf("va = 0x%08x\n", va);
         int offset = va & (PGSIZE - 1);
         void *pa = new_page(1);
         memset(pa, 0, PGSIZE);
         printf("pa = 0x%08x\n", pa);
         int len = PGSIZE - offset;
-        map(&pcb->as, (void *)va, pa, PTE_R | PTE_W | PTE_X | PTE_V);
+        map(&pcb->as, (void *)(va & ~(PGSIZE - 1)), pa, PTE_R | PTE_W | PTE_X | PTE_V);
         if (read_len < phdr[i].p_filesz)
         {
           int rlen = len;
@@ -120,6 +121,7 @@ inline static int arg_number(char *const argv[])
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
   Area kstack = RANGE(pcb->stack, pcb->stack + STACK_SIZE);
   char *ustack = new_page(STACK_NR_PAGE) + STACK_SIZE;
+  /* printf("here\n"); */
 #ifdef HAS_VME
   protect(&pcb->as);
   /* char *ustack = pcb->as.area.end; */
@@ -166,7 +168,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   {
     *(ustack2--) = envp_p[i];
   }
-  free(envp_p);
+  /* free(envp_p); */
 
   *ustack2 = NULL;
   for (int i = argc - 1; i >= 0; i--)
@@ -174,7 +176,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     ustack2--;
     *ustack2 = argv_p[i];
   }
-  free(argv_p);
+  /* free(argv_p); */
 
   int *ustack3 = (int *)ustack2;
   ustack3--;

@@ -24,6 +24,7 @@ int main() {
 #endif
 
   init_fs();
+  /* printf("here\n"); */
 
   init_proc();
 
