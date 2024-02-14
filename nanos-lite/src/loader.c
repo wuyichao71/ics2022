@@ -121,8 +121,18 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Area kstack = RANGE(pcb->stack, pcb->stack + STACK_SIZE);
 #ifdef HAS_VME
   protect(&pcb->as);
-#endif
+  char *ustack = pcb->as.area.end;
+  void *pa = new_page(STACK_NR_PAGE);
+  void *va = ustack - STACK_SIZE;
+  for (int i = 0; i < STACK_NR_PAGE; i++)
+  {
+    map(&pcb->as, va, pa, PTE_R | PTE_W | PTE_V);
+    va += PGSIZE;
+    pa += PGSIZE;
+  }
+#else
   char *ustack = new_page(STACK_NR_PAGE) + STACK_SIZE;
+#endif
   int argc = argv == NULL ? 0 : arg_number(argv);
   int envc = envp == NULL ? 0 : arg_number(envp);
   /* char **argv_p = NULL; */
