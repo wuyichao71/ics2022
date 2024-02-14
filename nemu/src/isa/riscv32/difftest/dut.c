@@ -50,13 +50,14 @@ void isa_difftest_detach() {difftest_detach();}
 #define INST_LEN 32
 #define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(5 + index)]);
 
-void read_difftest_csr(word_t inst[], int inst_i, word_t csr_code[], int length)
+int read_difftest_csr(word_t inst[], int inst_i, word_t csr_code[], int length)
 {
   for (int i = 0; i < length; i++)
   {
     inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
     /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
   }
+  return inst_i;
 }
 
 void output_difftest_csr(word_t inst[], int inst_i)
@@ -96,23 +97,23 @@ void isa_difftest_attach() {
     /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
   }
 
-  /* read_difftest_csr(inst, inst_i, csr_code, ARRLEN(csr_code)); */
-  int length = ARRLEN(csr_code);
-  for (int i = 0; i < length; i++)
-  {
-    inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7);
-    /* printf("inst = 0x%08x\n", inst[inst_i-1]); */
-  }
+  inst_i = read_difftest_csr(inst, inst_i, csr_code, ARRLEN(csr_code));
+  /* int length = ARRLEN(csr_code); */
+  /* for (int i = 0; i < length; i++) */
+  /* { */
+  /*   inst[inst_i++] = csr_code[i] << 20 | 0x00002073 | ((i + 5) << 7); */
+  /*   /1* printf("inst = 0x%08x\n", inst[inst_i-1]); *1/ */
+  /* } */
   /* printf("%d\n", inst_i); */
 
-  /* output_difftest_csr(inst, inst_i); */
-  CPU_state ref_r = {};
-  ref_r.pc = RESET_VECTOR;
-  ref_difftest_memcpy(RESET_VECTOR, inst, inst_i * sizeof(word_t), DIFFTEST_TO_REF);
-  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF);
-  ref_difftest_exec(inst_i);
-  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-  CSR_REG(CSR_DUT_PRINT);
+  output_difftest_csr(inst, inst_i);
+  /* CPU_state ref_r = {}; */
+  /* ref_r.pc = RESET_VECTOR; */
+  /* ref_difftest_memcpy(RESET_VECTOR, inst, inst_i * sizeof(word_t), DIFFTEST_TO_REF); */
+  /* ref_difftest_regcpy(&ref_r, DIFFTEST_TO_REF); */
+  /* ref_difftest_exec(inst_i); */
+  /* ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT); */
+  /* CSR_REG(CSR_DUT_PRINT); */
   difftest_attach();
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MBASE+CONFIG_MSIZE-RESET_VECTOR, DIFFTEST_TO_REF);
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
