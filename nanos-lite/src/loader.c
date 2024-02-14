@@ -201,8 +201,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t entry = loader(pcb, filename);
   /* AddrSpace as = {}; */
   pcb->cp = ucontext(&pcb->as, kstack, (void *)entry);
-  printf("ustack3 = 0x%08x\n", ustack3);
 #ifdef HAS_VME
+  printf("ustack3 = 0x%08x\n", ustack3);
+  printf("ustack_top = 0x%08x\n", ustack_top);
+  printf("pcb->as.area.end = 0x%08x\n", pcb->as.area.end);
   pcb->cp->GPRx = (intptr_t)pcb->as.area.end - ((intptr_t)ustack_top - (intptr_t)ustack3);
 #else
   pcb->cp->GPRx = (uintptr_t)ustack3;
