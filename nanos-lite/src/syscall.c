@@ -7,7 +7,7 @@
 #include <fs.h>
 #include <sys/time.h>
 void switch_boot_pcb();
-/* #define __STRACE__ */
+#define __STRACE__
 #ifdef __STRACE__
 # define SYS_format(format) format "         = %d"
 # define STRACE(SYS_type, format, ...) printf(#SYS_type format "\n", ## __VA_ARGS__)
@@ -55,27 +55,27 @@ void do_syscall(Context *c) {
       break;
     case SYS_read:
       c->GPRx = sys_read(a[1], (char *)a[2], a[3]);
-      STRACE(sys_read, SYS_format("(\"%s\", 0x%08x, %d)"), get_filename(a[1]).name, a[2], a[3], c->GPRx);
+      STRACE(sys_read, SYS_format("(\"%s\", 0x%08x, %d)"), get_filename(a[1]), a[2], a[3], c->GPRx);
       break; 
     case SYS_write: 
       c->GPRx = sys_write(a[1], (const void *)a[2], a[3]); 
-      STRACE(sys_write, SYS_format("(\"%s\", 0x%08x, %d)"), get_filename(a[1]).name, a[2], a[3], c->GPRx); 
+      STRACE(sys_write, SYS_format("(\"%s\", 0x%08x, %d)"), get_filename(a[1]), a[2], a[3], c->GPRx); 
       break;
     case SYS_lseek:
       c->GPRx = sys_lseek(a[1], a[2], a[3]);
-      STRACE(sys_lseek, SYS_format("(\"%s\", %d, %d)"), get_filename(a[1]).name, a[2], a[3], c->GPRx); 
+      STRACE(sys_lseek, SYS_format("(\"%s\", %d, %d)"), get_filename(a[1]), a[2], a[3], c->GPRx); 
       break;
     case SYS_close:
       c->GPRx = sys_close(a[1]);
-      STRACE(sys_close, SYS_format("(\"%s\")"), get_filename(a[1]).name, c->GPRx);
+      STRACE(sys_close, SYS_format("(\"%s\")"), get_filename(a[1]), c->GPRx);
       break;
     case SYS_brk: 
       c->GPRx = sys_brk(a[1]); 
       STRACE(sys_brk, SYS_format("(0x%08x)"), a[1], c->GPRx);
       break;
     case SYS_execve:
-      c->GPRx = sys_execve((const char *)a[1], (char *const*)a[2], (char *const*)a[3])
-      STRACE(sys_execve, SYS_format("(\"%s\", 0x%08x, 0x%08x)"), get_filename(a[1]).name, a[2], a[3], c->GPRx);
+      c->GPRx = sys_execve((const char *)a[1], (char *const*)a[2], (char *const*)a[3]);
+      STRACE(sys_execve, SYS_format("(\"%s\", 0x%08x, 0x%08x)"), get_filename(a[1]), a[2], a[3], c->GPRx);
     case SYS_gettimeofday:
       c->GPRx = sys_gettimeofday((struct timeval *)a[1], (struct timezone *)a[2]);
       STRACE(sys_gettimeofday, SYS_format("(0x%08x, 0x%08x)"), a[1], a[2]);
