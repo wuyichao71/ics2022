@@ -29,10 +29,10 @@ void init_proc() {
   char *argv[3] = {NULL};
   char *envp[2] = {NULL};
   /* argv[0] = "/bin/nterm"; */
-  /* argv[0] = "/bin/hello"; */
+  argv[0] = "/bin/hello";
   /* argv[0] = "/bin/dummy"; */
-  argv[0] = "/bin/pal";
-  argv[1] = "--skip";
+  /* argv[0] = "/bin/pal"; */
+  /* argv[1] = "--skip"; */
   /* envp[0] = "PATH=/bin"; */
   context_uload(&pcb[0], argv[0], argv, envp);
   context_kload(&pcb[1], hello_fun, "pcb 0");
