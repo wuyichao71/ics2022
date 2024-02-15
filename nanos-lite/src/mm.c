@@ -32,6 +32,7 @@ int mm_brk(uintptr_t brk) {
   if (current->max_brk == 0)
   {
     current->max_brk = brk & ~(PGSIZE - 1);
+    printf("first malloc is at %p\n", (void *)current->max_brk);
   }
   else
   {
