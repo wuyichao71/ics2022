@@ -1,4 +1,7 @@
 #include <memory.h>
+/* wuyc */
+#include <proc.h>
+/* wuyc */
 
 static void *pf = NULL;
 
@@ -25,6 +28,18 @@ void free_page(void *p) {
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
+  if (current->max_brk == 0)
+  {
+    current->max_brk = brk & ~(PGSIZE - 1);
+  }
+  else
+  {
+    for (; current->max_brk < brk; current->max_brk += PGSIZE)
+    {
+      void *pa = pg_alloc(PGSIZE);
+      map(&current->as, (void *)current->max_brk, pa, PTE_U | PTE_A | PTE_D | PTE_R | PTE_W | PTE_X | PTE_V);
+    }
+  }
   return 0;
 }
 

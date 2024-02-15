@@ -21,5 +21,14 @@ typedef union {
 } PCB;
 
 extern PCB *current;
+/* wuyc */
+#define PTE_V 0x01
+#define PTE_R 0x02
+#define PTE_W 0x04
+#define PTE_X 0x08
+#define PTE_U 0x10
+#define PTE_A 0x40
+#define PTE_D 0x80
+/* wuyc */
 
 #endif

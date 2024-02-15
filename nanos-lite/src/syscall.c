@@ -26,6 +26,7 @@ int sys_close(int fd);
 int sys_brk(intptr_t addr);
 int sys_execve(const char *fname, char *const argv[], char *const envp[]);
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz);
+int mm_brk(uintptr_t brk);
 
 /* wuyc */
 void do_syscall(Context *c) {
@@ -133,9 +134,7 @@ int sys_close(int fd)
 
 int sys_brk(intptr_t addr)
 {
-  static intptr_t program_break;
-  *(&program_break) = addr;
-  return 0;
+  return mm_brk(addr);
 }
 
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz)
