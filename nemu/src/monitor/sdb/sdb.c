@@ -216,7 +216,7 @@ static int cmd_load(char *args) {
 static int cmd_diffcsr(char *args) {
   word_t csr_code[] = {CSR_REG(CSR_CODE_LIST)};
   word_t inst[INST_LEN] = {};
-  word_t mem[INST_LEN] = {};
+  /* word_t mem[INST_LEN] = {}; */
   CPU_state cpy_r = {};
   int inst_i = 0;
 
