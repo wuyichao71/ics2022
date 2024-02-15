@@ -39,6 +39,7 @@ int mm_brk(uintptr_t brk) {
   for (; current->max_brk < brk; current->max_brk += PGSIZE)
   {
     void *pa = pg_alloc(PGSIZE);
+    printf("pa = 0x%08x\n", pa);
     map(&current->as, (void *)current->max_brk, pa, PTE_U | PTE_A | PTE_D | PTE_R | PTE_W | PTE_X | PTE_V);
   }
 #endif
