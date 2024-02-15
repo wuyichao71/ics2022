@@ -31,9 +31,6 @@ f(30) f(31)
 .globl __am_asm_trap
 __am_asm_trap:
   addi sp, sp, -CONTEXT_SIZE
-  li a0, (1 << 17)
-  or t1, t1, a0
-  csrw mstatus, t1
 
   MAP(REGS, PUSH)
 

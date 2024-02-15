@@ -26,6 +26,7 @@ typedef struct {
   vaddr_t pc;
   /* wuyc */
   word_t csr[NCSR];
+  int priv_mode;
   /* word_t mtvec; */
   /* vaddr_t mepc; */
   /* word_t mstatus; */
@@ -40,7 +41,9 @@ typedef struct {
   } inst;
 } riscv32_ISADecodeInfo;
 
+/* wuyc */
 #define PGSHIFT 12
+/* wuyc */
 /* #define isa_mmu_check(vaddr, len, type) (MMU_DIRECT) */
 #define isa_mmu_check(vaddr, len, type) ((vaddr >> PGSHIFT == (vaddr + len - 1) >> PGSHIFT) ? \
     cpu.csr[SATP] >> 31 : MMU_FAIL)

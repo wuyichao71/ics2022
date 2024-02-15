@@ -29,6 +29,9 @@ static const uint32_t img [] = {
 static void restart() {
   /* Set the initial program counter. */
   cpu.pc = RESET_VECTOR;
+  /* wuyc */
+  cpu.priv_mode = 3;
+  /* wuyc */
 
   /* The zero register is always 0. */
   cpu.gpr[0] = 0;
