@@ -134,6 +134,7 @@ int sys_close(int fd)
 
 int sys_brk(intptr_t addr)
 {
+  return 0;
   return mm_brk(addr);
 }
 
