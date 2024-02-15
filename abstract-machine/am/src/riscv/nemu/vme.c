@@ -114,6 +114,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   {
     return;
   }
+  else
   {
     pte_base[index] = ((uint32_t)pa & ~0xfff) >> 2 | prot;
     /* printf("pte = 0x%08x\n", pte_base[index]); */
