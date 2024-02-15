@@ -24,6 +24,19 @@ const char *regs[] = {
 };
 
 #define CSR_REG_PRINT(name, code, ...) printf("%4s: " FMT_WORD "\n", #name, cpu.csr[name]);
+void difftest_reg_display(CPU_state ref_r)
+{
+  int regs_len = ARRLEN(regs);
+  printf("IN DIFFTEST\n");
+  for(int i = 0; i < regs_len; i++)
+  {
+    printf("%4s: " FMT_WORD, reg_name(i, 4), ref_r.gpr[check_reg_idx(i)];
+    if ((i + 1) % 4 == 0)
+      printf("\n");
+  }
+  printf("%4s: " FMT_WORD "\n", "PC", ref_r.pc);
+  /* CSR_REG(CSR_REG_PRINT); */
+}
 void isa_reg_display() {
   /* wuyc */
   /* int regs_len = sizeof(regs) / sizeof(char *); */
