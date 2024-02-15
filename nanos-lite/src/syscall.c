@@ -7,7 +7,7 @@
 #include <fs.h>
 #include <sys/time.h>
 void switch_boot_pcb();
-#define __STRACE__
+/* #define __STRACE__ */
 #ifdef __STRACE__
 # define SYS_format(format) format "         = %d"
 # define STRACE(SYS_type, format, ...) printf(#SYS_type format "\n", ## __VA_ARGS__)
