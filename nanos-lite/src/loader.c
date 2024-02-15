@@ -69,7 +69,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
         memset(pa, 0, PGSIZE);
         /* printf("pa = 0x%08x\n", pa); */
         int len = PGSIZE - offset;
-        map(&pcb->as, (void *)(va & ~(PGSIZE - 1)), pa, PTE_U | PTE_A | PTE_R | PTE_W | PTE_X | PTE_V);
+        map(&pcb->as, (void *)(va & ~(PGSIZE - 1)), pa, PTE_U | PTE_D | PTE_R | PTE_W | PTE_X | PTE_V);
         if (read_len < phdr[i].p_filesz)
         {
           int rlen = len;
