@@ -110,10 +110,10 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   {
     pte_base[index] &= ~PTE_V;
   }
-  /* else if ((pte_base[index] & PTE_V) == PTE_V) */
-  /* { */
-  /*   return; */
-  /* } */
+  else if ((pte_base[index] & PTE_V) == PTE_V)
+  {
+    return;
+  }
   else
   {
     pte_base[index] = ((uint32_t)pa & ~0xfff) >> 2 | prot;

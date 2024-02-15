@@ -37,11 +37,14 @@ int mm_brk(uintptr_t brk) {
     /* current->max_brk = (brk + PGSIZE -1) & ~(PGSIZE - 1); */
     /* printf("first malloc is at %p\n", (void *)current->max_brk); */
   }
-  for (; current->max_brk < brk; current->max_brk += PGSIZE)
+  else
   {
-    void *pa = pg_alloc(PGSIZE);
-    printf("pa = 0x%08x\n", pa);
-    map(&current->as, (void *)current->max_brk, pa, PTE_U | PTE_A | PTE_D | PTE_R | PTE_W | PTE_X | PTE_V);
+    for (; current->max_brk < brk; current->max_brk += PGSIZE)
+    {
+      void *pa = pg_alloc(PGSIZE);
+      printf("pa = 0x%08x\n", pa);
+      map(&current->as, (void *)current->max_brk, pa, PTE_U | PTE_A | PTE_D | PTE_R | PTE_W | PTE_X | PTE_V);
+    }
   }
 #endif
   return 0;
