@@ -92,14 +92,14 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     PTE pte = pte_base[index];
     if ((pte & PTE_V) != PTE_V)
     {
-      uint32_t pg_ptr = (uint32_t)pgalloc_usr(PGSIZE) & ~0xfff;
+      uint32_t pg_ptr = (uint32_t)pgalloc_usr(PGSIZE) & ~(PGSIZE - 1);
       pte_base[index] = pg_ptr >> 2 | PTE_V;
       /* printf("pg_pte = 0x%08x\n", pte_base[index]); */
       pte_base = (PTE *)pg_ptr;
     }
     else
     {
-      pte_base = (PTE *)((pte & ~0x3ff) << 2);
+      pte_base = (PTE *)((pte << 2) & ~(PGSIZE - 1));
     }
     /* printf("%d\n", shift); */
     shift -= VPN_WIDTH;
@@ -116,7 +116,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   }
   else
   {
-    pte_base[index] = ((uint32_t)pa & ~0xfff) >> 2 | prot;
+    pte_base[index] = ((uint32_t)pa & ~(PGSIZE - 1)) >> 2 | prot;
     /* printf("pte = 0x%08x\n", pte_base[index]); */
   }
   /* printf("shift = %d\n", shift); */
