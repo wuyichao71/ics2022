@@ -5,7 +5,7 @@
 //#define HAS_CTE
 #define HAS_CTE
 //#define HAS_VME
-/* #define HAS_VME */
+#define HAS_VME
 //#define MULTIPROGRAM
 //#define TIME_SHARING
 
