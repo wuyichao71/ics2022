@@ -35,7 +35,7 @@ void init_wp_pool();
 #define INI_REG 5
 #define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(INI_REG + index)]);
 int read_difftest_csr(word_t inst[], int inst_i, word_t csr_code[], int length);
-void output_difftest_csr(word_t inst[], int inst_i);
+void output_difftest_csr(word_t inst[], int inst_i, vaddr_t ini_pc);
 /* wuyc */
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
