@@ -29,6 +29,14 @@ static bool is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+/* wuyc */
+#define CSR_CODE_LIST(name, code, ...) name##_CODE,
+#define INST_LEN 32
+#define INI_REG 5
+#define CSR_DUT_PRINT(name, code, index) printf("ref_r." #name " = 0x%08x\n", ref_r.gpr[(INI_REG + index)]);
+int read_difftest_csr(word_t inst[], int inst_i, word_t csr_code[], int length);
+void output_difftest_csr(word_t inst[], int inst_i);
+/* wuyc */
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -204,6 +212,22 @@ static int cmd_load(char *args) {
   }
   return 0;
 }
+
+static int cmd_diffcsr(char *args) {
+  word_t csr_code[] = {CSR_REG(CSR_CODE_LIST)};
+  word_t inst[INST_LEN] = {};
+  word_t mem[INST_LEN] = {};
+  CPU_state cpy_r = {};
+  int inst_i = 0;
+
+  inst_i = read_difftest_csr(inst, inst_i, csr_code, ARRLEN(csr_code));
+  ref_difftest_regcpy(&cpy_r, DIFFTEST_TO_DUT);
+  ref_difftest_memcpy(RESET_VECTOR, mem, inst_i * sizeof(word_t), DIFFTEST_TO_DUT);
+  output_difftest_csr(inst, inst_i);
+  ref_difftest_regcpy(&cpy_r, DIFFTEST_TO_REF);
+  ref_difftest_memcpy(RESET_VECTOR, mem, inst_i * sizeof(word_t), DIFFTEST_TO_REF);
+  return 0;
+}
 /* wuyc */
 
 static int cmd_c(char *args) {
@@ -237,6 +261,7 @@ static struct {
   {"attach", "attach difftest mode", cmd_attach},
   {"save", "save snapshot", cmd_save},
   {"load", "load snapshot", cmd_load},
+  {"diffcsr", "check difftest csr", cmd_diffcsr},
 
   /* TODO: Add more commands */
   /* wuyc */
