@@ -223,7 +223,7 @@ static int cmd_diffcsr(char *args) {
   inst_i = read_difftest_csr(inst, inst_i, csr_code, ARRLEN(csr_code));
   ref_difftest_regcpy(&cpy_r, DIFFTEST_TO_DUT);
   /* ref_difftest_memcpy(RESET_VECTOR, mem, inst_i * sizeof(word_t), DIFFTEST_TO_DUT); */
-  output_difftest_csr(inst, inst_i, CONFIG_MBASE + 4000000);
+  output_difftest_csr(inst, inst_i, CONFIG_MBASE + CONFIG_MSIZE - inst_i * sizeof(word_t));
   ref_difftest_regcpy(&cpy_r, DIFFTEST_TO_REF);
   /* ref_difftest_memcpy(RESET_VECTOR, mem, inst_i * sizeof(word_t), DIFFTEST_TO_REF); */
   return 0;
