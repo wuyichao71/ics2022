@@ -32,8 +32,8 @@ int mm_brk(uintptr_t brk) {
 #ifdef HAS_VME
   if (current->max_brk == 0)
   {
-    current->max_brk = (brk & ~(PGSIZE - 1));
-    /* current->max_brk = (brk & (PGSIZE - 1)) ? ((brk & ~(PGSIZE - 1)) + PGSIZE) : brk; */
+    /* current->max_brk = (brk & ~(PGSIZE - 1)); */
+    current->max_brk = (brk & (PGSIZE - 1)) ? ((brk & ~(PGSIZE - 1)) + PGSIZE) : brk;
     /* printf("first malloc is at %p\n", (void *)current->max_brk); */
   }
   for (; current->max_brk < brk; current->max_brk += PGSIZE)
