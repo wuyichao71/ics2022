@@ -27,6 +27,7 @@ typedef struct {
   /* wuyc */
   word_t csr[NCSR];
   int priv_mode;
+  bool INTR;
   /* word_t mtvec; */
   /* vaddr_t mepc; */
   /* word_t mstatus; */

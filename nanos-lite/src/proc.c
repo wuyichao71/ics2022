@@ -30,9 +30,9 @@ void init_proc() {
   char *envp[2] = {NULL};
   /* argv[0] = "/bin/nterm"; */
   /* argv[0] = "/bin/hello"; */
-  argv[0] = "/bin/dummy";
-  /* argv[0] = "/bin/pal"; */
-  /* argv[1] = "--skip"; */
+  /* argv[0] = "/bin/dummy"; */
+  argv[0] = "/bin/pal";
+  argv[1] = "--skip";
   /* envp[0] = "PATH=/bin"; */
   context_uload(&pcb[0], argv[0], argv, envp);
   context_kload(&pcb[1], hello_fun, "pcb 0");
@@ -66,8 +66,8 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   current->cp = prev;
-  current = &pcb[0];
-  /* current = (current == &pcb[0] ? &pcb[1] : &pcb[0]); */
+  /* current = &pcb[0]; */
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   /* printf("mepc = 0x%08x\n", current->cp->mepc); */
   /* printf("mcause = 0x%08x\n", current->cp->mcause); */
   return current->cp;
