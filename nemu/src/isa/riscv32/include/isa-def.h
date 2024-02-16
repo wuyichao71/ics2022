@@ -43,6 +43,7 @@ typedef struct {
 
 /* wuyc */
 #define PGSHIFT 12
+enum {MODE_U = 0x00, MODE_S = 0x01, MODE_M = 0x11};
 /* wuyc */
 /* #define isa_mmu_check(vaddr, len, type) (MMU_DIRECT) */
 #define isa_mmu_check(vaddr, len, type) ((vaddr >> PGSHIFT == (vaddr + len - 1) >> PGSHIFT) ? \

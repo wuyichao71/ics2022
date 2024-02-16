@@ -31,7 +31,15 @@ static inline const char* reg_name(int idx, int width) {
 }
 
 /* wuyc */
-#define CSR_REG(f) f(MSTATUS, 0x300, 0) f(MTVEC, 0x305, 1) f(MEPC, 0x341, 2) f(MCAUSE, 0x342, 3) f(SATP, 0x180, 4) 
+#define CSR_REG(f) \
+  f(MSTATUS, 0x300, 0) \
+  f(MTVEC, 0x305, 1) \
+  f(MEPC, 0x341, 2) \
+  f(MCAUSE, 0x342, 3) \
+  f(MSCRATCH, 0x340, 4) \
+  f(SATP, 0x180, 5) \
+  f(STVEC, 0x105, 6) \
+  f(MEDELEG, 0x302, 7)
 #define CSR_INDEX(name, code, index) name = index,
 #define CSR_CODE(name, code, ...) name##_CODE = code,
 #define CSR_CASE(name, code, ...) case name##_CODE: return name;

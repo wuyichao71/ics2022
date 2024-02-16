@@ -30,7 +30,7 @@ static void restart() {
   /* Set the initial program counter. */
   cpu.pc = RESET_VECTOR;
   /* wuyc */
-  cpu.priv_mode = 3;
+  cpu.priv_mode = MODE_M;
   /* wuyc */
 
   /* The zero register is always 0. */
