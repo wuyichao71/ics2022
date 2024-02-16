@@ -72,6 +72,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
   /* wuyc */
   asm volatile("csrw mstatus, %0" : : "r"(0x1800));
+  asm volatile("csrw medeleg, %0" : : "r"(0x1 << 7));
   /* wuyc */
 
   // register event handler
