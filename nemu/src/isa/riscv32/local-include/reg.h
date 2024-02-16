@@ -39,7 +39,8 @@ static inline const char* reg_name(int idx, int width) {
   f(MSCRATCH, 0x340, 4) \
   f(SATP, 0x180, 5) \
   f(STVEC, 0x105, 6) \
-  f(MEDELEG, 0x302, 7)
+  f(MEDELEG, 0x302, 7) \
+  f(SCAUSE, 0x142, 8)
 #define CSR_INDEX(name, code, index) name = index,
 #define CSR_CODE(name, code, ...) name##_CODE = code,
 #define CSR_CASE(name, code, ...) case name##_CODE: return name;
