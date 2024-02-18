@@ -2,6 +2,7 @@
 #include <riscv/riscv.h>
 #include <klib.h>
 
+
 static Context* (*user_handler)(Event, Context*) = NULL;
 /* wuyc */
 void __am_get_cur_as(Context *c);
@@ -71,6 +72,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
   // initialize exception entry
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
   /* wuyc */
+  /* asm volatile("csrw mstatus, %0" : : "r"(0x1800)); */
   asm volatile("csrw mstatus, %0" : : "r"(0x1800));
   /* asm volatile("csrw stvec, %0" : : "r"(__am_asm_trap)); */
   /* asm volatile("csrw medeleg, %0" : : "r"(0x1 << 7)); */
@@ -86,7 +88,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context *c = (Context *)kstack.end - 1;
   *c = (Context){0};
   c->mepc = (uintptr_t)entry;
-  c->mstatus = 0x800;
+  c->mstatus = 0x1800 | MSTATUS_MIE;
   c->GPRSP = (uintptr_t)kstack.end;
   c->GPR2 = (uintptr_t)arg;
   c->pdir = NULL;

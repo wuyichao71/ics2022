@@ -35,6 +35,14 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   return cpu.csr[MTVEC];
 }
 
+#define IRQ_TIMER 0x80000007
+#define MSTATUS_MIE (1 << 3)
+
 word_t isa_query_intr() {
+  if (cpu.INTR && (cpu.csr[MSTATUS] & MSTATUS_MIE))
+  {
+    cpu.INTR = false;
+    return IRQ_TIMER;
+  }
   return INTR_EMPTY;
 }
