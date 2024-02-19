@@ -88,7 +88,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context *c = (Context *)kstack.end - 1;
   *c = (Context){0};
   c->mepc = (uintptr_t)entry;
-  c->mstatus = 0x1800 | MSTATUS_MIE;
+  c->mstatus = 0x1800 | MSTATUS_MPIE;
   c->GPRSP = (uintptr_t)kstack.end;
   c->GPR2 = (uintptr_t)arg;
   c->pdir = NULL;

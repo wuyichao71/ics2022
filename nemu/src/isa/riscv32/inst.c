@@ -190,6 +190,12 @@ static word_t rw_csr(word_t code, word_t src1, char rw)
 
 #define SET_CSR(cmd) do {word_t t = rw_csr(imm, 0, 'r'); rw_csr(imm, cmd, 'w'); R(rd) = t;} while(0)
 
+#define MRET() do { \
+  s->dnpc = cpu.csr[MEPC]; \
+  if (cpu.csr[MSTATUS] & MSTATUS_MPIE) cpu.csr[MSTATUS] |= MSTATUS_MIE; \
+  else cpu.csr[MSTATUS] &= (~MSTATUS_MIE); \
+  cpu.csr[MSTATUS] |= MSTATUS_MPIE; \
+} while(0)
 
 /* wuyc */
 
@@ -232,7 +238,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, SET_CSR(src1));
   // INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, bool success; s->dnpc = isa_raise_intr(isa_reg_str2val("a7", &success), s->pc););
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, s->dnpc = isa_raise_intr(11, s->pc););
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret  , I, s->dnpc = cpu.csr[MEPC];);
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret  , I, MRET(););
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, SET_CSR(t | src1));
   /* wuyc */
   INSTPAT("??????? ????? ????? 010 ????? 01000 11", sw     , S, Mw(src1 + imm, 4, src2));

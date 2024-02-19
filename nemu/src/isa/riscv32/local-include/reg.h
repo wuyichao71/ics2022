@@ -59,5 +59,9 @@ static inline word_t code_to_csr(word_t code)
     default: panic("Some CSR is missing!");
   }
 }
+
+#define IRQ_TIMER 0x80000007
+#define MSTATUS_MIE (1 << 3)
+#define MSTATUS_MPIE (1 << 7)
 /* wuyc */
 #endif
