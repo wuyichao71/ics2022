@@ -2,6 +2,13 @@
 #include <riscv/riscv.h>
 #include <klib.h>
 
+/* wuyc */
+enum {
+  IRQ_TIMER = 0x80000007,
+  IRQ_M_ECALL = 11,
+};
+/* wuyc */
+
 
 static Context* (*user_handler)(Event, Context*) = NULL;
 /* wuyc */
@@ -43,6 +50,8 @@ Context* __am_irq_handle(Context *c) {
         /* ev.event = EVENT_SYSCALL; c->mepc += 4; break; */
       /* case -1: */ 
         /* ev.event = EVENT_YIELD  ; c->mepc += 4; break; */
+      case 0x80000007:
+        ev.event = EVENT_IRQ_TIMER;
       case 11:
         if (c->GPR1 == -1)
         {
