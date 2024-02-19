@@ -52,6 +52,7 @@ Context* __am_irq_handle(Context *c) {
         /* ev.event = EVENT_YIELD  ; c->mepc += 4; break; */
       case 0x80000007:
         ev.event = EVENT_IRQ_TIMER;
+        break;
       case 11:
         if (c->GPR1 == -1)
         {
