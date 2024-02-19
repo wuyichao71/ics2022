@@ -50,10 +50,10 @@ Context* __am_irq_handle(Context *c) {
         /* ev.event = EVENT_SYSCALL; c->mepc += 4; break; */
       /* case -1: */ 
         /* ev.event = EVENT_YIELD  ; c->mepc += 4; break; */
-      case 0x80000007:
+      case IRQ_TIMER:
         ev.event = EVENT_IRQ_TIMER;
         break;
-      case 11:
+      case IRQ_M_ECALL:
         if (c->GPR1 == -1)
         {
           ev.event = EVENT_YIELD;
