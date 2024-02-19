@@ -28,7 +28,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
     cpu.csr[MSTATUS] |= MSTATUS_MPIE;
   else
     cpu.csr[MSTATUS] &= (~MSTATUS_MPIE);
-  cpu.csr[MSTATUS] &= (~MSTATUS_MIE)
+  cpu.csr[MSTATUS] &= (~MSTATUS_MIE);
   /* cpu.csr[MSTATUS] |= (cpu.csr[MSTATUS] & MSTATUS_MIE) */
 #ifdef CONFIG_ETRACE
   log_write(FMT_WORD ": trigger exception(ID: %d)\n", cpu.csr[MEPC], cpu.csr[MCAUSE]);
