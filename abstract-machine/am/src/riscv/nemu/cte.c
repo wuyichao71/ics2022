@@ -32,7 +32,7 @@ Context* __am_irq_handle(Context *c) {
   printf("%4s: 0x%08x\n", "mepc", c->mepc);
   */
   printf("mcause = 0x%08x\n", c->mcause);
-  printf("reason = %d\n", &(c->GPR1));
+  printf("reason = %d\n", c->GPR1);
   /* wuyc */
   if (c->pdir != NULL)
     __am_get_cur_as(c);
