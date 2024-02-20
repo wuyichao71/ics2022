@@ -42,18 +42,18 @@ void hello_fun(void *arg) {
 void init_proc() {
   /* context_kload(&pcb[1], hello_fun, "pbc 1"); */
   /* context_uload(&pcb[0], "/bin/hello"); */
-  /* char *argv[3] = {NULL}; */
-  /* char *envp[2] = {NULL}; */
+  char *argv[3] = {NULL};
+  char *envp[2] = {NULL};
   /* argv[0] = "/bin/nterm"; */
-  /* argv[0] = "/bin/hello"; */
+  argv[0] = "/bin/hello";
   /* argv[0] = "/bin/dummy"; */
   /* argv[0] = "/bin/pal"; */
   /* argv[1] = "--skip"; */
   /* envp[0] = "PATH=/bin"; */
-  for (int i = 0; i < ARRLEN(utask_table); i++)
-    context_uload(&pcb[i], utask_table[i].filename, utask_table[i].argv, utask_table[i].envp);
-  /* context_uload(&pcb[0], argv[0], argv, envp); */
-  /* context_kload(&pcb[1], hello_fun, "pcb 0"); */
+  /* for (int i = 0; i < ARRLEN(utask_table); i++) */
+    /* context_uload(&pcb[i], utask_table[i].filename, utask_table[i].argv, utask_table[i].envp); */
+  context_uload(&pcb[0], argv[0], argv, envp);
+  context_kload(&pcb[1], hello_fun, "pcb 0");
   /* context_kload(&pcb[1], hello_fun, "pbc 1"); */
   switch_boot_pcb();
   /* printf("pcb_boot.as.ptr = 0x%08x\n", pcb_boot.as.ptr); */
