@@ -197,6 +197,19 @@ static word_t rw_csr(word_t code, word_t src1, char rw)
   cpu.csr[MSTATUS] |= MSTATUS_MPIE; \
 } while(0)
 
+#define ECALL() do { \
+  int mpie = cpu.mstatus >> 10 & 0b11; \
+  switch (mpie) \
+  { \
+    case 0b00: \
+      s->dnpc = isa_raise_intr(IRQ_U_ECALL, s->pc); \
+    case 0b01: \
+      s->dnpc = isa_raise_intr(IRQ_S_ECALL, s->pc); \
+    case 0b11: \
+      s->dnpc = isa_raise_intr(IRQ_M_ECALL, s->pc); \
+  } \
+} while(0)
+
 /* wuyc */
 
 static int decode_exec(Decode *s) {
@@ -237,7 +250,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 110 ????? 00100 11", ori    , I, R(rd) = src1 | imm);
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, SET_CSR(src1));
   // INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, bool success; s->dnpc = isa_raise_intr(isa_reg_str2val("a7", &success), s->pc););
-  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, s->dnpc = isa_raise_intr(IRQ_M_ECALL, s->pc););
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , I, ECALL(););
   INSTPAT("0011000 00010 00000 000 00000 11100 11", mret  , I, MRET(););
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, SET_CSR(t | src1));
   /* wuyc */
