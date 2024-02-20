@@ -26,8 +26,8 @@ task_t utask_table[] = {
   /* {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL}, */
   /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
   /* {.filename = pal_argv[0],   .argv = pal_argv,   .envp = NULL}, */
-  {.filename = "/bin/nterm", .argv = nterm_argv,   .envp = NULL},
   {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL},
+  {.filename = "/bin/nterm", .argv = nterm_argv, .envp = NULL},
 };
 /* wuyc */
 
