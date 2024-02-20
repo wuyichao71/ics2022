@@ -81,6 +81,7 @@ void *_sbrk(intptr_t increment) {
   if (program_break == 0)
   {
     program_break = ((intptr_t)&_end + PGSIZE - 1) & ~(PGSIZE - 1);
+    _syscall_((intptr_t)SYS_brk, (intptr_t)program_break, 0, 0);
   }
   intptr_t ret = program_break, new = program_break + increment;
   if (_syscall_(SYS_brk, new, 0, 0) == 0)
