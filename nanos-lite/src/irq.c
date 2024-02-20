@@ -8,6 +8,7 @@ static Context* do_event(Event e, Context* c) {
   /* printf("e.event = %d\n", e.event); */
   switch (e.event) {
     /* wuyc */
+    case EVENT_IRQ_IODEV:
     case EVENT_SYSCALL: do_syscall(c); break;
     case EVENT_YIELD: c = schedule(c); break;
     /* case EVENT_IRQ_TIMER: Log("In EVENT_IRQ_TIMER"); c = schedule(c); break; */

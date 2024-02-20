@@ -25,7 +25,7 @@ task_t utask_table[] = {
   /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
   /* {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL}, */
   /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
-  /* {.filename = pal_argv[0],   .argv = pal_argv,   .envp = NULL}, */
+  /* {.filename = "/bin/pal",   .argv = pal_argv,   .envp = NULL}, */
   {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL},
   {.filename = "/bin/nterm", .argv = nterm_argv, .envp = NULL},
 };
@@ -90,7 +90,7 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  int log_time[] = {1, 1};
+  int log_time[] = {1, 500};
   static int time = 0;
   static int index = 0;
   current->cp = prev;
