@@ -129,7 +129,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *c = (Context *)kstack.end - 1;
   *c = (Context){0};
   c->mepc = (uintptr_t)entry;
-  c->mstatus = 0x0 | MSTATUS_MXR | MSTATUS_SUM | MSTATUS_MPIE;
+  c->mstatus = 0x0 | MSTATUS_MXR | MSTATUS_SUM; //| MSTATUS_MPIE;
   c->GPRSP = (uintptr_t)kstack.end;
   c->pdir = as->ptr;
   /* printf("MODE_U = %d\n", MODE_U); */
