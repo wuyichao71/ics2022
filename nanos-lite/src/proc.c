@@ -17,18 +17,24 @@ typedef struct {
   char **envp;
 } task_t;
 
-/* static char *pal_argv[] = {"/bin/pal", "--skip", NULL}; */
+#define CMD(f) f(hello) //f(bird) f(nslider) f(pal)
+#define DEFINE_ARGV(name, ...) static char *name##_argv[] = {"/bin/" #name, ##__VA_ARGS__, NULL}
+
 static char *hello_argv[] = {"/bin/hello", NULL};
 /* static char *dummy_argv[] = {"/bin/dummy", NULL}; */
-static char *nterm_argv[] = {"/bin/nterm", NULL};
+/* static char *nterm_argv[] = {"/bin/nterm", NULL}; */
+/* static char *nterm_argv[] = {"/bin/bird", NULL}; */
+/* static char *nslider_argv[] = {"/bin/nslider", NULL}; */
+/* static char *pal_argv[] = {"/bin/pal", "--skip", NULL}; */
 /* static char *menu_argv[] = {"/bin/menu", NULL}; */
 task_t utask_table[] = {
   /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
   {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL},
+  /* {.filename = "/bin/bird", .argv = hello_argv, .envp = NULL}, */
   /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
   /* {.filename = "/bin/pal",   .argv = pal_argv,   .envp = NULL}, */
   /* {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL}, */
-  {.filename = "/bin/nterm", .argv = nterm_argv, .envp = NULL},
+  /* {.filename = "/bin/nterm", .argv = nterm_argv, .envp = NULL}, */
   /* {.filename = "/bin/menu", .argv = menu_argv, .envp = NULL}, */
 };
 /* wuyc */
