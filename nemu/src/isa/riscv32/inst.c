@@ -198,7 +198,7 @@ static word_t rw_csr(word_t code, word_t src1, char rw)
 } while(0)
 
 #define ECALL() do { \
-  int mpie = cpu.mstatus >> 10 & 0b11; \
+  int mpie = cpu.csr[MSTATUS] >> 10 & 0b11; \
   switch (mpie) \
   { \
     case 0b00: \
