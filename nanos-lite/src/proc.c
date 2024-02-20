@@ -18,7 +18,7 @@ typedef struct {
 } task_t;
 
 /* static char *pal_argv[] = {"/bin/pal", "--skip", NULL}; */
-/* static char *hello_argv[] = {"/bin/hello", NULL}; */
+static char *hello_argv[] = {"/bin/hello", NULL};
 /* static char *dummy_argv[] = {"/bin/dummy", NULL}; */
 /* static char *nterm_argv[] = {"/bin/nterm", NULL}; */
 static char *menu_argv[] = {"/bin/menu", NULL};
@@ -27,7 +27,7 @@ task_t utask_table[] = {
   /* {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL}, */
   /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
   /* {.filename = "/bin/pal",   .argv = pal_argv,   .envp = NULL}, */
-  /* {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL}, */
+  {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL},
   /* {.filename = "/bin/nterm", .argv = nterm_argv, .envp = NULL}, */
   {.filename = "/bin/menu", .argv = menu_argv, .envp = NULL},
 };
@@ -92,22 +92,22 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  /* int log_time[] = {1, 500}; */
-  /* static int time = 0; */
-  /* static int index = 0; */
+  int log_time[] = {1, 1};
+  static int time = 0;
+  static int index = 0;
   current->cp = prev;
-  current = &pcb[0];
-  /* if (time < log_time[index]) */
-  /* { */
-  /*   time++; */
-  /* } */
-  /* else */
-  /* { */
-  /*   time = 0; */
-  /*   index = (index + 1) % 2; */
-  /* } */
+  /* current = &pcb[0]; */
+  if (time < log_time[index])
+  {
+    time++;
+  }
+  else
+  {
+    time = 0;
+    index = (index + 1) % 2;
+  }
 
-  /* current = &pcb[index]; */
+  current = &pcb[index];
   /* current = (current == &pcb[0] ? &pcb[1] : &pcb[0]); */
   /* printf("mepc = 0x%08x\n", current->cp->mepc); */
   /* printf("mcause = 0x%08x\n", current->cp->mcause); */
