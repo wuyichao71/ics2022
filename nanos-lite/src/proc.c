@@ -17,11 +17,13 @@ typedef struct {
   char **envp;
 } task_t;
 
-static char *pal_argv[] = {"/bin/pal", "--skip", NULL};
+/* static char *pal_argv[] = {"/bin/pal", "--skip", NULL}; */
 static char *hello_argv[] = {"/bin/hello", NULL};
+static char *dummy_argv[] = {"/bin/dummy", NULL};
 task_t utask_table[] = {
   {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL},
-  {.filename = "/bin/pal",   .argv = pal_argv,   .envp = NULL},
+  {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL},
+  /* {.filename = "/bin/pal",   .argv = pal_argv,   .envp = NULL}, */
 };
 /* wuyc */
 
@@ -50,7 +52,7 @@ void init_proc() {
   /* argv[0] = "/bin/pal"; */
   /* argv[1] = "--skip"; */
   /* envp[0] = "PATH=/bin"; */
-  printf("ARRLEN(utask_table) = %d\n", ARRLEN(utask_table));
+  /* printf("ARRLEN(utask_table) = %d\n", ARRLEN(utask_table)); */
   for (int i = 0; i < ARRLEN(utask_table); i++)
     context_uload(&pcb[i], utask_table[i].filename, utask_table[i].argv, utask_table[i].envp);
   /* context_uload(&pcb[0], argv[0], argv, envp); */
