@@ -5,7 +5,7 @@ Context* schedule(Context *prev);
 /* wuyc */
 
 static Context* do_event(Event e, Context* c) {
-  /* printf("%d\n", c->GPR1); */
+  printf("e.event = %d\n", e.event);
   switch (e.event) {
     /* wuyc */
     case EVENT_SYSCALL: do_syscall(c); break;
