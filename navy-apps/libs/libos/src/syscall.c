@@ -76,36 +76,36 @@ int _write(int fd, void *buf, size_t count) {
 /* wuyc */
 extern char _end;
 void *_sbrk(intptr_t increment) {
-  /* static intptr_t program_break = (intptr_t)&_end; */
-  /* intptr_t ret = program_break, new = program_break + increment; */
-  /* if (_syscall_(SYS_brk, new, 0, 0) == 0) */
-  /* { */
-  /*   program_break = new; */
-  /*   return (void *)ret; */
-  /* } */
-
-  /* return (void *)-1; */
-  extern char end;
-  static intptr_t p_brk = 0;
-  if (p_brk == 0)
+  static intptr_t program_break = (intptr_t)&_end;
+  intptr_t ret = program_break, new = program_break + increment;
+  if (_syscall_(SYS_brk, new, 0, 0) == 0)
   {
-    p_brk = (intptr_t)&end;
-    _syscall_((intptr_t)SYS_brk, (intptr_t)p_brk, 0, 0);
-    // p_brk = (p_brk & 0xfff) ? ((p_brk & ~0xfff) + PG_SIZE) : p_brk;
-    // return (void *)-1;
+    program_break = new;
+    return (void *)ret;
   }
 
-  void *old_brk = (void *)p_brk;
-  // char buf[32];
-  // sprintf(buf, "new brk is %p\n", (void *)(p_brk + increment));
-  // write(1, buf, 32);
-  if (_syscall_((intptr_t)SYS_brk, (intptr_t)(p_brk + increment), 0, 0) != 0)
-    return (void *)-1;
-  p_brk = p_brk + increment;
-  // char buf[32];
-  // sprintf(buf, "p_brk is %p\n", (void *)(p_brk));
-  // write(1, buf, 32);
-  return old_brk;
+  return (void *)-1;
+  /* extern char end; */
+  /* static intptr_t p_brk = 0; */
+  /* if (p_brk == 0) */
+  /* { */
+  /*   p_brk = (intptr_t)&end; */
+  /*   _syscall_((intptr_t)SYS_brk, (intptr_t)p_brk, 0, 0); */
+  /*   // p_brk = (p_brk & 0xfff) ? ((p_brk & ~0xfff) + PG_SIZE) : p_brk; */
+  /*   // return (void *)-1; */
+  /* } */
+
+  /* void *old_brk = (void *)p_brk; */
+  /* // char buf[32]; */
+  /* // sprintf(buf, "new brk is %p\n", (void *)(p_brk + increment)); */
+  /* // write(1, buf, 32); */
+  /* if (_syscall_((intptr_t)SYS_brk, (intptr_t)(p_brk + increment), 0, 0) != 0) */
+  /*   return (void *)-1; */
+  /* p_brk = p_brk + increment; */
+  /* // char buf[32]; */
+  /* // sprintf(buf, "p_brk is %p\n", (void *)(p_brk)); */
+  /* // write(1, buf, 32); */
+  /* return old_brk; */
 }
 /* wuyc */
 

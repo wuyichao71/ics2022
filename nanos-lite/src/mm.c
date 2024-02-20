@@ -29,42 +29,42 @@ void free_page(void *p) {
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
   /* printf("brk = 0x%08x\n", brk); */
-/* #ifdef HAS_VME */
-/*   if (current->max_brk == 0) */
-/*   { */
-/*     /1* current->max_brk = (brk & ~(PGSIZE - 1)); *1/ */
-/*     /1* current->max_brk = (brk & (PGSIZE - 1)) ? ((brk & ~(PGSIZE - 1)) + PGSIZE) : brk; *1/ */
-/*     current->max_brk = (brk + PGSIZE -1) & ~(PGSIZE - 1); */
-/*     /1* printf("first malloc is at %p\n", (void *)current->max_brk); *1/ */
-/*   } */
-/*   for (; current->max_brk < brk; current->max_brk += PGSIZE) */
-/*   { */
-/*     void *pa = pg_alloc(PGSIZE); */
-/*     /1* printf("pa = 0x%08x\n", pa); *1/ */
-/*     map(&current->as, (void *)current->max_brk, pa, PTE_U | PTE_A | PTE_D | PTE_R | PTE_W | PTE_X | PTE_V); */
-/*   } */
-/* #endif */
-/*   return 0; */
 #ifdef HAS_VME
-  #define PG_MASK ~0xfff
   if (current->max_brk == 0)
   {
-    current->max_brk = (brk & ~PG_MASK) ? ((brk & PG_MASK) + PGSIZE) : brk;
-    printf("first malloc is at %p\n", (void *)current->max_brk);
-    return 0;
+    /* current->max_brk = (brk & ~(PGSIZE - 1)); */
+    /* current->max_brk = (brk & (PGSIZE - 1)) ? ((brk & ~(PGSIZE - 1)) + PGSIZE) : brk; */
+    current->max_brk = (brk + PGSIZE -1) & ~(PGSIZE - 1);
+    /* printf("first malloc is at %p\n", (void *)current->max_brk); */
   }
-
   for (; current->max_brk < brk; current->max_brk += PGSIZE)
   {
-    // printf("malloc new space for virtual %p, brk is %p\n", (void *)current->max_brk, (void *)brk);
-    // printf("malloc new space %p for virtual %p\n", pg_p, (void *)i);
-    // map(&current->as, (void *)current->max_brk, pg_alloc(PGSIZE), PGSIZE);
-    map(&current->as, (void *)current->max_brk, pg_alloc(PGSIZE), PTE_R | PTE_W | PTE_X);
-#endif
+    void *pa = pg_alloc(PGSIZE);
+    /* printf("pa = 0x%08x\n", pa); */
+    map(&current->as, (void *)current->max_brk, pa, PTE_U | PTE_A | PTE_D | PTE_R | PTE_W | PTE_X | PTE_V);
   }
+#endif
+  return 0;
+/* #ifdef HAS_VME */
+/*   #define PG_MASK ~0xfff */
+/*   if (current->max_brk == 0) */
+/*   { */
+/*     current->max_brk = (brk & ~PG_MASK) ? ((brk & PG_MASK) + PGSIZE) : brk; */
+/*     printf("first malloc is at %p\n", (void *)current->max_brk); */
+/*     return 0; */
+/*   } */
+
+/*   for (; current->max_brk < brk; current->max_brk += PGSIZE) */
+/*   { */
+/*     // printf("malloc new space for virtual %p, brk is %p\n", (void *)current->max_brk, (void *)brk); */
+/*     // printf("malloc new space %p for virtual %p\n", pg_p, (void *)i); */
+/*     // map(&current->as, (void *)current->max_brk, pg_alloc(PGSIZE), PGSIZE); */
+/*     map(&current->as, (void *)current->max_brk, pg_alloc(PGSIZE), PTE_R | PTE_W | PTE_X); */
+/* #endif */
+  /* } */
 
   // printf("finished malloc\n");
-  return 0;
+  /* return 0; */
 }
 
 extern char _data;
