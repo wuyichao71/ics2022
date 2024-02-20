@@ -153,8 +153,8 @@ int sys_execve(const char *fname, char *const argv[], char *const envp[])
   else
     fs_close(fd);
   context_uload(current, fname, argv, envp);
-  printf("hele\n");
   switch_boot_pcb();
+  printf("hele\n");
   yield();
 
   /* naive_uload(NULL, fname); */
