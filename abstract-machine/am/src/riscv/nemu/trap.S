@@ -1,6 +1,8 @@
 #define concat_temp(x, y) x ## y
 #define concat(x, y) concat_temp(x, y)
 #define MAP(c, f) c(f)
+#define KERNEL 0
+#define USER 1
 
 #if __riscv_xlen == 32
 #define LOAD  lw
@@ -26,11 +28,40 @@ f(30) f(31)
 #define OFFSET_CAUSE  (32 * XLEN)
 #define OFFSET_STATUS (33 * XLEN)
 #define OFFSET_EPC    (34 * XLEN)
+#define OFFSET_NP     (36 * XLEN)
+#define OFFSET_T0     (5 * XLEN)
 
 .align 3
 .globl __am_asm_trap
 __am_asm_trap:
+  csrrw sp, mscratch, sp
+  bnez sp, set_np
+  csrr sp, mscratch # ksp == 0
+
+  # wuyc
+  addi sp, sp, -XLEN
+  # wuyc
   addi sp, sp, -CONTEXT_SIZE
+  STORE t0, OFFSET_T0(sp)
+  STORE zero, OFFSET_NP(sp)
+  j save_context
+
+set_np:
+  # wuyc
+  addi sp, sp, -XLEN
+  # wuyc
+  addi sp, sp, -CONTEXT_SIZE
+
+  STORE t0, OFFSET_T0(sp)
+  li t0, USER
+  STORE t0, OFFSET_NP(sp) 
+
+save_context:
+
+  csrr t0, mscratch
+  STORE t0, OFFSET_SP(sp) # c->sp = $sp
+  csrw mscratch, zero # support re-entry of CTE
+  LOAD t0, OFFSET_T0(sp)
 
   MAP(REGS, PUSH)
 
@@ -51,6 +82,8 @@ __am_asm_trap:
   jal __am_irq_handle
   mv sp, a0
 
+  # LOAD t0, OFFSET_SP(sp)
+  # csrw mscratch, t0
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
@@ -58,5 +91,21 @@ __am_asm_trap:
 
   MAP(REGS, POP)
 
+  STORE t0, OFFSET_T0(sp)
+  LOAD t0, OFFSET_NP(sp)
+  
+  beqz t0, set_sp
   addi sp, sp, CONTEXT_SIZE
+  # wuyc
+  addi sp, sp, XLEN
+  # wuyc
+  csrw mscratch, sp
+  # wuyc
+  addi sp, sp, -XLEN
+  # wuyc
+  addi sp, sp, -CONTEXT_SIZE
+
+set_sp:
+  LOAD t0, OFFSET_T0(sp)
+  LOAD sp, OFFSET_SP(sp)
   mret
