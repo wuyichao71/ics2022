@@ -1,6 +1,8 @@
 #include <am.h>
 #include <nemu.h>
 #include <klib.h>
+#define KERNEL 0
+#define USER 1
 
 static AddrSpace kas = {};
 static void* (*pgalloc_usr)(int) = NULL;
@@ -130,6 +132,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   c->mstatus = 0x0 | MSTATUS_MXR | MSTATUS_SUM | MSTATUS_MPIE;
   c->GPRSP = (uintptr_t)kstack.end;
   c->pdir = as->ptr;
+  c->np = USER;
   /* c->GPR2 = (uintptr_t)arg; */
   return c;
   /* return NULL; */
