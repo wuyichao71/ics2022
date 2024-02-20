@@ -132,7 +132,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   c->mstatus = 0x0 | MSTATUS_MXR | MSTATUS_SUM | MSTATUS_MPIE;
   c->GPRSP = (uintptr_t)kstack.end;
   c->pdir = as->ptr;
-  c->np = USER;
+  c->np = MODE_U;
   /* c->GPR2 = (uintptr_t)arg; */
   return c;
   /* return NULL; */
