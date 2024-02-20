@@ -194,12 +194,18 @@ static word_t rw_csr(word_t code, word_t src1, char rw)
   s->dnpc = cpu.csr[MEPC]; \
   if (cpu.csr[MSTATUS] & MSTATUS_MPIE) cpu.csr[MSTATUS] |= MSTATUS_MIE; \
   else cpu.csr[MSTATUS] &= (~MSTATUS_MIE); \
+  cpu.priv_mode = (cpu.csr[MSTATUS] >> 11) & MODE_M; \
   cpu.csr[MSTATUS] |= MSTATUS_MPIE; \
+  cpu.csr[MSTATUS] &= ~(MODE_M << 11); \
+  if (cpu.priv_mode != MODE_M) cpu.csr[MSTATUS] &= ~(1 << 17); \
 } while(0)
 
 #define ECALL() do { \
-  uint32_t mpie = (cpu.csr[MSTATUS] >> 11) & 0b11; \
-  switch (mpie) \
+  int prev_priv_mode = cpu.priv_mode; \
+  cpu.csr[MSTATUS] &= (~0x1800); \
+  cpu.csr[MSTATUS] |= (cpu.priv_mode << 11); \
+  cpu.priv_mode = MODE_M; \
+  switch (prev_priv_mode) \
   { \
     case 0b00: \
       s->dnpc = isa_raise_intr(IRQ_U_ECALL, s->pc); \
