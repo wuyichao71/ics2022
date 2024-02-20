@@ -88,7 +88,7 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  int log_time[] = {1, 100};
+  int log_time[] = {100, 1};
   static int time = 0;
   static int index = 0;
   current->cp = prev;
