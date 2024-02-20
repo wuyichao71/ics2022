@@ -102,6 +102,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->GPRSP = (uintptr_t)kstack.end;
   c->GPR2 = (uintptr_t)arg;
   c->pdir = NULL;
+  c->np = MODE_M;
   return c;
   /* return NULL; */
 }
