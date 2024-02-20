@@ -6,6 +6,8 @@
 enum {
   IRQ_TIMER = 0x80000007,
   IRQ_M_ECALL = 11,
+  IRQ_U_ECALL = 8,
+  IRQ_S_ECALL = 9,
 };
 /* wuyc */
 
@@ -53,6 +55,8 @@ Context* __am_irq_handle(Context *c) {
       case IRQ_TIMER:
         ev.event = EVENT_IRQ_TIMER;
         break;
+      case IRQ_U_ECALL:
+      case IRQ_S_ECALL:
       case IRQ_M_ECALL:
         if (c->GPR1 == -1)
         {
