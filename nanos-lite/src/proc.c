@@ -17,14 +17,14 @@ typedef struct {
   char **envp;
 } task_t;
 
-/* static char *pal_argv[] = {"/bin/pal", "--skip", NULL}; */
-static char *hello_argv[] = {"/bin/hello", NULL};
+static char *pal_argv[] = {"/bin/pal", "--skip", NULL};
+/* static char *hello_argv[] = {"/bin/hello", NULL}; */
 static char *dummy_argv[] = {"/bin/dummy", NULL};
 task_t utask_table[] = {
-  {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL},
-  /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
+  /* {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL}, */
   {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL},
-  /* {.filename = "/bin/pal",   .argv = pal_argv,   .envp = NULL}, */
+  /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
+  {.filename = "/bin/pal",   .argv = pal_argv,   .envp = NULL},
 };
 /* wuyc */
 
