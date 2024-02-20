@@ -98,22 +98,22 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  int log_time[] = {1, 1};
-  static int time = 0;
-  static int index = 0;
+  /* int log_time[] = {1, 1}; */
+  /* static int time = 0; */
+  /* static int index = 0; */
   current->cp = prev;
-  /* current = &pcb[0]; */
-  if (time < log_time[index])
-  {
-    time++;
-  }
-  else
-  {
-    time = 0;
-    index = (index + 1) % 2;
-  }
+  current = &pcb[0];
+  /* if (time < log_time[index]) */
+  /* { */
+  /*   time++; */
+  /* } */
+  /* else */
+  /* { */
+  /*   time = 0; */
+  /*   index = (index + 1) % 2; */
+  /* } */
 
-  current = &pcb[index];
+  /* current = &pcb[index]; */
   /* current = (current == &pcb[0] ? &pcb[1] : &pcb[0]); */
   /* printf("mepc = 0x%08x\n", current->cp->mepc); */
   /* printf("mcause = 0x%08x\n", current->cp->mcause); */
