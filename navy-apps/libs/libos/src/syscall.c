@@ -77,7 +77,11 @@ int _write(int fd, void *buf, size_t count) {
 extern char _end;
 #define PGSIZE 4096
 void *_sbrk(intptr_t increment) {
-  static intptr_t program_break = (intptr_t)((&_end + PGSIZE - 1) & ~(PGSIZE - 1));
+  static intptr_t program_break = 0;
+  if (program_break == 0)
+  {
+    program_break = ((intptr_t)&_end + PGSIZE - 1) & ~(PGSIZE - 1);
+  }
   intptr_t ret = program_break, new = program_break + increment;
   if (_syscall_(SYS_brk, new, 0, 0) == 0)
   {
