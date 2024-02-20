@@ -202,4 +202,5 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 #else
   pcb->cp->GPRx = (uintptr_t)ustack3;
 #endif
+  pcb->max_brk = 0;
 }
