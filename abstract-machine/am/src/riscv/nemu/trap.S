@@ -1,8 +1,9 @@
 #define concat_temp(x, y) x ## y
 #define concat(x, y) concat_temp(x, y)
 #define MAP(c, f) c(f)
-#define KERNEL 0
-#define USER 1
+#define MODE_U 0
+#define MODE_S 1
+#define MODE_M 3
 
 #if __riscv_xlen == 32
 #define LOAD  lw
@@ -43,7 +44,8 @@ __am_asm_trap:
   # wuyc
   addi sp, sp, -CONTEXT_SIZE
   STORE t0, OFFSET_T0(sp)
-  STORE zero, OFFSET_NP(sp)
+  li t0, MODE_M
+  STORE t0, OFFSET_NP(sp)
   j save_context
 
 set_np:
@@ -53,7 +55,7 @@ set_np:
   addi sp, sp, -CONTEXT_SIZE
 
   STORE t0, OFFSET_T0(sp)
-  li t0, USER
+  li t0, MODE_U
   STORE t0, OFFSET_NP(sp) 
 
 save_context:
@@ -93,6 +95,7 @@ save_context:
 
   STORE t0, OFFSET_T0(sp)
   LOAD t0, OFFSET_NP(sp)
+  addi t0, t0, -MODE_M
   
   beqz t0, set_sp
   addi sp, sp, CONTEXT_SIZE
