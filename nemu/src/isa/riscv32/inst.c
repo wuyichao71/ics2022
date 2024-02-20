@@ -204,10 +204,13 @@ static word_t rw_csr(word_t code, word_t src1, char rw)
   { \
     case 0b00: \
       s->dnpc = isa_raise_intr(IRQ_U_ECALL, s->pc); \
+      break; \
     case 0b01: \
       s->dnpc = isa_raise_intr(IRQ_S_ECALL, s->pc); \
+      break; \
     case 0b11: \
       s->dnpc = isa_raise_intr(IRQ_M_ECALL, s->pc); \
+      break; \
     default: \
       panic("ERROR"); \
   } \
