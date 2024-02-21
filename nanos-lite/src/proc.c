@@ -111,6 +111,7 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   int log_time[] = {utask_log_time[0], utask_log_time[fg_pcb_index]};
+  int task_index[] = {0, fg_pcb_index};
   static int time = 1;
   static int index = -1;
   current->cp = prev;
@@ -127,7 +128,7 @@ Context* schedule(Context *prev) {
     time = 1;
     index = (index + 1) % ARRLEN(log_time);
   }
-  current = &pcb[index];
+  current = &pcb[task_index[index]];
   /* current = &pcb[0]; */
   /* if (time < log_time[index]) */
   /* { */
