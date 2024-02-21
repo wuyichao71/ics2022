@@ -9,6 +9,7 @@ static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB *current = NULL;
 static PCB *fg_pcb = NULL;
+static int fg_pcb_index = -1;
 
 /* wuyc */
 #define ARRLEN(a) (sizeof(a) / sizeof(a[0]))
@@ -18,9 +19,10 @@ typedef struct {
   char **envp;
 } task_t;
 
-#define CMD(f) f(hello) f(bird) f(nslider) f(pal, "--skip")
-#define DEFINE_ARGV(name, ...) static char *name##_argv[] = {"/bin/"#name, ##__VA_ARGS__, NULL};
-#define DEFINE_TASK(name, ...) {.filename = "/bin/"#name, .argv = name##_argv, .envp = NULL},
+#define CMD(f) f(hello, 1) f(bird, 100) f(nslider, 100) f(pal, 100, "--skip")
+#define DEFINE_ARGV(name, logtime, ...) static char *name##_argv[] = {"/bin/"#name, ##__VA_ARGS__, NULL};
+#define DEFINE_TASK(name, logtime, ...) {.filename = "/bin/"#name, .argv = name##_argv, .envp = NULL},
+#define DEFINE_LOGTIME(name, logtime, ...) logtime,
 
 CMD(DEFINE_ARGV)
 /* DEFINE_ARGV(hello) */
@@ -31,7 +33,7 @@ CMD(DEFINE_ARGV)
 /* static char *nslider_argv[] = {"/bin/nslider", NULL}; */
 /* static char *pal_argv[] = {"/bin/pal", "--skip", NULL}; */
 /* static char *menu_argv[] = {"/bin/menu", NULL}; */
-task_t utask_table[] = {
+static task_t utask_table[] = {
   CMD(DEFINE_TASK)
   /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
   /* {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL}, */
@@ -41,6 +43,9 @@ task_t utask_table[] = {
   /* {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL}, */
   /* {.filename = "/bin/nterm", .argv = nterm_argv, .envp = NULL}, */
   /* {.filename = "/bin/menu", .argv = menu_argv, .envp = NULL}, */
+};
+static int utask_log_time[] = {
+  CMD(DEFINE_LOGTIME)
 };
 /* wuyc */
 
@@ -75,7 +80,8 @@ void init_proc() {
   /* context_uload(&pcb[0], argv[0], argv, envp); */
   /* context_kload(&pcb[1], hello_fun, "pcb 0"); */
   /* context_kload(&pcb[1], hello_fun, "pbc 1"); */
-  fg_pcb = &pcb[1];
+  fg_pcb_index = 1;
+  fg_pcb = &pcb[fg_pcb_index];
   switch_boot_pcb();
   /* printf("pcb_boot.as.ptr = 0x%08x\n", pcb_boot.as.ptr); */
   /* printf("pcb[0].as.ptr = 0x%08x\n", pcb[0].as.ptr); */
@@ -104,10 +110,25 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  /* int log_time[] = {1, 1}; */
-  /* static int time = 0; */
-  /* static int index = 0; */
+  int log_time[] = {utask_log_time[0], utask_log_time[fg_pcb_index]};
+  static int time = 1;
+  static int index = -1;
   current->cp = prev;
+  if (current == &pcb_boot)
+  {
+    index = 0;
+    current = &pcb[0];
+  }
+  else if (time < log_time[index])
+  {
+    time++;
+  }
+  else
+  {
+    time = 1;
+    index = (index + 1) / ARRLEN(log_time);
+  }
+  current = &pcb[index];
   /* current = &pcb[0]; */
   /* if (time < log_time[index]) */
   /* { */
@@ -119,8 +140,7 @@ Context* schedule(Context *prev) {
   /*   index = (index + 1) % 2; */
   /* } */
 
-  /* current = &pcb[index]; */
-  current = (current == &pcb[0] ? fg_pcb : &pcb[0]);
+  /* current = (current == &pcb[0] ? fg_pcb : &pcb[0]); */
   /* printf("mepc = 0x%08x\n", current->cp->mepc); */
   /* printf("mcause = 0x%08x\n", current->cp->mcause); */
   return current->cp;
@@ -130,5 +150,6 @@ Context* schedule(Context *prev) {
 void set_fg_pcb(int index)
 {
   assert(index >= 0 && index < MAX_NR_PROC);
-  fg_pcb = &pcb[index];
+  fg_pcb_index = index;
+  fg_pcb = &pcb[fg_pcb_index];
 }
