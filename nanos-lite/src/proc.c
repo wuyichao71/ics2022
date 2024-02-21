@@ -19,7 +19,7 @@ typedef struct {
   char **envp;
 } task_t;
 
-#define CMD(f) f(hello, 1) f(bird, 100) f(nslider, 100) f(pal, 100, "--skip")
+#define CMD(f) f(hello, 1) f(bird, 1000) f(nslider, 1000) f(pal, 1000, "--skip")
 #define DEFINE_ARGV(name, logtime, ...) static char *name##_argv[] = {"/bin/"#name, ##__VA_ARGS__, NULL};
 #define DEFINE_TASK(name, logtime, ...) {.filename = "/bin/"#name, .argv = name##_argv, .envp = NULL},
 #define DEFINE_LOGTIME(name, logtime, ...) logtime,
