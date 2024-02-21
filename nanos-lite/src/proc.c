@@ -117,7 +117,6 @@ Context* schedule(Context *prev) {
   if (current == &pcb_boot)
   {
     index = 0;
-    current = &pcb[0];
   }
   else if (time < log_time[index])
   {
@@ -126,7 +125,7 @@ Context* schedule(Context *prev) {
   else
   {
     time = 1;
-    index = (index + 1) / ARRLEN(log_time);
+    index = (index + 1) % ARRLEN(log_time);
   }
   current = &pcb[index];
   /* current = &pcb[0]; */
