@@ -12,6 +12,10 @@
 #define NAME(key) \
   [AM_KEY_##key] = #key,
 
+/* wuyc */
+void set_fg_pcb(int index);
+/* wuyc */
+
 static const char *keyname[256] __attribute__((used)) = {
   [AM_KEY_NONE] = "NONE",
   AM_KEYS(NAME)
@@ -34,6 +38,12 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   {
     len = sprintf(buf, "k%c %s\n", ev.keydown ? 'd' : 'u', keyname[ev.keycode]);
     /* printf("%d\n", AM_INPUT_KEYBRD); */
+    switch (ev.keycode)
+    {
+      case AM_KEY_F1: set_fg_pcb(1); break;
+      case AM_KEY_F2: set_fg_pcb(2); break;
+      case AM_KEY_F3: set_fg_pcb(3); break;
+    }
     return len;
   }
   return 0;

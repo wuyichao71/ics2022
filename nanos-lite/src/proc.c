@@ -8,6 +8,7 @@
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB *current = NULL;
+static PCB *fg_pcb = NULL;
 
 /* wuyc */
 #define ARRLEN(a) (sizeof(a) / sizeof(a[0]))
@@ -17,10 +18,13 @@ typedef struct {
   char **envp;
 } task_t;
 
-#define CMD(f) f(hello) //f(bird) f(nslider) f(pal)
-#define DEFINE_ARGV(name, ...) static char *name##_argv[] = {"/bin/" #name, ##__VA_ARGS__, NULL}
+#define CMD(f) f(hello) f(bird) f(nslider) f(pal, "--skip")
+#define DEFINE_ARGV(name, ...) static char *name##_argv[] = {"/bin/"#name, ##__VA_ARGS__, NULL};
+#define DEFINE_TASK(name, ...) {.filename = "/bin/"#name, .argv = name##_argv, .envp = NULL},
 
-static char *hello_argv[] = {"/bin/hello", NULL};
+CMD(DEFINE_ARGV)
+/* DEFINE_ARGV(hello) */
+/* static char *hello_argv[] = {"/bin/hello", NULL}; */
 /* static char *dummy_argv[] = {"/bin/dummy", NULL}; */
 /* static char *nterm_argv[] = {"/bin/nterm", NULL}; */
 /* static char *nterm_argv[] = {"/bin/bird", NULL}; */
@@ -28,8 +32,9 @@ static char *hello_argv[] = {"/bin/hello", NULL};
 /* static char *pal_argv[] = {"/bin/pal", "--skip", NULL}; */
 /* static char *menu_argv[] = {"/bin/menu", NULL}; */
 task_t utask_table[] = {
+  CMD(DEFINE_TASK)
   /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
-  {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL},
+  /* {.filename = "/bin/hello", .argv = hello_argv, .envp = NULL}, */
   /* {.filename = "/bin/bird", .argv = hello_argv, .envp = NULL}, */
   /* {.filename = "/bin/dummy", .argv = dummy_argv, .envp = NULL}, */
   /* {.filename = "/bin/pal",   .argv = pal_argv,   .envp = NULL}, */
@@ -65,11 +70,12 @@ void init_proc() {
   /* argv[1] = "--skip"; */
   /* envp[0] = "PATH=/bin"; */
   /* printf("ARRLEN(utask_table) = %d\n", ARRLEN(utask_table)); */
-  for (int i = 0; i < ARRLEN(utask_table); i++)
+  for (int i = 0; i < MAX_NR_PROC; i++)
     context_uload(&pcb[i], utask_table[i].filename, utask_table[i].argv, utask_table[i].envp);
   /* context_uload(&pcb[0], argv[0], argv, envp); */
   /* context_kload(&pcb[1], hello_fun, "pcb 0"); */
   /* context_kload(&pcb[1], hello_fun, "pbc 1"); */
+  fg_pcb = &pcb[1];
   switch_boot_pcb();
   /* printf("pcb_boot.as.ptr = 0x%08x\n", pcb_boot.as.ptr); */
   /* printf("pcb[0].as.ptr = 0x%08x\n", pcb[0].as.ptr); */
@@ -102,7 +108,7 @@ Context* schedule(Context *prev) {
   /* static int time = 0; */
   /* static int index = 0; */
   current->cp = prev;
-  current = &pcb[0];
+  /* current = &pcb[0]; */
   /* if (time < log_time[index]) */
   /* { */
   /*   time++; */
@@ -114,9 +120,15 @@ Context* schedule(Context *prev) {
   /* } */
 
   /* current = &pcb[index]; */
-  /* current = (current == &pcb[0] ? &pcb[1] : &pcb[0]); */
+  current = (current == &pcb[0] ? fg_pcb : &pcb[0]);
   /* printf("mepc = 0x%08x\n", current->cp->mepc); */
   /* printf("mcause = 0x%08x\n", current->cp->mcause); */
   return current->cp;
   /* return NULL; */
+}
+
+void set_fg_pcb(int index)
+{
+  assert(index >= 0 && index < MAX_NR_PROC);
+  fg_pcb = &pcb[index];
 }
