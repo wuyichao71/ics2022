@@ -36,14 +36,14 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   /* printf("%d\n", AM_INPUT_KEYBRD); */
   if (ev.keycode != AM_KEY_NONE)
   {
-    len = sprintf(buf, "k%c %s\n", ev.keydown ? 'd' : 'u', keyname[ev.keycode]);
-    /* printf("%d\n", AM_INPUT_KEYBRD); */
     switch (ev.keycode)
     {
-      case AM_KEY_F1: set_fg_pcb(1); break;
-      case AM_KEY_F2: set_fg_pcb(2); break;
-      case AM_KEY_F3: set_fg_pcb(3); break;
+      case AM_KEY_F1: set_fg_pcb(1); return 0; break;
+      case AM_KEY_F2: set_fg_pcb(2); return 0; break;
+      case AM_KEY_F3: set_fg_pcb(3); return 0; break;
     }
+    len = sprintf(buf, "k%c %s\n", ev.keydown ? 'd' : 'u', keyname[ev.keycode]);
+    /* printf("%d\n", AM_INPUT_KEYBRD); */
     return len;
   }
   return 0;
