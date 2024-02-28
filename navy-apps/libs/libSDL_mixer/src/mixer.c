@@ -1,4 +1,7 @@
 #include <SDL_mixer.h>
+/* wuyc */
+#include <assert.h>
+/* wuyc */
 
 
 // General
@@ -15,30 +18,36 @@ char *Mix_GetError() {
 }
 
 int Mix_QuerySpec(int *frequency, uint16_t *format, int *channels) {
+  /* assert(0); */
   return 0;
 }
 
 // Samples
 
 Mix_Chunk *Mix_LoadWAV_RW(SDL_RWops *src, int freesrc) {
+  /* assert(0); */
   return NULL;
 }
 
 void Mix_FreeChunk(Mix_Chunk *chunk) {
+  assert(0);
 }
 
 
 // Channels
 
 int Mix_AllocateChannels(int numchans) {
+  /* assert(0); */
   return 0;
 }
 
 int Mix_Volume(int channel, int volume) {
+  assert(0);
   return 0;
 }
 
 int Mix_PlayChannel(int channel, Mix_Chunk *chunk, int loops) {
+  assert(0);
   return 0;
 }
 

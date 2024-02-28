@@ -4,8 +4,11 @@
 #include <string.h>
 #include <stdlib.h>
 /* wuyc */
+#include <SDL.h>
 #include <stdio.h>
 void CallbackHelper();
+void TimerCallbackHelper();
+extern uint32_t g_flags;
 /* wuyc */
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
@@ -110,6 +113,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   /* NDL_OpenCanvas(&s->w, &s->h); */
   CallbackHelper();
+  if (g_flags & SDL_INIT_TIMER) TimerCallbackHelper();
   if (x == 0 && y == 0 && w == 0 && h == 0)
   {
     w = s->w; h = s->h;

@@ -9,4 +9,15 @@ int SDL_RemoveTimer(SDL_TimerID id);
 uint32_t SDL_GetTicks();
 void SDL_Delay(uint32_t ms);
 
+/* wuyc */
+typedef struct SDL_Timer
+{
+  uint32_t interval;
+  SDL_NewTimerCallback callback;
+  void *param;
+  int previous_time;
+  struct SDL_Timer *next, *prev;
+} SDL_Timer;
+/* wuyc */
+
 #endif
